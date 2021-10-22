@@ -1,0 +1,28 @@
+body {
+    color: #dcdbdb;
+}
+
+/***** HEADER *****/
+.principal {
+    background-color: rgba(65, 1, 1, 0.60);
+}
+/** Liste de lien **/
+.nav a {
+    color: #dcdbdb;
+    text-decoration: none;
+}
+
+.nav a:hover {
+    background-color: rgba(213, 4, 4, 0.50);
+    transition-duration: 0.5s;
+}
+.nav a:active {
+    background-color: rgba(110, 3, 3, 0.5);
+    color: #5e5d5d;
+    transition-duration: 0s;
+}
+
+/* Footer */
+.footer_principal {
+    background-color: rgba(65, 1, 1, 0.60);
+}

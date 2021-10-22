@@ -1,0 +1,119 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+/** Header **/
+.principal {
+    width: 100%;
+    height: 80px;
+    margin-bottom: 3rem;
+}
+
+#tireSite {
+    float :left;
+    margin-top : 20px;
+    margin-left : 50px;
+    display:block;
+}
+
+/* Liens */
+.nav {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 2rem;
+}
+
+.nav li {
+    padding: 0.5rem;
+    margin-right: 0.5rem;
+    margin-top: 20px;
+}
+
+.nav a {
+    padding: 7px;
+    border-radius: 15px;
+}
+
+/***** BODY *****/
+body {
+    background-image: url('../image/banner.jpg');
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+h2 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 200%;
+    margin-bottom: 5rem;
+}
+
+/*** Retour de la base de donnée ***/
+ul#list_group {
+    overflow:hidden;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-bottom: 6rem;
+}
+
+.group img {
+    display: block;
+    max-width: 250px;
+    max-height: 250px;
+    margin: 0 auto;
+}
+
+li.group {
+    float : left;
+    position: relative;
+    width: 300px;
+    height: 250px;
+    margin: 4px;
+    padding: 5px 0;
+    background-color: rgba(73, 1, 1, 0.9);
+    border: 1px solid rgba(49, 1, 1, 0.9);
+    border-radius: 5%;
+    color: #919090;
+    text-align: center;
+}
+
+.group a {
+    text-decoration: none;
+    display: block;
+    width: 245px;
+    height: 20px;
+    line-height: 20px;
+    position: absolute;
+    bottom: 0;
+    right:0;
+    padding: 0 5px;
+    font-size: 12px;
+    text-align: right;
+    background-color: rgba(213, 4, 4, 0.9);
+    font-weight: bold;
+    color: white;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.group a:hover {
+    background-color: rgb(152, 37, 37);
+    transition-duration: 1s;
+}
+
+/* Footer */
+.footer_principal {
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 98%;
+    padding-top: 30px;
+    height: 50px;
+    margin-left: 1%;
+    margin-bottom: 5px;
+}
