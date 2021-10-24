@@ -7,8 +7,8 @@ $connexion = connexionBd();
 
 $sql = "select * 
         from concerts C
-        join groupe G on G.id_groupe = C.groupe
-        order by RAND() LIMIT 3";
+        join groupe G on G.id_groupe = C.groupe;
+        ";
 
 $concerts = $connexion->query($sql);
 $concert = $concerts->fetchAll(PDO::FETCH_OBJ);
@@ -31,7 +31,7 @@ $concert = $concerts->fetchAll(PDO::FETCH_OBJ);
     <body>
         <?php require("header.php");?>
 
-        <h2> Réservez votre place pour voir vos artistes préférés ! </h2>
+        <h2> Réservez votre place pour voir vos artistes <br> préférés ! </h2>
 
         <ul id="list_group">
             <?php foreach ($concert as $unGroupe): ?>
@@ -40,7 +40,7 @@ $concert = $concerts->fetchAll(PDO::FETCH_OBJ);
                     <p> Nom : <?= $unGroupe->nom; ?> </p>
                     <p> Lieu : <?= $unGroupe->lieu; ?> </p>
                     <p> Prix : <?= $unGroupe->prix_place; ?> </p>
-                    <a href="vue_concert.php"> Voir les détails</a>
+                    <a href="vue_concert.php?nom=<?=$unGroupe->nom;?>" class="lien-details"> Voir les détails</a>
                 </li>
             <?php endforeach; ?>
         </ul>

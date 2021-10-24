@@ -65,7 +65,7 @@ ul#list_group {
     display: block;
     max-width: 250px;
     max-height: 250px;
-    margin: 0 auto;
+    margin: 0px auto;
 }
 
 li.group {
@@ -75,14 +75,14 @@ li.group {
     height: 250px;
     margin: 4px;
     padding: 5px 0;
-    background-color: rgba(73, 1, 1, 0.9);
+    background-color: rgba(73, 1, 1, 0.8);
     border: 1px solid rgba(49, 1, 1, 0.9);
     border-radius: 5%;
-    color: #919090;
+    color: #ffffff;
     text-align: center;
 }
 
-.group a {
+.lien-details {
     text-decoration: none;
     display: block;
     width: 245px;
@@ -99,6 +99,7 @@ li.group {
     color: white;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .group a:hover {
@@ -116,4 +117,40 @@ li.group {
     height: 50px;
     margin-left: 1%;
     margin-bottom: 5px;
+}
+
+/** PAGE VUE_CONCERT.PHP **/
+.presentation {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+#detail {
+    overflow:hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin: auto;
+}
+
+#detail li {
+    display: flex;
+    flex-direction: column;
+}
+
+#detail li p {
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+#detail img {
+    float : left;
+    position: relative;
+    max-width: 300px;
+    max-height: 250px;
+    padding: 5px 0;
+    display: block;
+    margin: auto;
+    text-align: center;
 }
