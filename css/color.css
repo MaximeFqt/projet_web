@@ -2,7 +2,7 @@ body {
     color: #dcdbdb;
 }
 
-/***** HEADER *****/
+/*************** HEADER ***************/
 .principal {
     background-color: rgba(65, 1, 1, 0.60);
 }
@@ -16,13 +16,37 @@ body {
     background-color: rgba(213, 4, 4, 0.50);
     transition-duration: 0.5s;
 }
+
 .nav a:active {
     background-color: rgba(110, 3, 3, 0.5);
     color: #5e5d5d;
     transition-duration: 0s;
 }
 
-/* Footer */
+/*************** Footer ***************/
 .footer_principal {
     background-color: rgba(65, 1, 1, 0.60);
 }
+
+/*************** PAGE ADMIN ***************/
+#form-ajout {
+    border:2px solid darkred;
+    text-align: center;
+}
+
+/*************** Page vue_concert.php ***************/
+.retourIndex a {
+    background-color: darkred;
+}
+
+.retourIndex a:hover {
+    background-color: rgba(213, 4, 4, 0.50);
+    transition-duration: 0.5s;
+}
+
+.retourIndex a:active {
+    background-color: rgba(110, 3, 3, 0.5);
+    color: #5e5d5d;
+    transition-duration: 0s;
+}
+

@@ -1,17 +1,26 @@
 <?php
+session_start();
+
+if (isset($_SESSION['login']) && isset($_SESSION['pass']) && isset($_SESSION['role']) ) {
+    $login = $_SESSION['login'];
+    $pass = $_SESSION['pass'];
+    $role = $_SESSION['role'];
+}
 
 // Inclusion du fichier
 include('connexion.php');
 // Appel de la méthode permettant la connexion à la BDD
 $connexion = connexionBd();
 
-$sql = "select * 
-        from concerts C
-        join groupe G on G.id_groupe = C.groupe;
-        ";
+$sql = "select * from concerts C join groupes G on G.id_groupe = C.groupe;";
 
-$concerts = $connexion->query($sql);
-$concert = $concerts->fetchAll(PDO::FETCH_OBJ);
+$recupAdmin = "select * from users;";
+
+$concerts = $connexion->query($sql);                    // Envoie
+$concert = $concerts->fetchAll(PDO::FETCH_OBJ);   // Traitement
+
+$users = $connexion->query($recupAdmin);               // Envoie
+$user = $users->fetchAll(PDO::FETCH_OBJ);       // Traitement
 
 ?>
 
@@ -25,13 +34,54 @@ $concert = $concerts->fetchAll(PDO::FETCH_OBJ);
         <link href="css/reset.css" rel="stylesheet" type="text/css">
         <link href="css/layout.css" rel="stylesheet" type="text/css">
         <link href="css/color.css" rel="stylesheet" type="text/css">
+        <script src="js/comportement.js"></script>
         <title>TrouvesTonConcert</title>
     </head>
 
-    <body>
+    <body id="body">
         <?php require("header.php");?>
 
-        <h2> Réservez votre place pour voir vos artistes <br> préférés ! </h2>
+        <?php if (isset($role)) : ?>
+            <?php if ($role == 'admin') : ?>
+                <p id="info-connection"> Vous êtes connecté en tant qu'administrateur </p>
+            <?php else : ?>
+                <p id="info-connection"> Vous êtes connecté en tant que : <?= $login; ?> </p>
+            <?php endif; ?>
+        <?php else : ?>
+            <p id="info-connection"> Vous n'êtes pas connecté </p>
+        <?php endif; ?>
+
+        <!-- ===============================
+             FORMULAIRE DE CONNEXION
+             =============================== -->
+
+        <form id="formulaire" method="post" action="login.php">
+            <fieldset id="form-id-admin">
+                <legend>Identification administrateur</legend>
+                <p>
+                    <label for="identifiant">Identifiant: </label>
+                    <input type="text" placeholder="identifiant" name="login" autocomplete="off" required/>
+                </p>
+                <p>
+                    <label for="motDePasse">Mot de passe:</label>
+                    <input type="password" placeholder="Mot de passe" name="pass" required/>
+                </p>
+                <p>
+                    <a href="ajoutUser.php" class="inscription"> Je m'inscrit </a>
+                </p>
+            </fieldset>
+            <p class="submit">
+                <input type="submit" id="btnSubmit" value="Continuer" name="send"/>
+                <input type="reset" id="btnReset" value="Annuler" />
+            </p>
+        </form>
+
+
+        <!-- ===============================
+             AFFICHAGE DES CONCERT DE LA PAGE
+             =============================== -->
+
+        <h2 id="titre"> Réservez votre place pour voir vos artistes <br> préférés ! </h2>
 
         <ul id="list_group">
             <?php foreach ($concert as $unGroupe): ?>
@@ -39,7 +89,7 @@ $concert = $concerts->fetchAll(PDO::FETCH_OBJ);
                     <img src="<?=$unGroupe->image;?>" alt="<?= $unGroupe->nom; ?>">
                     <p> Nom : <?= $unGroupe->nom; ?> </p>
                     <p> Lieu : <?= $unGroupe->lieu; ?> </p>
-                    <p> Prix : <?= $unGroupe->prix_place; ?> </p>
+                    <p> Prix : <?= $unGroupe->prix_place; ?>€ </p>
                     <a href="vue_concert.php?nom=<?=$unGroupe->nom;?>" class="lien-details"> Voir les détails</a>
                 </li>
             <?php endforeach; ?>

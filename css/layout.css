@@ -4,14 +4,15 @@
     border: 0;
 }
 
-/** Header **/
+/****************************** Header ******************************/
 .principal {
+    position: relative;
     width: 100%;
     height: 80px;
-    margin-bottom: 3rem;
+    margin-bottom: 1.5rem;
 }
 
-#tireSite {
+#titreSite {
     float :left;
     margin-top : 20px;
     margin-left : 50px;
@@ -34,9 +35,18 @@
 .nav a {
     padding: 7px;
     border-radius: 15px;
+    cursor: pointer;
 }
 
-/***** BODY *****/
+/****************************** FIN HEADER.PHP ******************************/
+
+
+
+/****************************** BODY *****************************/
+
+
+
+/*************** index.php ***************/
 body {
     background-image: url('../image/banner.jpg');
     -webkit-background-size: cover;
@@ -45,11 +55,17 @@ body {
     background-size: cover;
 }
 
-h2 {
+h2#titre {
     text-align: center;
     font-weight: bold;
     font-size: 200%;
-    margin-bottom: 5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+}
+
+#info-connection {
+    margin-left: 10px;
+    margin-bottom: 10px;
 }
 
 /*** Retour de la base de donnée ***/
@@ -107,19 +123,37 @@ li.group {
     transition-duration: 1s;
 }
 
-/* Footer */
-.footer_principal {
+#formulaire {
+    padding: 1rem;
+    background-color: rgb(110, 3, 3);
+    position: absolute;
+    border-radius: 5%;
+    left : 40vw;
+    top : 40vh;
     text-align: center;
-    position: fixed;
-    bottom: 0;
-    width: 98%;
-    padding-top: 30px;
-    height: 50px;
-    margin-left: 1%;
-    margin-bottom: 5px;
+    display: none;
+    z-index: 0;
 }
 
-/** PAGE VUE_CONCERT.PHP **/
+#form-id-admin {
+    height: 130px;
+    border: 2px solid darkred;
+}
+
+#form-id-admin p {
+    margin: 1rem;
+}
+
+#form-id-admin a.inscription {
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+/*************** FIN PAGE INDEX.PHP ***************/
+
+
+
+/*************** PAGE VUE_CONCERT.PHP ***************/
 .presentation {
     font-size: 2rem;
     text-align: center;
@@ -137,6 +171,7 @@ li.group {
 #detail li {
     display: flex;
     flex-direction: column;
+    padding-bottom: 1rem;
 }
 
 #detail li p {
@@ -154,3 +189,178 @@ li.group {
     margin: auto;
     text-align: center;
 }
+
+.retourIndex {
+    text-align: center;
+}
+
+.retourIndex a {
+    text-decoration: none;
+    color: #FFFFFF;
+    border: solid 2px darkred;
+    padding: 7px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+/*************** FIN PAGE VUE_CONCERT.PHP ***************/
+
+
+
+/*************** PAGE ADMIN.PHP ***************/
+h2#titre-Admin {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: bold;
+    font-size: 3vw;
+}
+
+/* Emplacement section contenant les boutons d'actions */
+section#action_admin {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+section#action_admin>h3.ss_titre {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Positionnement des formulaires */
+.formulaire {
+    position: absolute;
+    left: 37vw;
+    top: 35vh;
+    margin: auto;
+    width: 25%;
+    display: none;
+}
+
+.formulaire p {
+    margin: 10px;
+}
+
+#form-ajout>p {
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+form.formulaire>p.submit {
+    text-align: center;
+}
+
+form.formulaire>p.submit input {
+    text-decoration: none;
+    color: #FFFFFF;
+    border: solid 2px darkred;
+    padding: 7px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+form.formulaire>p.submit input {
+    background-color: darkred;
+}
+
+form.formulaire>p.submit input:hover {
+    background-color: rgba(213, 4, 4, 0.50);
+    transition-duration: 0.5s;
+}
+
+form.formulaire>p.submit input:active {
+    background-color: rgba(110, 3, 3, 0.5);
+    color: #5e5d5d;
+    transition-duration: 0s;
+}
+
+/* Placement des tables de données */
+div#table_status {
+    display: flex block;
+    flex-direction: column;
+    max-width: 35%;
+    margin: auto;
+    margin-bottom: 6rem;
+}
+
+div#table_status table {
+    justify-content: space-around;
+    border: solid white 1px;
+    text-align: center;
+    margin: auto;
+    margin-bottom: 20px;
+    background-color: rgba(110, 3, 3, 0.5);
+}
+
+div#table_status table tr, td {
+    border: solid white 1px;
+    padding: 5px;
+}
+
+div#table_status h3 {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+p.info-admin {
+    text-align: center;
+    font-size: 1px;
+}
+/*************** FIN ADMIN.PHP ***************/
+
+
+
+/*************** PAGE AJOUTUSER.PHP ***************/
+h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 150%;
+    font-weight: bold;
+}
+
+#formulaire-enregistrement {
+    margin: auto;
+    max-width : 25%;
+}
+
+#formulaire-enregistrement fieldset {
+    text-align: center;
+    border: solid 1px darkred;
+}
+
+#formulaire-enregistrement p {
+    margin: 10px;
+}
+
+#formulaire-enregistrement p.submit {
+    text-align: center;
+}
+
+#infoFormulaireUser {
+    text-align: center;
+    margin-top: 1rem;
+}
+/*************** FIN AJOUTUSER.PHP ***************/
+
+
+
+/****************************** FIN BODY ******************************/
+
+
+
+/****************************** Footer ******************************/
+.footer_principal {
+    position: fixed;
+    text-align: center;
+    bottom: 0;
+    width: 98%;
+    padding-top: 30px;
+    height: 50px;
+    margin-left: 1%;
+    margin-bottom: 5px;
+}
+/****************************** FIN FOOTER ******************************/
+
+
+

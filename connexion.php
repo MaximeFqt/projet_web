@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * FICHIER POUR ASSURER LA CONNEXION AVEC LA BASE DE DONNEE
+ */
+
 // Connexion à une base de donnée
 function connexionBd($SERVEUR = "localhost", $USER = "root",
                      $MDP = "", $BD = "projet_web") {
