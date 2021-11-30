@@ -110,8 +110,10 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`id_user`);
 
 --
--- AUTO_INCREMENT pour les tables déchargées
+-- AUTO_INCREMENT pour la table `groupes`
 --
+ALTER TABLE `groupes`
+    MODIFY `id_groupe` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `concerts`
