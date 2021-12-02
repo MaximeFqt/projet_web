@@ -131,6 +131,7 @@ else if (isset($_POST['sendAjtGrp'])) {
         // INSERTION
         $image = 'image/groupe/'.$_FILES["image"]["name"];
 
+        // Ajout du groupe
         $sql = "insert into groupes (nom, image)
                     values ('$nomGroupe', '$image')";
 
@@ -181,16 +182,21 @@ else if (isset($_POST['sendMdfConcert'])) {
 
     if (!empty($_POST['nomGroupe']) && !empty($_POST['lieu']) && !empty($_POST['date'])) {
 
+        // Stockage des valeurs
         $nomGroupe = htmlspecialchars($_POST['nomGroupe']);
         $lieu = htmlspecialchars($_POST['lieu']);
         $date = htmlspecialchars($_POST['date']);
 
+        // Requête et envoie
         $sql = "select * from concerts Cr join groupes Gr on Gr.id_groupe = Cr.groupe
                 where Gr.nom = '$nomGroupe' and Cr.lieu = '$lieu' and Cr.date = '$date';";
         $recupConcert = $connexion->query($sql);
 
         if ($recupConcert->rowCount() == 1) {
+            // Traitement
             $selectConcert = $recupConcert->fetchAll(PDO::FETCH_ASSOC);
+
+            // Stockage des varialbes utiles pour la modification
             $_SESSION['idConcert'] = $selectConcert[0]['id_concert'];
             $_SESSION['id_groupe'] = $selectConcert[0]['groupe'];
         } else {
@@ -249,15 +255,20 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
 // Traitement du formulaire pour MODIFIER UN GROUPE/ARTISTE
 else if (isset($_POST['sendMdfGrp']) && !empty($_POST['nomGroupe'])) {
 
+    // Stockage valeur
     $nomGroupe = htmlspecialchars($_POST['nomGroupe']);
 
+    // Requête et envoie
     $sql = "select * from groupes where nom = '$nomGroupe';";
     $recupGrp = $connexion->query($sql);
 
     if ($recupGrp->rowCount() == 1) {
+        // Traitement de la requête
         $selectGrp = $recupGrp->fetchAll(PDO::FETCH_ASSOC);
+
+        // Stockage valeur utile pour la modification
         $_SESSION['id_groupe'] = $selectGrp[0]['id_groupe'];
-        unset($_POST['sendMdfGrp']);
+
     } else {
         header('location: admin.php');
     }
