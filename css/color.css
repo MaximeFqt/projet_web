@@ -23,15 +23,56 @@ body {
     transition-duration: 0s;
 }
 
+/** Lien de catégorie **/
+ul.menu_categorie a {
+    color: #dcdbdb;
+    text-decoration: none;
+}
+
+ul.menu_categorie a:hover {
+    background-color: rgba(213, 4, 4, 0.50);
+    transition-duration: 0.5s;
+}
+
+ul.menu_categorie a:active {
+    background-color: rgba(110, 3, 3, 0.5);
+    color: #5e5d5d;
+    transition-duration: 0s;
+}
+
 /*************** Footer ***************/
 .footer_principal {
     background-color: rgba(65, 1, 1, 0.60);
 }
 
 /*************** PAGE ADMIN ***************/
+/* Formulaires */
 #form-ajout {
-    border:2px solid darkred;
+    border: 2px solid darkred;
     text-align: center;
+}
+
+/* Boutons d'actions */
+section#action_admin input {
+    font-size: 1rem;
+    color: #dcdbdb;
+    text-decoration: none;
+    cursor: pointer;
+    border: solid 2px darkred;
+    padding: 7px;
+    border-radius: 15px;
+    background-color: darkred;
+}
+
+section#action_admin input:hover {
+    background-color: rgba(21, 4, 4, 0.5);
+    transition-duration: 0.5s;
+}
+
+section#action_admin input:active {
+    background-color: rgba(110, 3, 3, 0.5);
+    color: #5e5d5d;
+    transition-duration: 0s;
 }
 
 /*************** Page vue_concert.php ***************/

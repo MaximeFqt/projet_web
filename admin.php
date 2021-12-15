@@ -18,16 +18,19 @@ if (!(isset($_SESSION['role']))) {
 $sqlGrp = "select * from groupes";
 $sqlConcert = "select * from concerts";
 $sqlUsr = "select * from users";
+$sqlGenre = "select * from genremusical";
 
 /* Envoie */
 $groupes = $connexion->query($sqlGrp);
 $concerts = $connexion->query($sqlConcert);
 $users = $connexion->query($sqlUsr);
+$genres = $connexion->query($sqlGenre);
 
 /* Traitement */
 $groupe = $groupes->fetchAll(PDO::FETCH_OBJ);
 $concert = $concerts->fetchAll(PDO::FETCH_OBJ);
 $user = $users->fetchAll(PDO::FETCH_OBJ);
+$genremusique = $genres->fetchAll(PDO::FETCH_OBJ);
 
 /*-------------- VARIABLE ENREGISTREMENT DE FICHIER --------------*/
 $enregistrement = false;
@@ -68,6 +71,9 @@ if (isset($_POST['sendAjtConcert'])) {
             echo '<body onload = "alert(\'Ce groupe n`existe pas \')" >';
         }
 
+    } else {
+        echo '<body onload = "alert(\'Les données du formulaire ne sont pas valables\')" >';
+        echo '<meta http-equiv="refresh" content="0;URL=admin.php">';
     }
 
 }
@@ -105,42 +111,68 @@ else if (isset($_POST['sendSprConcert'])) {
                 header('location:admin.php');
 
             } else {
-                // Affichage de l'alerte (font de la page est la page ajoutUser.php)
+                // Affichage de l'alerte
                 echo '<body onload = "alert(\'Ce concert n`existe pas \')" >';
             }
 
+        } else {
+            echo '<body onload = "alert(\'Ce groupe n`eciste pas\')" >';
+            echo '<meta http-equiv="refresh" content="0;URL=admin.php">';
         }
 
+    } else {
+        echo '<body onload = "alert(\'Les données du formulaire ne sont pas valable\')" >';
+        echo '<meta http-equiv="refresh" content="0;URL=admin.php">';
     }
 
 }
 // Traitement du formulaire pour AJOUTER UN GROUPE/ARTISTE
 else if (isset($_POST['sendAjtGrp'])) {
 
-    if (!empty($_POST['nomGroupe'])) {
+    if (!empty($_POST['nomGroupe']) && !empty($_POST['genre'])) {
 
         // Stockage des valeurs
         $nomGroupe = htmlspecialchars($_POST['nomGroupe']);
+        $genre = htmlspecialchars($_POST['genre']);
 
-        // ENREGISTREMENT DE L'IMAGE SUR LE SERVEUR
-        if (isset($_FILES) && $_FILES['image']['error'] == 0) {
-            $enregistrement = move_uploaded_file($_FILES["image"]["tmp_name"], "image/groupe/" . $_FILES["image"]["name"]);
-            $aff .= "Stored in: " . "image/groupe/" . $_FILES["image"]["name"];
+        // Récupère les informations sur les genres de musique
+        $recupGenre = "select * from genremusical where nomGenre = '$genre'";
+        $genres = $connexion->query($recupGenre); // Envoie
+
+        if ($genres->rowCount() === 1) {
+            $nomGenre = $genres->fetchAll(PDO::FETCH_ASSOC);
+            // Réaffectation de la variable
+            $genre = $nomGenre[0]['nomGenre'];
+
+            // ENREGISTREMENT DE L'IMAGE SUR LE SERVEUR
+            if (isset($_FILES) && $_FILES['image']['error'] == 0) {
+                $enregistrement = move_uploaded_file($_FILES["image"]["tmp_name"], "image/groupe/" . $_FILES["image"]["name"]);
+                $aff .= "Stored in: " . "image/groupe/" . $_FILES["image"]["name"];
+            }
+
+            // INSERTION
+            $image = 'image/groupe/'.$_FILES["image"]["name"];
+
+            // Ajout du groupe
+            $sql = "insert into groupes (nom, genre, image)
+                    values ('$nomGroupe', '$genre', '$image')";
+
+            $insertGroupe = $connexion->exec($sql);
+
+            // Ajout variable de session
+            $_SESSION['updateSite'] = 'AjtGroupe';
+
+            // Redirection
+            header('location:admin.php');
+
+        } else {
+            // Affichage de l'alerte
+            echo '<body onload = "alert(\'Ce genre n`existe pas \')" >';
         }
 
-        // INSERTION
-        $image = 'image/groupe/'.$_FILES["image"]["name"];
-
-        // Ajout du groupe
-        $sql = "insert into groupes (nom, image)
-                    values ('$nomGroupe', '$image')";
-
-        $insertGroupe = $connexion->exec($sql);
-
-        $_SESSION['updateSite'] = 'AjtGroupe';
-
-        header('location:admin.php');
-
+    } else {
+        echo '<body onload = "alert(\'Les données du formulaire ne sont pas valables\')" >';
+        echo '<meta http-equiv="refresh" content="0;URL=admin.php">';
     }
 
 }
@@ -149,31 +181,51 @@ else if (isset($_POST['sendSprGrp'])) {
 
     if (isset($_POST['sendSprGrp'])) {
 
-        if (!empty($_POST['nomGroupe'])) {
+        if (!empty($_POST['nomGroupe']) && !empty($_POST['genre'])) {
 
             // Stockage des valeurs
             $nomGroupe = htmlspecialchars($_POST['nomGroupe']);
+            $genre = htmlspecialchars($_POST['genre']);
 
-            // Requête
-            $sql = "select * from groupes where nom = '$nomGroupe';";
-            $sprGroupe = $connexion->query($sql);
+            // Récupère les informations sur les genres de musique
+            $recupGenre = "select * from genremusical where nomGenre = '$genre'";
+            $genres = $connexion->query($recupGenre); // Envoie
 
-            if ($sprGroupe->rowCount() == 1) {
-                // Suppression
-                $sqlDeleteGrp = "delete from groupes where nom = '$nomGroupe';";
-                $deleteGrp = $connexion->exec($sqlDeleteGrp);
+            if ($genres->rowCount() === 1) {
+                $nomGenre = $genres->fetchAll(PDO::FETCH_ASSOC);
+                // Réaffectation de la variable
+                $genre = $nomGenre[0]['nomGenre'];
 
-                $_SESSION['updateSite'] = 'SprGroupe';
+                // Requête
+                $sql = "select * from groupes where nom = '$nomGroupe';";
+                $sprGroupe = $connexion->query($sql);
 
-                header('location:admin.php');
+                if ($sprGroupe->rowCount() == 1) {
+                    // Suppression
+                    $sqlDeleteGrp = "delete from groupes where nom = '$nomGroupe' and genre = '$genre';";
+                    $deleteGrp = $connexion->exec($sqlDeleteGrp);
 
+                    $_SESSION['updateSite'] = 'SprGroupe';
+
+                    header('location:admin.php');
+
+                } else {
+                    // Affichage de l'alerte
+                    echo '<body onload = "alert(\'Ce groupe n`existe pas \')" >';
+                }
             } else {
-                // Affichage de l'alerte (font de la page est la page ajoutUser.php)
-                echo '<body onload = "alert(\'Ce groupe n`existe pas \')" >';
+                // Affichage de l'alerte
+                echo '<body onload = "alert(\'Ce genre n`existe pas \')" >';
             }
 
+        } else {
+            echo '<body onload = "alert(\'Les données du formulaire ne sont pas valables\')" >';
+            echo '<meta http-equiv="refresh" content="0;URL=admin.php">';
         }
 
+    } else {
+        echo '<body onload = "alert(\'Les données du formulaire ne sont pas valables\')" >';
+        echo '<meta http-equiv="refresh" content="0;URL=admin.php">';
     }
 
 }
@@ -200,9 +252,13 @@ else if (isset($_POST['sendMdfConcert'])) {
             $_SESSION['idConcert'] = $selectConcert[0]['id_concert'];
             $_SESSION['id_groupe'] = $selectConcert[0]['groupe'];
         } else {
-            header('location: admin.php');
+            echo '<body onload = "alert(\'Ce concert n`existe pas\')" >';
+            echo '<meta http-equiv="refresh" content="0;URL=admin.php">';
         }
 
+    } else {
+        echo '<body onload = "alert(\'Les données du formulaire ne sont pas valables\')" >';
+        echo '<meta http-equiv="refresh" content="0;URL=admin.php">';
     }
 }
 // TRAITEMENT DES MODIFICATIONS DU CONCERT
@@ -247,19 +303,32 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
                     // Redirection
                     header('location: admin.php');
 
+                } else {
+                    echo '<body onload = "alert(\'Les données du formulaire ne sont pas valables\')" >';
+                    echo '<meta http-equiv="refresh" content="0;URL=admin.php?action=modifCrt">';
                 }
+            } else {
+                echo '<body onload = "alert(\'Les données du formulaire ne sont pas valables\')" >';
+                echo '<meta http-equiv="refresh" content="0;URL=admin.php?action=modifCrt">';
             }
+        } else {
+            echo '<body onload = "alert(\'Concert inexistant\')" >';
+            echo '<meta http-equiv="refresh" content="0;URL=admin.php">';
         }
-    } else { header('location: admin.php'); }
+    } else {
+        echo '<body onload = "alert(\'Aucun concert séléctionné\')" >';
+        echo '<meta http-equiv="refresh" content="0;URL=admin.php">';
+    }
 }
 // Traitement du formulaire pour MODIFIER UN GROUPE/ARTISTE
-else if (isset($_POST['sendMdfGrp']) && !empty($_POST['nomGroupe'])) {
+else if (isset($_POST['sendMdfGrp']) && !empty($_POST['nomGroupe']) && !empty($_POST['genre'])) {
 
     // Stockage valeur
     $nomGroupe = htmlspecialchars($_POST['nomGroupe']);
+    $genre = htmlspecialchars($_POST['genre']);
 
     // Requête et envoie
-    $sql = "select * from groupes where nom = '$nomGroupe';";
+    $sql = "select * from groupes Gr join genremusical Gm on Gm.id_genre = Gr.genre where Gr.nom = '$nomGroupe' and Gm.nomGenre = '$genre';";
     $recupGrp = $connexion->query($sql);
 
     if ($recupGrp->rowCount() == 1) {
@@ -270,7 +339,8 @@ else if (isset($_POST['sendMdfGrp']) && !empty($_POST['nomGroupe'])) {
         $_SESSION['id_groupe'] = $selectGrp[0]['id_groupe'];
 
     } else {
-        header('location: admin.php');
+        echo '<body onload = "alert(\'Ce groupe ou ce genre n`existe pas\')" >';
+        echo '<meta http-equiv="refresh" content="0;URL=admin.php">';
     }
 }
 // TRAITEMENT DES MODIFICATIONS DU GROUPE
@@ -290,41 +360,180 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
             // Traitement de la requête
             $selectGrp = $recupGrp->fetchAll(PDO::FETCH_ASSOC);
 
-            if (isset($_POST['modificationGrp']) && !empty($_POST['nomGroupe'])) {
+            if (isset($_POST['modificationGrp']) && !empty($_POST['nomGroupe']) && !empty($_POST['genre'])) {
 
                 // Stockage valeur
                 $nomGroupe = htmlspecialchars($_POST['nomGroupe']);
+                $genre = htmlspecialchars($_POST['genre']);
 
-                // ENREGISTREMENT DE L'IMAGE
-                if (isset($_FILES) && $_FILES['image']['error'] == 0) {
-                    $enregistrement = move_uploaded_file($_FILES["image"]["tmp_name"], "image/groupe/" . $_FILES["image"]["name"]);
-                    $aff .= "Stored in: " . "image/groupe/" . $_FILES["image"]["name"];
+                // Requête
+                $sql = "select * from genremusical where nomGenre = '$genre';";
+                $id_genres = $connexion->query($sql); // Envoie
+
+                if ($id_genres->rowCount() > 0) {
+                    $id_genre = $id_genres->fetchAll(PDO::FETCH_ASSOC);
+
+                    $genre = $id_genre[0]['id_genre'];
+
+                    // ENREGISTREMENT DE L'IMAGE
+                    if (isset($_FILES) && $_FILES['image']['error'] == 0) {
+                        $enregistrement = move_uploaded_file($_FILES["image"]["tmp_name"], "image/groupe/" . $_FILES["image"]["name"]);
+                        $aff .= "Stored in: " . "image/groupe/" . $_FILES["image"]["name"];
+                    }
+
+                    // INSERTION
+                    $image = 'image/groupe/' . $_FILES["image"]["name"];
+
+                    // Modification du groupe
+                    $updateGrp = "update groupes set nom = '$nomGroupe', genre = '$genre', image = '$image' where id_groupe = '$idGroupe';";
+
+                    $update = $connexion->exec($updateGrp);
+
+                    $_SESSION['updateSite'] = "modifGroupe";
+
+                    // Suppression des variables de session inutiles
+                    unset($_SESSION['id_groupe']);
+                    unset($_POST['modificationGrp']);
+
+                    // redirection
+                    header('location: admin.php');
+                } else {
+                    echo '<body onload = "alert(\'Ce genre n`existe pas\')" >';
+                    echo '<meta http-equiv="refresh" content="URL=admin.php?action=modifGrp">';
                 }
+            } else {
+                echo '<body onload = "alert(\'Les données du formulaires ne sont pas valables\')" >';
+                echo '<meta http-equiv="refresh" content="0;URL=admin.php?action=modifGrp">';
+            }
+        } else {
+            echo '<body onload = "alert(\'Ce groupe n`existe pas !\')" >';
+            echo '<meta http-equiv="refresh" content="0;URL=admin.php">';
+        }
+    } else {
+        echo '<body onload = "alert(\'Aucun groupe séléctionné\')" >';
+        echo '<meta http-equiv="refresh" content="0;URL=admin.php">';
+    }
+}
+// Traitement du formulaire pour AJOUTER UN GENRE
+else if (isset($_POST['sendAjtGenre']) && !empty($_POST['genre'])) {
 
-                // INSERTION
-                $image = 'image/groupe/' . $_FILES["image"]["name"];
+    // Stockage des valeurs
+    $genre = htmlspecialchars($_POST['genre']);
 
-                // Modification du groupe
-                $updateGrp = "update groupes set nom = '$nomGroupe', image = '$image' where id_groupe = '$idGroupe';";
+    $recupGenre = "select * from genremusical where nomGenre = '$genre';";   // Requête
+    $genres = $connexion->query($recupGenre);
 
-                $update = $connexion->exec($updateGrp);
+    if ($genres->rowCount() == 0) {
 
-                $_SESSION['updateSite'] = "modifGroupe";
+        $sql = "insert into genremusical (nomGenre) values ('$genre');";
+        $insertGenre = $connexion->exec($sql);
+
+        $_SESSION['updateSite'] = "AjtGenre";
+
+        header('location: admin.php');
+
+    } else {
+        echo '<body onload = "alert(\'Ce genre existe déjà !\')" >';
+        echo '<meta http-equiv="refresh" content="0;URL=admin.php">';
+    }
+
+}
+// Traitement du formulaire poour SUPPRIMER UN GENRE
+else if (isset($_POST['sendSprGenre']) && !empty($_POST['genre'])) {
+
+    // Stockage variable
+    $genre = htmlspecialchars($_POST['genre']);
+
+    // Requête
+    $recupGenre = "select * from genremusical where nomGenre = '$genre';";
+    $genres = $connexion->query($recupGenre);
+
+    if ($genres->rowCount() === 1) {
+
+        $sql = "delete from genremusical where nomGenre = '$genre';";
+        $deleteGenre = $connexion->exec($sql);
+
+        $_SESSION['updateSite'] = "SprGenre";
+
+        header('location: admin.php');
+
+    } else {
+        echo '<body onload = "alert(\'Ce genre n`existe pas\')" >';
+        echo '<meta http-equiv="refresh" content="0;URL=admin.php">';
+    }
+
+}
+// Traitement du formulaire pour MODIFIER UN GENRE
+else if (isset($_POST['sendMdfGenre']) && isset($_POST['genre']) && !empty($_POST['genre'])) {
+
+    // Stockage variable
+    $genre = htmlspecialchars($_POST['genre']);
+
+    // Requête
+    $recupGenre = "select * from genremusical where nomGenre = '$genre';";
+    $genres = $connexion->query($recupGenre);
+
+    if ($genres->rowCount() === 1) {
+
+        // Traitement de la requête
+        $genre = $genres->fetchAll(PDO::FETCH_ASSOC);
+
+        // Stockage valeur utile pour la modification
+        $_SESSION['id_genre'] = $genre[0]['id_genre'];
+
+    } else {
+        echo '<body onload = "alert(\'Ce genre n`existe pas\')" >';
+        echo '<meta http-equiv="refresh" content="0;URL=admin.php">';
+    }
+
+}
+// TRAITEMENT DES MODIFICATIONS DU GROUPE
+else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] == "modifGenre") {
+
+    if (isset($_SESSION['id_genre']) && !empty($_SESSION['id_genre'])) {
+
+        $idGenre = htmlspecialchars($_SESSION['id_genre']);
+
+        // Requête
+        $sql = "select * from genremusical where id_genre = '$idGenre';";
+        $recupGenre = $connexion->query($sql);
+
+        if ($recupGenre->rowCount() === 1) {
+
+            // Traitement de la requête
+            $genre = $recupGenre->fetchAll(PDO::FETCH_ASSOC);
+
+            if (isset($_POST['modificationGenre']) && !empty($_POST['genre'])) {
+
+                $nomGenre = htmlspecialchars($_POST['genre']);
+
+                $updateGenre = "update genremusical set nomGenre = '$nomGenre' where id_genre = '$idGenre';";
+
+                $update = $connexion->exec($updateGenre);
+
+                $_SESSION['updateSite'] = "modifGenre";
 
                 // Suppression des variables de session inutiles
-                unset($_SESSION['id_groupe']);
-                unset($_POST['modificationGrp']);
+                unset($_SESSION['id_genre']);
 
                 // redirection
                 header('location: admin.php');
 
+            } else {
+                echo '<body onload = "alert(\'Les données du formulaire ne sont pas valides\')" >';
+                echo '<meta http-equiv="refresh" content="0;URL=admin.php?action=modifGenre">';
             }
+
+        } else {
+            echo '<body onload = "alert(\'Ce groupe n`existe pas\')" >';
+            echo '<meta http-equiv="refresh" content="0;URL=admin.php">';
         }
     } else {
-        header('location: admin.php');
+        echo '<body onload = "alert(\'Aucun groupe séléctionné\')" >';
+        echo '<meta http-equiv="refresh" content="0;URL=admin.php">';
     }
-}
 
+}
 
 ?>
 <!doctype html>
@@ -344,29 +553,7 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
     <body>
         <?php require('header.php'); ?>
 
-        <h2 id="titre-Admin">Administration du site</h2>
-
-        <?php if (isset($_SESSION['updateSite'])) : ?>
-            <?php if ($_SESSION['updateSite'] == "AjtConcert") : ?>
-            <p> Un concert vient d'être ajouté avec succés ! </p>
-            <?php elseif ($_SESSION['updateSite'] == "SprConcert") : ?>
-            <p> Un concert vient d'être supprimé avec succés ! </p>
-            <?php elseif ($_SESSION['updateSite'] == "AjtGroupe") : ?>
-            <p> Un groupe vient d'être ajouté avec succés ! </p>
-            <?php elseif ($_SESSION['updateSite'] == "SprGroupe") : ?>
-            <p> Un groupe vient d'être supprimé avec succés ! </p>
-            <?php elseif ($_SESSION['updateSite'] == "modifConcert") : ?>
-            <p> Un concert vient d'être modifié avec succés ! </p>
-            <?php elseif ($_SESSION['updateSite'] == "modifGroupe") : ?>
-            <p> Un groupe vient d'être modifié avec succés ! </p>
-            <?php endif; ?>
-        <?php endif; ?>
-
-
-
-
-
-
+        <h2 id="titre-Admin"> Administration du site </h2>
 
         <!-- ===============================
              BOUTONS D'ACTION DE LA PAGE ADMIN
@@ -375,26 +562,45 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
         <section id="action_admin">
             <h3 class="ss_titre"> Veuillez choisir l'action que vous voulez effectuer </h3>
 
-            <div>
-                <input type="button" id="ajout_concert" name="ajout_concert" value="Ajouter un concert">
-                <input type="button" id="suppr_concert" name="suppr_concert" value="Supprimer un concert">
-                <input type="button" id="ajout_groupe"  name="ajout_groupe"  value="Ajouter un groupe">
-                <input type="button" id="suppr_groupe"  name="suppr_groupe"  value="Supprimer un groupe">
-                <input type="button" id="modif_concert" name="modif_concert" value="Modifier un concert">
-                <input type="button" id="modif_groupe"  name="modif_groupe"  value="Modifier un groupe">
+            <div id="btn_admin">
+                <div id="btn_concert">
+                    <input type="button" id="ajout_concert" name="ajout_concert" value="Ajouter un concert"   >
+                    <input type="button" id="suppr_concert" name="suppr_concert" value="Supprimer un concert" >
+                    <input type="button" id="modif_concert" name="modif_concert" value="Modifier un concert"  >
+                </div>
+                <div id="btn_groupe">
+                    <input type="button" id="ajout_groupe"  name="ajout_groupe"  value="Ajouter un groupe"    >
+                    <input type="button" id="suppr_groupe"  name="suppr_groupe"  value="Supprimer un groupe"  >
+                    <input type="button" id="modif_groupe"  name="modif_groupe"  value="Modifier un groupe"   >
+                </div>
+                <div id="btn_genre">
+                    <input type="button" id="ajout_genre"   name="ajout_genre"   value="Ajouter un genre"     >
+                    <input type="button" id="suppr_genre"   name="suppr_genre"   value="Supprimer un genre"   >
+                    <input type="button" id="modif_genre"   name="modif_genre"   value="Modifier un genre"    >
+                </div>
             </div>
 
             <!-- ============ NOTIFICATIONS ============ -->
 
             <?php if (isset($_SESSION['updateSite']) && !empty($_SESSION['updateSite'])): ?>
                 <?php if ($_SESSION['updateSite'] == 'AjtConcert') : ?>
-                    <p class="info-admin"> Le concert à été ajouté </p>
+                    <p class="info-admin"> Le concert à été ajouté avec succés ! </p>
                 <?php elseif ($_SESSION['updateSite'] == 'SprConcert') : ?>
-                    <p class="info-admin"> Le concert à été supprimé </p>
+                    <p class="info-admin"> Le concert à été supprimé avec succés ! </p>
                 <?php elseif ($_SESSION['updateSite'] == 'AjtGroupe') : ?>
-                    <p class="info-admin"> Le groupe à été ajouté </p>
+                    <p class="info-admin"> Le groupe à été ajouté avec succés ! </p>
                 <?php elseif ($_SESSION['updateSite'] == 'SprGroupe') : ?>
-                    <p class="info-admin"> Le groupe à été supprimé </p>
+                    <p class="info-admin"> Le groupe à été supprimé avec succés ! </p>
+                <?php elseif ($_SESSION['updateSite'] == "modifConcert") : ?>
+                    <p class="info-admin"> Un concert vient d'être modifié avec succés ! </p>
+                <?php elseif ($_SESSION['updateSite'] == "modifGroupe") : ?>
+                    <p class="info-admin"> Un groupe vient d'être modifié avec succés ! </p>
+                <?php elseif ($_SESSION['updateSite'] == "AjtGenre") : ?>
+                    <p class="info-admin"> Un genre vient d'être ajouté avec succés ! </p>
+                <?php elseif ($_SESSION['updateSite'] == "SprGenre") : ?>
+                    <p class="info-admin"> Un genre vient d'être supprimé avec succés ! </p>
+                <?php elseif ($_SESSION['updateSite'] == "modifGenre") : ?>
+                    <p class="info-admin"> Un genre vient d'être modifié avec succés ! </p>
                 <?php endif; ?>
             <?php endif; ?>
 
@@ -414,6 +620,7 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
                 <tr>
                     <td> Id </td>
                     <td> Nom </td>
+                    <td> Genre </td>
                     <td> Image </td>
                 </tr>
 
@@ -421,6 +628,7 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
                     <tr>
                         <td> <?= $unGrp->id_groupe ?> </td>
                         <td> <?= $unGrp->nom; ?> </td>
+                        <td> <?= $unGrp->genre; ?> </td>
                         <td> <?= $unGrp->image; ?> </td>
                     </tr>
                 <?php endforeach; ?>
@@ -448,6 +656,26 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
                         <td> <?= $unConcert->lieu; ?> </td>
                         <td> <?= $unConcert->date; ?> </td>
                         <td> <?= $unConcert->prix_place; ?> </td>
+                    </tr>
+                <?php endforeach; ?>
+
+            </table>
+
+            <table id="genreMusique">
+
+                <!-- ============ TABLE GROUPES ============ -->
+
+                <h3> Table genreMusical </h3>
+
+                <tr>
+                    <td> Id </td>
+                    <td> Genre </td>
+                </tr>
+
+                <?php foreach ($genremusique as $unGenre): ?>
+                    <tr>
+                        <td> <?= $unGenre->id_genre ?> </td>
+                        <td> <?= $unGenre->nomGenre; ?> </td>
                     </tr>
                 <?php endforeach; ?>
 
@@ -482,20 +710,20 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
             <fieldset id="form-ajout">
                 <legend>Ajout d'un concert</legend>
                 <p>
-                    <label for="nom-groupe"> Nom du groupe: </label>
-                    <input type="text" name="nomGroupe" required>
+                    <label for="nomGroupe"> Nom du groupe: </label>
+                    <input type="text" name="nomGroupe" id="nomGroupe" required>
                 </p>
                 <p>
-                    <label for="date-groupe"> Date du concert : </label>
-                    <input type="date" name="date" required>
+                    <label for="dateGroupe"> Date du concert : </label>
+                    <input type="date" name="date" id="dateGroupe" required>
                 </p>
                 <p>
-                    <label for="lieu-groupe"> Lieu du concert : </label>
-                    <input type="text" name="lieu" required>
+                    <label for="lieuGroupe"> Lieu du concert : </label>
+                    <input type="text" name="lieu" id="lieuGroupe" required>
                 </p>
                 <p>
-                    <label for="prix-concert"> Prix de la place : </label>
-                    <input type="text" name="prix" required>
+                    <label for="prixConcert"> Prix de la place : </label>
+                    <input type="text" name="prix" id="prixConcert" required>
                 </p>
             </fieldset>
 
@@ -513,16 +741,16 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
             <fieldset id="form-ajout">
                 <legend>Supprimer d'un concert</legend>
                 <p>
-                    <label for="nom-groupe"> Nom du groupe : </label>
-                    <input type="text" name="nomGroupe" required>
+                    <label for="nomGroupe"> Nom du groupe : </label>
+                    <input type="text" name="nomGroupe" id="nomGroupe" required>
                 </p>
                 <p>
-                    <label for="date-groupe"> Date du concert : </label>
-                    <input type="date" name="date" required>
+                    <label for="dateGroupe"> Date du concert : </label>
+                    <input type="date" name="date" id="dateGroupe" required>
                 </p>
                 <p>
-                    <label for="lieu-groupe"> Lieu du concert : </label>
-                    <input type="text" name="lieu" required>
+                    <label for="lieuGroupe"> Lieu du concert : </label>
+                    <input type="text" name="lieu" id="lieuGroupe" required>
                 </p>
             </fieldset>
 
@@ -540,8 +768,12 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
             <fieldset id="form-ajout">
                 <legend>Ajout d'un groupe</legend>
                 <p>
-                    <label for="nom-groupe"> Nom : </label>
-                    <input type="text" name="nomGroupe" required>
+                    <label for="nomGroupe"> Nom : </label>
+                    <input type="text" name="nomGroupe" id="nomGroupe" required>
+                </p>
+                <p>
+                    <label for="genre"> Genre: </label>
+                    <input type="text" name="genre" id="genre" required>
                 </p>
                 <p>
                     <label for="img-groupe"> Image du groupe : </label>
@@ -563,8 +795,12 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
             <fieldset id="form-ajout">
                 <legend>Suppression d'un groupe</legend>
                 <p>
-                    <label for="nom-groupe"> Nom : </label>
-                    <input type="text" name="nomGroupe" required>
+                    <label for="nomGroupe"> Nom : </label>
+                    <input type="text" name="nomGroupe" id="nomGroupe" required>
+                </p>
+                <p>
+                    <label for="genre"> Genre : </label>
+                    <input type="text" name="genre" id="genre" required>
                 </p>
             </fieldset>
 
@@ -580,23 +816,27 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
 
         <form action="admin.php?action=modifCrt" id="modifConcert" class="formulaire" method="post">
             <fieldset id="form-ajout">
-                <legend>Modification d'un concert</legend>
+                <?php if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] == "modifCrt") : ?>
+                    <legend> Modification du concert </legend>
+                <?php else : ?>
+                    <legend> Sélection d'un concert</legend>
+                <?php endif; ?>
                 <p>
-                    <label for="nom-groupe"> Nom du groupe : </label>
-                    <input type="text" name="nomGroupe" required>
+                    <label for="nomGroupe"> Nom du groupe : </label>
+                    <input type="text" name="nomGroupe" id="nomGroupe" required>
                 </p>
                 <p>
                     <label for="lieu"> Lieu : </label>
-                    <input type="text" name="lieu" required>
+                    <input type="text" name="lieu" id="lieu" required>
                 </p>
                 <p>
                     <label for="date"> Date : </label>
-                    <input type="date" name="date" required>
+                    <input type="date" name="date" id="date" required>
                 </p>
                 <?php if (isset($_GET['action']) && $_GET['action'] == "modifCrt") : ?>
                 <p>
-                    <label for="date"> Prix de la place : </label>
-                    <input type="text" name="prix" required>
+                    <label for="prix"> Nouveau prix: </label>
+                    <input type="text" name="prix" id="prix" required>
                 </p>
                 <?php endif; ?>
             </fieldset>
@@ -619,10 +859,18 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
 
         <form action="admin.php?action=modifGrp" id="modifGroupe" class="formulaire" method="post" enctype="multipart/form-data">
             <fieldset id="form-ajout">
-                <legend>Modification d'un groupe</legend>
+                <?php if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] == "modifGrp") : ?>
+                    <legend> Modification du groupe </legend>
+                <?php else : ?>
+                    <legend> Sélection d'un groupe </legend>
+                <?php endif; ?>
                 <p>
-                    <label for="nom-groupe"> Nom : </label>
-                    <input type="text" name="nomGroupe" required>
+                    <label for="nomGroupe"> Nom : </label>
+                    <input type="text" name="nomGroupe" id="nomGroupe" required>
+                </p>
+                <p>
+                    <label for="genre"> Genre musical : </label>
+                    <input type="text" name="genre" id="genre" required>
                 </p>
                 <?php if (isset($_GET['action']) && $_GET['action'] == "modifGrp") : ?>
                     <p>
@@ -638,6 +886,74 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
                         name="modificationGrp"
                     <?php else : ?>
                         name="sendMdfGrp"
+                    <?php endif; ?>
+                />
+                <input type="reset" id="btnReset" value="Annuler"/>
+            </p>
+        </form>
+
+        <!-- ===============================
+             FORMULAIRE AJOUT D'UN GENRE
+             =============================== -->
+
+        <form action="admin.php" id="ajoutGenre" class="formulaire" method="post">
+            <fieldset id="form-ajout">
+                <legend> Ajout d'un genre de musique </legend>
+                <p>
+                    <label for="nomGenre"> Nom du genre : </label>
+                    <input type="text" name="genre" id="nomGenre" required>
+                </p>
+            </fieldset>
+
+            <p class="submit">
+                <input type="submit" id="btnSubmit" value="Ajouter" name="sendAjtGenre"/>
+                <input type="reset" id="btnReset" value="Annuler"/>
+            </p>
+        </form>
+
+        <!-- ===============================
+             FORMULAIRE SUPPRESSION D'UN GENRE
+             =============================== -->
+
+        <form action="admin.php" id="supprGenre" class="formulaire" method="post">
+            <fieldset id="form-ajout">
+                <legend> Suppression d'un genre de musique </legend>
+                <p>
+                    <label for="nomGenre"> Nom du genre : </label>
+                    <input type="text" name="genre" id="nomGenre" required>
+                </p>
+            </fieldset>
+
+            <p class="submit">
+                <input type="submit" id="btnSubmit" value="Continuer" name="sendSprGenre"/>
+                <input type="reset" id="btnReset" value="Annuler"/>
+            </p>
+        </form>
+
+        <!-- ===============================
+             FORMULAIRE MODIFICATION D'UN GENRE
+             =============================== -->
+
+        <form action="admin.php?action=modifGenre" id="modifGenre" class="formulaire" method="post">
+            <fieldset id="form-ajout">
+                <?php if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] == "modifGenre") : ?>
+                    <legend> Modification d'un genre de musique </legend>
+                <?php else : ?>
+                    <legend> Sélection d'un genre de musique </legend>
+                <?php endif; ?>
+                <p>
+                    <label for="nomGenre"> Nom du genre : </label>
+                    <input type="text" name="genre" id="nomGenre" required >
+                </p>
+
+            </fieldset>
+
+            <p class="submit">
+                <input type="submit" id="btnSubmit" value="Continuer"
+                    <?php if (isset($_GET['action']) && $_GET['action'] == "modifGenre") : ?>
+                        name="modificationGenre"
+                    <?php else : ?>
+                       name="sendMdfGenre"
                     <?php endif; ?>
                 />
                 <input type="reset" id="btnReset" value="Annuler"/>

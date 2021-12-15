@@ -8,7 +8,7 @@
 .principal {
     position: relative  ;
     width: 100%;
-    height: 80px;
+    height: 85px;
     margin-bottom: 1.5rem;
 }
 
@@ -33,6 +33,22 @@
 }
 
 .nav a {
+    padding: 7px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+ /* Lien catégorie */
+ul.menu_categorie {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+ul.menu_categorie li {
+    text-align: center;
+}
+
+ul.menu_categorie a {
     padding: 7px;
     border-radius: 15px;
     cursor: pointer;
@@ -63,12 +79,17 @@ h2#titre {
     padding-bottom: 1rem;
 }
 
-#info-connection {
+p#info_connection, p#info_cookie {
     margin-left: 10px;
     margin-bottom: 10px;
 }
 
 /*** Retour de la base de donnée ***/
+section#affGroupe {
+    max-width: 75%;
+    margin: auto;
+}
+
 ul#list_group {
     overflow:hidden;
     display: flex;
@@ -135,16 +156,16 @@ li.group {
     z-index: 0;
 }
 
-#form-id-admin {
+#form-login {
     height: 130px;
     border: 2px solid darkred;
 }
 
-#form-id-admin p {
+#form-login p {
     margin: 1rem;
 }
 
-#form-id-admin a.inscription {
+#form-login a.inscription {
     text-decoration: none;
     color: #FFFFFF;
 }
@@ -220,6 +241,15 @@ section#action_admin {
     margin-bottom: 1rem;
 }
 
+section#action_admin div#btn_admin {
+    display: flex;
+    flex-direction: column;
+}
+
+section#action_admin input {
+    margin: 5px;
+}
+
 section#action_admin>h3.ss_titre {
     font-size: 2rem;
     font-weight: bold;
@@ -241,8 +271,8 @@ section#action_admin>h3.ss_titre {
 }
 
 #form-ajout>p {
-    margin-bottom: 5px;
-    margin-top: 5px;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 form.formulaire>p.submit {

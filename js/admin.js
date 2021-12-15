@@ -12,6 +12,9 @@ function principale() {
     let btnSprGroupe  = document.getElementById('suppr_groupe');
     let btnMdfConcert = document.getElementById('modif_concert');
     let btnMdfGroupe  = document.getElementById('modif_groupe');
+    let btnAjtGenre   = document.getElementById('ajout_genre');
+    let btnSprGenre   = document.getElementById('suppr_genre');
+    let btnMdfGenre   = document.getElementById('modif_genre');
 
     // Récupération des tables de données
     let tablesDonnees = document.getElementById('table_status');
@@ -32,6 +35,9 @@ function principale() {
     let formSprGroupe  = document.getElementById('supprGroupe');
     let formMdfConcert = document.getElementById('modifConcert');
     let formMdfGroupe  = document.getElementById('modifGroupe');
+    let formAjtGenre   = document.getElementById('ajoutGenre');
+    let formSprGenre   = document.getElementById('supprGenre');
+    let formMdfGenre   = document.getElementById('modifGenre');
 
     // Ajout des événements
     btnAjtConcert.addEventListener('click', ajoutConcert);
@@ -40,6 +46,9 @@ function principale() {
     btnSprGroupe .addEventListener('click', supprGroupe );
     btnMdfConcert.addEventListener('click', modifConcert);
     btnMdfGroupe .addEventListener('click', modifGroupe );
+    btnAjtGenre  .addEventListener('click', ajoutGenre  );
+    btnSprGenre  .addEventListener('click', supprGenre  );
+    btnMdfGenre  .addEventListener('click', modifGenre  );
 
                                                     /*----------
                                                       FONCTIONS
@@ -47,6 +56,7 @@ function principale() {
 
     // AJOUT D'UN CONCERT
     function ajoutConcert() {
+
         console.log('Ajout d\'un concert ! ');
         formAjtConcert.style.display = 'block';
 
@@ -56,17 +66,19 @@ function principale() {
         formSprGroupe.style.display  = 'none';
         formMdfConcert.style.display = 'none';
         formMdfGroupe.style.display  = 'none';
+        formAjtGenre.style.display   = 'none';
+        formSprGenre.style.display   = 'none';
+        formMdfGenre.style.display   = 'none';
 
         // Traitement des boutons
         document.getElementById('action_admin').style.display = 'none';
         tablesDonnees.style.display = 'none';
 
-        btnAnnul.addEventListener('click', annuler);
-
     }
 
     // SUPPRESSION D'UN CONCERT
     function supprConcert() {
+
         console.log('Suppression d\'un concert ! ');
         formSprConcert.style.display = 'block';
 
@@ -76,17 +88,20 @@ function principale() {
         formSprGroupe.style.display  = 'none';
         formMdfConcert.style.display = 'none';
         formMdfGroupe.style.display  = 'none';
+        formAjtGenre.style.display   = 'none';
+        formSprGenre.style.display   = 'none';
+        formMdfGenre.style.display   = 'none';
+
 
         // Traitement des boutons
         document.getElementById('action_admin').style.display = 'none';
         tablesDonnees.style.display = 'none';
 
-        btnAnnul.addEventListener('click', annuler);
-
     }
 
     // AJOUT D'UN GROUPE
     function ajoutGroupe() {
+
         console.log('Ajout d\'un groupe ! ');
         formAjtGroupe.style.display = 'block';
 
@@ -96,17 +111,19 @@ function principale() {
         formSprGroupe.style.display  = 'none';
         formMdfConcert.style.display = 'none';
         formMdfGroupe.style.display  = 'none';
+        formAjtGenre.style.display   = 'none';
+        formSprGenre.style.display   = 'none';
+        formMdfGenre.style.display   = 'none';
 
         // Traitement des boutons
         document.getElementById('action_admin').style.display = 'none';
         tablesDonnees.style.display = 'none';
 
-        btnAnnul.addEventListener('click', annuler);
-
     }
 
     // SUPPRESSION D'UN GROUPE
     function supprGroupe() {
+
         console.log('Suppression d\'un groupe ! ');
         formSprGroupe.style.display = 'block';
 
@@ -116,17 +133,19 @@ function principale() {
         formAjtGroupe.style.display  = 'none';
         formMdfConcert.style.display = 'none';
         formMdfGroupe.style.display  = 'none';
+        formAjtGenre.style.display   = 'none';
+        formSprGenre.style.display   = 'none';
+        formMdfGenre.style.display   = 'none';
 
         // Traitement des boutons
         document.getElementById('action_admin').style.display = 'none';
         tablesDonnees.style.display = 'none';
 
-        btnAnnul.addEventListener('click', annuler);
-
     }
 
     // MODIFICATION D'UN CONCERT
     function modifConcert() {
+
         console.log('Modification d\'un concert ! ');
         formMdfConcert.style.display = 'block';
 
@@ -136,17 +155,19 @@ function principale() {
         formAjtGroupe.style.display  = 'none';
         formSprGroupe.style.display  = 'none';
         formMdfGroupe.style.display  = 'none';
+        formAjtGenre.style.display   = 'none';
+        formSprGenre.style.display   = 'none';
+        formMdfGenre.style.display   = 'none';
 
         // Traitement des boutons
         document.getElementById('action_admin').style.display = 'none';
         tablesDonnees.style.display = 'none';
 
-        btnAnnul.addEventListener('click', annuler);
-
     }
 
     // MODIFICATION D'UN GROUPE
     function modifGroupe() {
+
         console.log('Modification d\'un groupe ! ');
         formMdfGroupe.style.display = 'block';
 
@@ -156,12 +177,79 @@ function principale() {
         formAjtGroupe.style.display  = 'none';
         formSprGroupe.style.display  = 'none';
         formMdfConcert.style.display = 'none';
+        formAjtGenre.style.display   = 'none';
+        formSprGenre.style.display   = 'none';
+        formMdfGenre.style.display   = 'none';
 
         // Traitement des boutons
         document.getElementById('action_admin').style.display = 'none';
         tablesDonnees.style.display = 'none';
 
-        btnAnnul.addEventListener('click', annuler);
+    }
+
+    // AJOUT D'UN GENRE
+    function ajoutGenre() {
+
+        console.log('Ajout d\'un genre ! ');
+        formAjtGenre.style.display = 'block';
+
+        // Traitement des formulaires
+        formAjtConcert.style.display = 'none';
+        formSprConcert.style.display = 'none';
+        formMdfConcert.style.display = 'none';
+        formAjtGroupe.style.display  = 'none';
+        formSprGroupe.style.display  = 'none';
+        formMdfConcert.style.display = 'none';
+        formSprGenre.style.display   = 'none';
+        formMdfGenre.style.display   = 'none';
+
+        // Traitement des boutons
+        document.getElementById('action_admin').style.display = 'none';
+        tablesDonnees.style.display = 'none';
+
+    }
+
+    // SUPPRESSION D'UN GENRE
+    function supprGenre() {
+
+        console.log('Suppression d\'un genre ! ');
+        formSprGenre.style.display = 'block';
+
+        // Traitement des formulaires
+        formAjtConcert.style.display = 'none';
+        formSprConcert.style.display = 'none';
+        formMdfConcert.style.display = 'none';
+        formAjtGroupe.style.display  = 'none';
+        formSprGroupe.style.display  = 'none';
+        formMdfConcert.style.display = 'none';
+        formAjtGenre.style.display   = 'none';
+        formMdfGenre.style.display   = 'none';
+
+        // Traitement des boutons
+        document.getElementById('action_admin').style.display = 'none';
+        tablesDonnees.style.display = 'none';
+
+    }
+
+    // MODIFICATION D'UN GENRE
+    function modifGenre() {
+
+        console.log('Modification d\'un genre ! ');
+        formMdfGenre.style.display = 'block';
+
+        // Traitement des formulaires
+        formAjtConcert.style.display = 'none';
+        formSprConcert.style.display = 'none';
+        formMdfConcert.style.display = 'none';
+        formAjtGroupe.style.display  = 'none';
+        formSprGroupe.style.display  = 'none';
+        formMdfConcert.style.display = 'none';
+        formAjtGenre.style.display   = 'none';
+        formSprGenre.style.display   = 'none';
+
+        // Traitement des boutons
+        document.getElementById('action_admin').style.display = 'none';
+        tablesDonnees.style.display = 'none';
 
     }
 
@@ -171,12 +259,15 @@ function principale() {
         document.getElementById('action_admin').style.display = 'block';
         tablesDonnees.style.display = 'block';
 
-        formAjtConcert.style.display ='none';
-        formSprConcert.style.display ='none';
-        formAjtGroupe.style.display  ='none';
-        formSprGroupe.style.display  ='none';
-        formMdfConcert.style.display ='none';
-        formMdfGroupe.style.display  ='none';
+        formAjtConcert.style.display = 'none';
+        formSprConcert.style.display = 'none';
+        formAjtGroupe.style.display  = 'none';
+        formSprGroupe.style.display  = 'none';
+        formMdfConcert.style.display = 'none';
+        formMdfGroupe.style.display  = 'none';
+        formAjtGenre.style.display   = 'none';
+        formSprGenre.style.display   = 'none';
+        formMdfGenre.style.display   = 'none';
 
     }
 

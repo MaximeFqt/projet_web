@@ -12,7 +12,21 @@ include('connexion.php');
 // Appel de la méthode permettant la connexion à la BDD
 $connexion = connexionBd();
 
-$sql = "select * from concerts C join groupes G on G.id_groupe = C.groupe;";
+if (isset($_COOKIE['genre'])) {
+    $genre = $_COOKIE['genre'];
+
+    if ($genre == 'all') {
+        // Requete SQL récupérant 3 article au hasard
+        $sql = "select * from concerts C join groupes G on G.id_groupe = C.groupe order by rand() limit 3;";
+    } else {
+        // Requete SQL récupérant 3 article au hasard
+        $sql = "select * from concerts C join groupes G on G.id_groupe = C.groupe join genremusical Gm on Gm.id_genre = G.genre
+where G.genre = '$genre' order by rand() limit 3;";
+    }
+} else {
+    // Requete SQL récupérant 3 article au hasard
+    $sql = "select * from concerts C join groupes G on G.id_groupe = C.groupe order by rand() limit 3;";
+}
 
 $recupAdmin = "select * from users;";
 
@@ -41,22 +55,47 @@ $user = $users->fetchAll(PDO::FETCH_OBJ);       // Traitement
     <body id="body">
         <?php require("header.php");?>
 
-        <?php if (isset($role)) : ?>
-            <?php if ($role == 'admin') : ?>
-                <p id="info-connection"> Vous êtes connecté en tant qu'administrateur </p>
-            <?php else : ?>
-                <p id="info-connection"> Vous êtes connecté en tant que : <?= $login; ?> </p>
-            <?php endif; ?>
-        <?php else : ?>
-            <p id="info-connection"> Vous n'êtes pas connecté </p>
-        <?php endif; ?>
+
 
         <!-- ===============================
-             FORMULAIRE DE CONNEXION
+                INFORMATIONS DE CONNEXION
              =============================== -->
 
+
+        <?php if (isset($role)) : ?>
+            <?php if ($role == 'admin') : ?>
+                <p id="info_connection"> Vous êtes connecté en tant qu'administrateur </p>
+            <?php else : ?>
+                <p id="info_connection"> Vous êtes connecté en tant que : <?= $login; ?> </p>
+            <?php endif; ?>
+        <?php else : ?>
+            <p id="info_connection"> Vous n'êtes pas connecté </p>
+        <?php endif; ?>
+
+
+
+        <!-- ===============================
+                   SUGGESTION COOKIES
+             =============================== -->
+
+
+        <?php if (isset($_COOKIE)) : ?>
+            <?php if (!empty($_COOKIE['genre']) && $_COOKIE['genre'] == 'all') : ?>
+                <p id="info_cookie"> Parce que vous avez regardé tous les genres </p>
+            <?php elseif (!empty($_COOKIE['genre']) && $_COOKIE['genre'] != 'all') : ?>
+                <p id="info_cookie"> Parce que vous avez regardé <?= $concert[0]->nomGenre; ?> </p>
+            <?php endif; ?>
+        <?php endif; ?>
+
+
+
+        <!-- ===============================
+                 FORMULAIRE DE CONNEXION
+             =============================== -->
+
+
         <form id="formulaire" method="post" action="login.php">
-            <fieldset id="form-id-admin">
+            <fieldset id="form-login">
                 <legend>Identification administrateur</legend>
                 <p>
                     <label for="identifiant">Identifiant: </label>
@@ -77,23 +116,27 @@ $user = $users->fetchAll(PDO::FETCH_OBJ);       // Traitement
         </form>
 
 
+
         <!-- ===============================
              AFFICHAGE DES CONCERT DE LA PAGE
              =============================== -->
 
+
         <h2 id="titre"> Réservez votre place pour voir vos artistes <br> préférés ! </h2>
 
-        <ul id="list_group">
-            <?php foreach ($concert as $unGroupe): ?>
-                <li class="group">
-                    <img src="<?=$unGroupe->image;?>" alt="<?= $unGroupe->nom; ?>">
-                    <p> Nom : <?= $unGroupe->nom; ?> </p>
-                    <p> Lieu : <?= $unGroupe->lieu; ?> </p>
-                    <p> Prix : <?= $unGroupe->prix_place; ?>€ </p>
-                    <a href="vue_concert.php?nom=<?=$unGroupe->nom;?>" class="lien-details"> Voir les détails</a>
-                </li>
-            <?php endforeach; ?>
-        </ul>
+        <section id="affGroupe">
+            <ul id="list_group">
+                <?php foreach ($concert as $unConcert): ?>
+                    <li class="group">
+                        <img src="<?= $unConcert->image; ?>" alt="<?= $unConcert->nom; ?>">
+                        <p> Nom : <?= $unConcert->nom; ?> </p>
+                        <p> Lieu : <?= $unConcert->lieu; ?> </p>
+                        <p> Prix : <?= $unConcert->prix_place; ?>€ </p>
+                        <a href="vue_concert.php?nom=<?= $unConcert->nom; ?>" class="lien-details"> Voir les détails</a>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </section>
 
         <?php require("footer.php");?>
     </body>

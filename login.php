@@ -8,7 +8,8 @@
 include('connexion.php');
 
 if (isset($_POST['send'])) {
-    $login  = htmlspecialchars($_POST['login']);
+
+    $login = htmlspecialchars($_POST['login']);
     $pass = htmlspecialchars($_POST['pass']);
 
     // Connexion à la base
@@ -18,8 +19,6 @@ if (isset($_POST['send'])) {
     $sqlUser = "select * from users where login = '$login'";
     $users = $connexion->query($sqlUser);             // Envoie
 
-    var_dump($users->rowCount());
-
     if ($users->rowCount() > 0) {
         $user = $users->fetchAll(PDO::FETCH_ASSOC);    // Traitement
         if (password_verify($pass, $user[0]['pass'])) {
@@ -28,7 +27,7 @@ if (isset($_POST['send'])) {
             $_SESSION['login'] = $_POST['login'];
             $_SESSION['pass'] = $_POST['pass'];
 
-            if($login == 'admin' && $pass == 'admin') {
+            if ($login == 'admin' && $pass = 'admin') {
                 $_SESSION['role'] = 'admin';
             } else {
                 $_SESSION['role'] = 'user';
@@ -36,10 +35,16 @@ if (isset($_POST['send'])) {
 
             header('location: index.php');
         } else {
-            header('location: ajoutUser.php');
+            // Alerte
+            echo '<body onload = "alert(\'Les informations de connexion sont incorrectes\')" >';
+            // Redirection
+            echo '<meta http-equiv="refresh" content="0;URL=index.php">';
         }
     } else {
-        header('location: ajoutUser.php');
+        // Alerte
+        echo '<body onload = "alert(\'Les informations de connexion sont incorrectes\')" >';
+        // Redirection
+        echo '<meta http-equiv="refresh" content="0;URL=index.php">';
     }
 
 }
