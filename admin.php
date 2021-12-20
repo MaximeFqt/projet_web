@@ -19,18 +19,21 @@ $sqlGrp = "select * from groupes";
 $sqlConcert = "select * from concerts";
 $sqlUsr = "select * from users";
 $sqlGenre = "select * from genremusical";
+$sqlReserv = "select * from reservations";
 
 /* Envoie */
 $groupes = $connexion->query($sqlGrp);
 $concerts = $connexion->query($sqlConcert);
 $users = $connexion->query($sqlUsr);
 $genres = $connexion->query($sqlGenre);
+$reservations = $connexion->query($sqlReserv);
 
 /* Traitement */
 $groupe = $groupes->fetchAll(PDO::FETCH_OBJ);
 $concert = $concerts->fetchAll(PDO::FETCH_OBJ);
 $user = $users->fetchAll(PDO::FETCH_OBJ);
 $genremusique = $genres->fetchAll(PDO::FETCH_OBJ);
+$reserv = $reservations->fetchAll(PDO::FETCH_OBJ);
 
 /*-------------- VARIABLE ENREGISTREMENT DE FICHIER --------------*/
 $enregistrement = false;
@@ -490,7 +493,7 @@ else if (isset($_POST['sendMdfGenre']) && isset($_POST['genre']) && !empty($_POS
 // TRAITEMENT DES MODIFICATIONS DU GROUPE
 else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] == "modifGenre") {
 
-    if (isset($_SESSION['id_genre']) && !empty($_SESSION['id_genre'])) {
+    if (isset($_SESSION['id_genre'])) {
 
         $idGenre = htmlspecialchars($_SESSION['id_genre']);
 
@@ -547,7 +550,7 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
         <link href="css/layout.css" rel="stylesheet" type="text/css">
         <link href="css/color.css" rel="stylesheet" type="text/css">
         <script src="js/admin.js"></script>
-        <title>TrouvesTonConcert</title>
+        <title> Concertôt </title>
     </head>
 
     <body>
@@ -564,19 +567,19 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
 
             <div id="btn_admin">
                 <div id="btn_concert">
-                    <input type="button" id="ajout_concert" name="ajout_concert" value="Ajouter un concert"   >
-                    <input type="button" id="suppr_concert" name="suppr_concert" value="Supprimer un concert" >
-                    <input type="button" id="modif_concert" name="modif_concert" value="Modifier un concert"  >
+                    <input type="button" id="ajout_concert" name="ajout_concert" value="Ajouter un concert">
+                    <input type="button" id="suppr_concert" name="suppr_concert" value="Supprimer un concert">
+                    <input type="button" id="modif_concert" name="modif_concert" value="Modifier un concert">
                 </div>
                 <div id="btn_groupe">
-                    <input type="button" id="ajout_groupe"  name="ajout_groupe"  value="Ajouter un groupe"    >
-                    <input type="button" id="suppr_groupe"  name="suppr_groupe"  value="Supprimer un groupe"  >
-                    <input type="button" id="modif_groupe"  name="modif_groupe"  value="Modifier un groupe"   >
+                    <input type="button" id="ajout_groupe" name="ajout_groupe" value="Ajouter un groupe">
+                    <input type="button" id="suppr_groupe" name="suppr_groupe" value="Supprimer un groupe">
+                    <input type="button" id="modif_groupe" name="modif_groupe" value="Modifier un groupe">
                 </div>
                 <div id="btn_genre">
-                    <input type="button" id="ajout_genre"   name="ajout_genre"   value="Ajouter un genre"     >
-                    <input type="button" id="suppr_genre"   name="suppr_genre"   value="Supprimer un genre"   >
-                    <input type="button" id="modif_genre"   name="modif_genre"   value="Modifier un genre"    >
+                    <input type="button" id="ajout_genre" name="ajout_genre" value="Ajouter un genre">
+                    <input type="button" id="suppr_genre" name="suppr_genre" value="Supprimer un genre">
+                    <input type="button" id="modif_genre" name="modif_genre" value="Modifier un genre">
                 </div>
             </div>
 
@@ -611,17 +614,17 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
              =============================== -->
 
         <div id="table_status">
-            <table id="groupes">
+            <table class="table_admin groupes">
 
                 <!-- ============ TABLE GROUPES ============ -->
 
                 <h3> Table groupes </h3>
 
                 <tr>
-                    <td> Id </td>
-                    <td> Nom </td>
-                    <td> Genre </td>
-                    <td> Image </td>
+                    <th> Id </th>
+                    <th> Nom </th>
+                    <th> Genre </th>
+                    <th> Image </th>
                 </tr>
 
                 <?php foreach ($groupe as $unGrp): ?>
@@ -635,18 +638,18 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
 
             </table>
 
-            <table id="concerts">
+            <table class="table_admin concerts">
 
                 <!-- ============ TABLE CONCERTS ============ -->
 
                 <h3> Table concerts </h3>
 
                 <tr>
-                    <td> Id </td>
-                    <td> Id_groupe </td>
-                    <td> Lieu </td>
-                    <td> Date </td>
-                    <td> Prix </td>
+                    <th> Id </th>
+                    <th> Id_groupe </th>
+                    <th> Lieu </th>
+                    <th> Date </th>
+                    <th> Prix </th>
                 </tr>
 
                 <?php foreach ($concert as $unConcert): ?>
@@ -661,15 +664,15 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
 
             </table>
 
-            <table id="genreMusique">
+            <table class="table_admin genreMusique">
 
-                <!-- ============ TABLE GROUPES ============ -->
+                <!-- ============ TABLE GENRES ============ -->
 
                 <h3> Table genreMusical </h3>
 
                 <tr>
-                    <td> Id </td>
-                    <td> Genre </td>
+                    <th> Id </th>
+                    <th> Genre </th>
                 </tr>
 
                 <?php foreach ($genremusique as $unGenre): ?>
@@ -681,21 +684,53 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
 
             </table>
 
-            <table id="users">
+            <table class="table_admin users">
 
                 <!-- ============ TABLE USERS ============ -->
 
                 <h3> Table users </h3>
 
                 <tr>
-                    <td> Id </td>
-                    <td> Login </td>
+                    <th> Id </th>
+                    <th> Login </th>
                 </tr>
 
                 <?php foreach ($user as $unUsr): ?>
                     <tr>
                         <td> <?= $unUsr->id_user; ?> </td>
                         <td> <?= $unUsr->login; ?> </td>
+                    </tr>
+                <?php endforeach; ?>
+
+            </table>
+
+            <table class="table_admin reservation">
+
+                <!-- ============ TABLE RESERVATIONS ============ -->
+
+                <h3> Table reservations </h3>
+
+                <tr>
+                    <th> Id </th>
+                    <th> idUser </th>
+                    <th> idConcert </th>
+                    <th> Nombre place </th>
+                    <th> PrixTotal </th>
+                    <th> idGroupe </th>
+                    <th> Lieu </th>
+                    <th> Date </th>
+                </tr>
+
+                <?php foreach ($reserv as $uneReserv): ?>
+                    <tr>
+                        <td> <?= $uneReserv->id_res; ?> </td>
+                        <td> <?= $uneReserv->idUser; ?> </td>
+                        <td> <?= $uneReserv->idConcert; ?> </td>
+                        <td> <?= $uneReserv->nbPlace; ?> </td>
+                        <td> <?= $uneReserv->prixTotal; ?> </td>
+                        <td> <?= $uneReserv->groupe; ?> </td>
+                        <td> <?= $uneReserv->lieu; ?> </td>
+                        <td> <?= $uneReserv->date; ?> </td>
                     </tr>
                 <?php endforeach; ?>
 

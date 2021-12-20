@@ -21,10 +21,10 @@ if (isset($_COOKIE['genre'])) {
     } else {
         // Requete SQL récupérant 3 article au hasard
         $sql = "select * from concerts C join groupes G on G.id_groupe = C.groupe join genremusical Gm on Gm.id_genre = G.genre
-where G.genre = '$genre' order by rand() limit 3;";
+        where G.genre = '$genre' order by rand() limit 3;";
     }
 } else {
-    // Requete SQL récupérant 3 article au hasard
+    // Requete SQL récupérant 3 articles au hasard
     $sql = "select * from concerts C join groupes G on G.id_groupe = C.groupe order by rand() limit 3;";
 }
 
@@ -49,7 +49,7 @@ $user = $users->fetchAll(PDO::FETCH_OBJ);       // Traitement
         <link href="css/layout.css" rel="stylesheet" type="text/css">
         <link href="css/color.css" rel="stylesheet" type="text/css">
         <script src="js/comportement.js"></script>
-        <title>TrouvesTonConcert</title>
+        <title>Concertôt</title>
     </head>
 
     <body id="body">
@@ -73,7 +73,6 @@ $user = $users->fetchAll(PDO::FETCH_OBJ);       // Traitement
         <?php endif; ?>
 
 
-
         <!-- ===============================
                    SUGGESTION COOKIES
              =============================== -->
@@ -87,8 +86,6 @@ $user = $users->fetchAll(PDO::FETCH_OBJ);       // Traitement
             <?php endif; ?>
         <?php endif; ?>
 
-
-
         <!-- ===============================
                  FORMULAIRE DE CONNEXION
              =============================== -->
@@ -99,11 +96,11 @@ $user = $users->fetchAll(PDO::FETCH_OBJ);       // Traitement
                 <legend>Identification administrateur</legend>
                 <p>
                     <label for="identifiant">Identifiant: </label>
-                    <input type="text" placeholder="identifiant" name="login" autocomplete="off" required/>
+                    <input type="text" placeholder="identifiant" name="login" autocomplete="off" id="identifiant" required/>
                 </p>
                 <p>
                     <label for="motDePasse">Mot de passe:</label>
-                    <input type="password" placeholder="Mot de passe" name="pass" required/>
+                    <input type="password" placeholder="Mot de passe" name="pass" id="motDePasse" required/>
                 </p>
                 <p>
                     <a href="ajoutUser.php" class="inscription"> Je m'inscrit </a>
@@ -132,7 +129,7 @@ $user = $users->fetchAll(PDO::FETCH_OBJ);       // Traitement
                         <p> Nom : <?= $unConcert->nom; ?> </p>
                         <p> Lieu : <?= $unConcert->lieu; ?> </p>
                         <p> Prix : <?= $unConcert->prix_place; ?>€ </p>
-                        <a href="vue_concert.php?nom=<?= $unConcert->nom; ?>" class="lien-details"> Voir les détails</a>
+                        <a href="vue_concert.php?nom=<?= $unConcert->nom; ?>&id=<?= $unConcert->id_concert;?>" class="lien-details"> Voir les détails</a>
                     </li>
                 <?php endforeach; ?>
             </ul>

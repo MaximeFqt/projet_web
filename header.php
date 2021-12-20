@@ -1,10 +1,16 @@
 <?php
 
+$connexion = connexionBd();
+
 if (isset($_SESSION['role'])) {
     $role = $_SESSION['role'];
     $login = $_SESSION['login'];
     $pass = $_SESSION['pass'];
 }
+
+$sql = "select * from genremusical";
+$genres = $connexion->query($sql);
+$genre = $genres->fetchAll(PDO::FETCH_OBJ);
 
 ?>
 
@@ -13,7 +19,7 @@ if (isset($_SESSION['role'])) {
      =============================== -->
 
 <header class="principal">
-    <h1 id="titreSite"> TrouveTonConcert </h1>
+    <h1 id="titreSite"> Concertôt </h1>
 
     <!-- Navigation dans le site -->
     <nav>
@@ -36,8 +42,17 @@ if (isset($_SESSION['role'])) {
     <nav>
         <ul class="menu_categorie">
             <li><a href="categorie.php?cat=all"> Tous les genres </a></li>
-            <li><a href="categorie.php?cat=1"> Rock </a></li>
-            <li><a href="categorie.php?cat=2"> Chanson Française </a></li>
+            <li>
+                <form action="categorie.php" method="post">
+                    <label for="selectMenu"> Genre : </label>
+                    <select name="selectGenre" id="selectMenu">
+                        <?php foreach ($genre as $unGenre) : ?>
+                            <option value="<?= $unGenre->id_genre; ?>"> <?= $unGenre->nomGenre; ?> </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <input type="submit" value="Ok" id="selectMenu" name="sendSelectGenre">
+                </form>
+            </li>
         </ul>
     </nav>
 </header>

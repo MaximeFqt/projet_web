@@ -54,7 +54,7 @@ if (isset($_POST['send'])) {
         <link href="css/color.css" rel="stylesheet" type="text/css">
         <script src="js/comportement.js"></script>
         <script src="js/formulaireInscription.js"></script>
-        <title>TrouvesTonConcert</title>
+        <title> Concertôt </title>
     </head>
     <body>
         <?php include('header.php'); ?>

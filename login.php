@@ -25,7 +25,8 @@ if (isset($_POST['send'])) {
             // Démarrage de la session
             session_start();
             $_SESSION['login'] = $_POST['login'];
-            $_SESSION['pass'] = $_POST['pass'];
+            $_SESSION['pass']  = $user[0]['pass'];
+            $_SESSION['id']    = $user[0]['id_user'];
 
             if ($login == 'admin' && $pass = 'admin') {
                 $_SESSION['role'] = 'admin';

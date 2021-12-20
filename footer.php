@@ -9,7 +9,7 @@
 <footer class="footer_principal">
 
     <p>
-        <span>Maxime Fiquet - TrouveTonConcert</span>
+        <span id="copyRight"> Fiquet Maxime | &copy; 2021, Concertôt </span>
     </p>
 
 </footer>

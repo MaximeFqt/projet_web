@@ -4,6 +4,14 @@ session_start();
 include('connexion.php');
 $connexion = connexionBd();
 
+if (isset($_POST['sendSelectGenre']) && isset($_POST['selectGenre']) && !empty($_POST['selectGenre'])) {
+
+    $genre = htmlspecialchars($_POST['selectGenre']);
+    //Redirection
+    header("location: categorie.php?cat=$genre");
+
+}
+
 if (isset($_GET['cat'])) {
     $cat = htmlspecialchars($_GET['cat']);
 
@@ -25,8 +33,15 @@ if (isset($_GET['cat'])) {
         $sql2 = "select * from concerts C join groupes Gr on Gr.id_groupe = C.groupe where Gr.genre = '$cat';";
         // Envoie
         $concerts = $connexion->query($sql2);
-        // Traitement
-        $concert = $concerts->fetchAll(PDO::FETCH_OBJ);
+
+        if ($concerts->rowCount() > 0) {
+            // Traitement
+            $concert = $concerts->fetchAll(PDO::FETCH_OBJ);
+        } else {
+            setcookie($name);
+            header('location: index.php');
+        }
+
     }
 
 }
@@ -44,7 +59,7 @@ if (isset($_GET['cat'])) {
         <link href="css/layout.css" rel="stylesheet" type="text/css">
         <link href="css/color.css" rel="stylesheet" type="text/css">
         <script src="js/comportement.js"></script>
-        <title>TrouvesTonConcert</title>
+        <title> Concertôt </title>
     </head>
     <body>
 
@@ -64,6 +79,10 @@ if (isset($_GET['cat'])) {
                 <?php endforeach; ?>
             </ul>
         </section>
+
+        <p class="retourIndex">
+            <a href="index.php"> Retour </a>
+        </p>
 
         <?php include('footer.php'); ?>
 

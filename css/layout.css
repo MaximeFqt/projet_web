@@ -46,6 +46,7 @@ ul.menu_categorie {
 
 ul.menu_categorie li {
     text-align: center;
+    margin-right: 10px;
 }
 
 ul.menu_categorie a {
@@ -53,6 +54,11 @@ ul.menu_categorie a {
     border-radius: 15px;
     cursor: pointer;
 }
+
+select#selectMenu {
+    margin-right: 5px;
+}
+
 
 /****************************** FIN HEADER.PHP ******************************/
 
@@ -102,7 +108,7 @@ ul#list_group {
     display: block;
     max-width: 250px;
     max-height: 250px;
-    margin: 0px auto;
+    margin: auto;
 }
 
 li.group {
@@ -217,6 +223,7 @@ li.group {
 
 .retourIndex a {
     text-decoration: none;
+    font-size: 1.2rem;
     color: #FFFFFF;
     border: solid 2px darkred;
     padding: 7px;
@@ -307,8 +314,9 @@ form.formulaire>p.submit input:active {
 div#table_status {
     display: flex block;
     flex-direction: column;
-    max-width: 35%;
-    margin: auto;
+    max-width: 50%;
+    margin-left: auto;
+    margin-right: auto;
     margin-bottom: 6rem;
 }
 
@@ -316,7 +324,8 @@ div#table_status table {
     justify-content: space-around;
     border: solid white 1px;
     text-align: center;
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
     margin-bottom: 20px;
     background-color: rgba(110, 3, 3, 0.5);
 }
@@ -372,6 +381,28 @@ h2 {
     margin-top: 1rem;
 }
 /*************** FIN AJOUTUSER.PHP ***************/
+
+
+/*************** PAGE PANIER.PHP ***************/
+table#table_panier, table.table_admin {
+    width: 100%;
+    text-align: center;
+}
+
+table#table_panier th, table.table_admin th {
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 30px;
+    border-top: 1px solid darkred;
+    border-bottom: 1px solid darkred;
+}
+
+table#table_panier td, table.table_admin td{
+    border-bottom: 1px solid darkred;
+    font-size: 14px;
+    line-height: 25px;
+}
+/*************** FIN PAGE PANIER.PHP ***************/
 
 
 

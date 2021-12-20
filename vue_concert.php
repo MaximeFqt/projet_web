@@ -7,14 +7,61 @@ if(isset($_SESSION['login']) && isset($_SESSION['pass'])) {
     $pass = $_SESSION['pass'];
 }
 
-if(isset($_GET['nom'])) {
-    $nomRecup = htmlspecialchars($_GET['nom']);
-}
-
 // Inclusion du fichier de connexion
 include('connexion.php');
 // Appel de méthode de connexion
 $connexion = connexionBd();
+
+if(isset($_GET['nom']) && isset($_GET['id'])) {
+    if (!empty($_GET['nom']) && !empty($_GET['id'])) {
+        $nomRecup = htmlspecialchars($_GET['nom']);
+        $idConcert = htmlspecialchars($_GET['id']);
+
+        $sql = "select * from concerts Cr join groupes Gr on Gr.id_groupe = Cr.groupe where Gr.nom = '$nomRecup' and Cr.id_concert = '$idConcert';";
+        $concerts = $connexion->query($sql);
+
+        if ($concerts->rowCount() === 1 ) {
+
+            $concert = $concerts->fetchAll(PDO::FETCH_OBJ);
+
+            // Traitement de la réservation
+            if (isset($_POST['sendBuy']) && !empty($_POST['sendBuy'])) {
+                if (!empty($_POST['nbPlace'])) {
+
+                    // Stockage des valeurs
+                    $nbPlace   = htmlspecialchars($_POST['nbPlace']);
+                    $idUser    = htmlspecialchars($_SESSION['id']);
+                    $idConcert = htmlspecialchars($concert[0]->id_concert);
+                    $prix      = htmlspecialchars($concert[0]->prix_place);
+                    $groupe    = htmlspecialchars($concert[0]->id_groupe);
+                    $lieu      = htmlspecialchars($concert[0]->lieu);
+                    $date      = htmlspecialchars($concert[0]->date);
+
+                    $prixTotal = $nbPlace * $prix;
+
+                    $sql = "insert into reservation (idUser, idConcert, nbplace, prixTotal, groupe, lieu, date) 
+                            values ('$idUser', '$idConcert', '$nbPlace', '$prixTotal', '$groupe', '$lieu', '$date');";
+
+                    $insertReservation = $connexion->exec($sql);
+
+                } else {
+                    echo '<body onload = "alert(\'Un problème est survenu !\')" >';
+                    echo '<meta http-equiv="refresh">';
+                }
+            }
+
+        } else {
+            echo '<body onload = "alert(\'Concert inconnu\')" >';
+            echo '<meta http-equiv="refresh" content="0;URL=index.php">';
+        }
+    } else {
+        echo '<body onload = "alert(\'Concert inconnu\')" >';
+        echo '<meta http-equiv="refresh" content="0;URL=index.php">';
+    }
+} else {
+    echo '<body onload = "alert(\'Concert inconnu\')" >';
+    echo '<meta http-equiv="refresh" content="0;URL=index.php">';
+}
 
 // Requete recuperation infos sur les groupes
 $recupImage = "select * from concerts C join groupes G on G.id_groupe = C.groupe;";
@@ -36,19 +83,19 @@ $groupe = $groupes->fetchAll(PDO::FETCH_OBJ);   // Traitement
         <link href="css/layout.css" rel="stylesheet" type="text/css">
         <link href="css/color.css" rel="stylesheet" type="text/css">
         <script src="js/comportement.js"></script>
-        <title>TrouvesTonConcert</title>
+        <title> Concertôt </title>
     </head>
     <body>
         <?php require('header.php');?>
 
-        <?php if (isset($login)) : ?>
-            <?php if ($login == 'admin' && $pass == 'admin') : ?>
-                <p id="info-connection"> Vous êtes connecté en tant qu'administrateur </p>
+        <?php if (isset($role)) : ?>
+            <?php if ($role == 'admin') : ?>
+                <p id="info_connection"> Vous êtes connecté en tant qu'administrateur </p>
             <?php else : ?>
-                <p id="info-connection"> Vous êtes connecté en tant que : <?= $login; ?> </p>
+                <p id="info_connection"> Vous êtes connecté en tant que : <?= $login; ?> </p>
             <?php endif; ?>
         <?php else : ?>
-            <p id="info-connection"> Vous n'êtes pas connecté </p>
+            <p id="info_connection"> Vous n'êtes pas connecté </p>
         <?php endif; ?>
 
         <!-- ===============================
@@ -56,15 +103,15 @@ $groupe = $groupes->fetchAll(PDO::FETCH_OBJ);   // Traitement
              =============================== -->
 
         <form id="formulaire" method="post" action="login.php">
-            <fieldset id="form-id-admin">
+            <fieldset id="form-login">
                 <legend>Identification administrateur</legend>
                 <p>
                     <label for="identifiant">Identifiant: </label>
-                    <input type="text" placeholder="identifiant" name="login" required>
+                    <input type="text" placeholder="identifiant" name="login" autocomplete="off" id="identifiant" required/>
                 </p>
                 <p>
                     <label for="motDePasse">Mot de passe:</label>
-                    <input type="password" placeholder="Mot de passe" name="pass" required>
+                    <input type="password" placeholder="Mot de passe" name="pass" id="motDePasse" required/>
                 </p>
                 <p>
                     <a href="ajoutUser.php" class="inscription"> Je m'inscrit </a>
@@ -98,10 +145,20 @@ $groupe = $groupes->fetchAll(PDO::FETCH_OBJ);   // Traitement
                             <p>
                                 Le prix de la place est de <?= $unGroupe->prix_place;?>€ par personne.
                             </p>
-                            <?php break; ?>
                         </li>
                     <?php endif; ?>
                 <?php endforeach; ?>
+                <li>
+                    <form action="#" id="buy" method="post">
+                        <p>
+                            <label for="buy"> Réserver : </label>
+                            <input type="number" id="buy" min="0" name="nbPlace" placeholder="Nombre de place" required/>
+                        </p>
+                        <p>
+                            <input type="submit" value="Ok" name="sendBuy">
+                        </p>
+                    </form>
+                </li>
             </ul>
         </div>
 

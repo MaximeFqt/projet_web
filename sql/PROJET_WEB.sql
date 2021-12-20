@@ -2,8 +2,8 @@
 -- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1
--- Généré le : lun. 06 déc. 2021 à 19:50
+-- Hôte : localhost
+-- Généré le : lun. 20 déc. 2021 à 20:34
 -- Version du serveur : 10.4.21-MariaDB
 -- Version de PHP : 8.0.11
 
@@ -90,6 +90,20 @@ INSERT INTO `groupes` (`id_groupe`, `nom`, `genre`, `image`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `reservation`
+--
+
+CREATE TABLE `reservation` (
+  `id_res` int(11) NOT NULL,
+  `idUser` int(11) NOT NULL,
+  `idConcert` int(11) NOT NULL,
+  `nbPlace` int(11) NOT NULL,
+  `prixTotal` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `users`
 --
 
@@ -133,6 +147,14 @@ ALTER TABLE `groupes`
   ADD KEY `genre` (`genre`);
 
 --
+-- Index pour la table `reservation`
+--
+ALTER TABLE `reservation`
+  ADD PRIMARY KEY (`id_res`),
+  ADD KEY `idUser` (`idUser`),
+  ADD KEY `idConcert` (`idConcert`);
+
+--
 -- Index pour la table `users`
 --
 ALTER TABLE `users`
@@ -161,6 +183,12 @@ ALTER TABLE `groupes`
   MODIFY `id_groupe` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT pour la table `reservation`
+--
+ALTER TABLE `reservation`
+  MODIFY `id_res` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
@@ -181,6 +209,13 @@ ALTER TABLE `concerts`
 --
 ALTER TABLE `groupes`
   ADD CONSTRAINT `groupes_ibfk_1` FOREIGN KEY (`genre`) REFERENCES `genremusical` (`id_genre`);
+
+--
+-- Contraintes pour la table `reservation`
+--
+ALTER TABLE `reservation`
+  ADD CONSTRAINT `reservation_ibfk_1` FOREIGN KEY (`idUser`) REFERENCES `users` (`id_user`),
+  ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`idConcert`) REFERENCES `concerts` (`id_concert`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
