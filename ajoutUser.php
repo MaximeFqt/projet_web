@@ -2,8 +2,21 @@
 
 // Démarrage de la session
 session_start();
-// Inclusion du fichier de connexion à la base de donnée
-include('connexion.php');
+
+// Utilisation du fichier
+use App\Config\Database;
+
+/* AUTOLOAD */
+//autoload
+function chargerClasse($classe)
+{
+    $classe=str_replace('\\','/',$classe);
+    require $classe . '.php';
+}
+spl_autoload_register('chargerClasse'); //fin Autoload
+
+// Instanciation d'une bdd
+$db = new Database();
 
 if (isset($_POST['send'])) {
     $login  = htmlspecialchars($_POST['login']);
@@ -11,7 +24,7 @@ if (isset($_POST['send'])) {
     $email = htmlspecialchars($_POST['email']);
 
     // Connexion à la base
-    $connexion = connexionBd();
+    $connexion = $db->getConnection();
 
     // Requête vérification login
     $sqlLogin = "select * from users where login = '$login';";
@@ -70,19 +83,19 @@ if (isset($_POST['send'])) {
             <fieldset>
                 <legend> Enregistrement des informations </legend>
                 <p>
-                    <label for="identifiant"> * Identifiant : </label>
+                    <label for="id_new_user"> * Identifiant : </label>
                     <input type="text" placeholder="Identifiant" id="id_new_user" name="login" autocomplete="off" required/>
                 </p>
                 <p>
-                    <label for="email"> * Email : </label>
+                    <label for="email_new_user"> * Email : </label>
                     <input type="email" placeholder="ex@emple.fr" id="email_new_user" name="email" autocomplete="off"/>
                 </p>
                 <p>
-                    <label for="mot de passe"> * Mot de passe : </label>
+                    <label for="pass_new_user"> * Mot de passe : </label>
                     <input type="password" placeholder="Mot de passe" id="pass_new_user" name="pass" required>
                 </p>
                 <p>
-                    <label for="confirmation"> * Confirmation : </label>
+                    <label for="pass_confirm_new_user"> * Confirmation : </label>
                     <input type="password" placeholder="Confirmation" id="pass_confirm_new_user" required>
                 </p>
                 <p> * Champs obligatoires</p>

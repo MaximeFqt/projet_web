@@ -2,8 +2,21 @@
 
 session_start();
 
-include('connexion.php');
-$connexion = connexionBd();
+// Utilisation du fichier
+use App\Config\Database;
+
+/* AUTOLOAD */
+//autoload
+function chargerClasse($classe)
+{
+    $classe=str_replace('\\','/',$classe);
+    require $classe . '.php';
+}
+spl_autoload_register('chargerClasse'); //fin Autoload
+
+// Instanciation d'une bdd
+$db = new Database();
+$connexion = $db->getConnection();
 
 if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
     $id = htmlspecialchars($_SESSION['id']);
@@ -20,6 +33,26 @@ if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
     } else {
         $_SESSION['panier'] = "empty";
     }
+
+    if (isset($_POST['annulReserv']) && isset($_POST['idRes']) && !empty($_POST['idRes'])) {
+
+        $idRes = htmlspecialchars($_POST['idRes']);
+
+        $sql = "select * from reservations where id_res ='$idRes';";
+        $reserv = $connexion->query($sql);
+
+        if ($reserv->rowCount() === 1) {
+
+            $res = $reserv->fetchAll(PDO::FETCH_OBJ);
+
+            $deleteRes = "delete from reservations where id_res = '$idRes';";
+            $deleteRes = $connexion->exec($deleteRes);
+
+            header('location: panier.php');
+
+        }
+    }
+
 }
 
 
@@ -77,8 +110,8 @@ if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
                 </p>
             </fieldset>
             <p class="submit">
-                <input type="submit" id="btnSubmit" value="Continuer" name="send"/>
-                <input type="reset" id="btnReset" value="Annuler" />
+                <input type="submit" id="btnSubmitLogin" value="Continuer" name="send"/>
+                <input type="reset" id="btnResetLogin" value="Annuler" />
             </p>
         </form>
 
@@ -91,11 +124,12 @@ if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
             <?php if (isset($_SESSION['panier']) && $_SESSION['panier'] == "unfree") : ?>
                 <table id="table_panier">
                     <tr>
-                        <th> Nom du groupe</th>
-                        <th> Nombre de place</th>
-                        <th> Lieu</th>
-                        <th> Date</th>
-                        <th> Prix</th>
+                        <th> Nom du groupe </th>
+                        <th> Nombre de place </th>
+                        <th> Lieu </th>
+                        <th> Date </th>
+                        <th> Prix </th>
+                        <th>  </th>
                     </tr>
 
                     <?php foreach ($reserv as $uneReserv) : ?>
@@ -106,6 +140,12 @@ if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
                             <td><?= $uneReserv->lieu ?> </td>
                             <td><?= $uneReserv->date ?> </td>
                             <td><?= $uneReserv->prixTotal ?> </td>
+                            <td id="btnAnnulReserv">
+                                <form action="panier.php" method="post">
+                                    <input type="hidden" name="idRes" value="<?= $uneReserv->id_res ?>">
+                                    <input type="submit" name="annulReserv" value="X">
+                                </form>
+                            </td>
                         </tr>
 
                     <?php endforeach; ?>

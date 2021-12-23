@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : lun. 20 déc. 2021 à 20:34
+-- Généré le : lun. 20 déc. 2021 à 21:45
 -- Version du serveur : 10.4.21-MariaDB
 -- Version de PHP : 8.0.11
 
@@ -90,15 +90,18 @@ INSERT INTO `groupes` (`id_groupe`, `nom`, `genre`, `image`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `reservation`
+-- Structure de la table `reservations`
 --
 
-CREATE TABLE `reservation` (
+CREATE TABLE `reservations` (
   `id_res` int(11) NOT NULL,
   `idUser` int(11) NOT NULL,
   `idConcert` int(11) NOT NULL,
   `nbPlace` int(11) NOT NULL,
-  `prixTotal` float NOT NULL
+  `prixTotal` float NOT NULL,
+  `groupe` int(11) NOT NULL,
+  `lieu` varchar(250) NOT NULL,
+  `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -147,12 +150,13 @@ ALTER TABLE `groupes`
   ADD KEY `genre` (`genre`);
 
 --
--- Index pour la table `reservation`
+-- Index pour la table `reservations`
 --
-ALTER TABLE `reservation`
+ALTER TABLE `reservations`
   ADD PRIMARY KEY (`id_res`),
   ADD KEY `idUser` (`idUser`),
-  ADD KEY `idConcert` (`idConcert`);
+  ADD KEY `idConcert` (`idConcert`),
+  ADD KEY `groupe` (`groupe`);
 
 --
 -- Index pour la table `users`
@@ -183,10 +187,10 @@ ALTER TABLE `groupes`
   MODIFY `id_groupe` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT pour la table `reservation`
+-- AUTO_INCREMENT pour la table `reservations`
 --
-ALTER TABLE `reservation`
-  MODIFY `id_res` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `reservations`
+  MODIFY `id_res` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT pour la table `users`
@@ -211,11 +215,12 @@ ALTER TABLE `groupes`
   ADD CONSTRAINT `groupes_ibfk_1` FOREIGN KEY (`genre`) REFERENCES `genremusical` (`id_genre`);
 
 --
--- Contraintes pour la table `reservation`
+-- Contraintes pour la table `reservations`
 --
-ALTER TABLE `reservation`
-  ADD CONSTRAINT `reservation_ibfk_1` FOREIGN KEY (`idUser`) REFERENCES `users` (`id_user`),
-  ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`idConcert`) REFERENCES `concerts` (`id_concert`);
+ALTER TABLE `reservations`
+  ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`idUser`) REFERENCES `users` (`id_user`),
+  ADD CONSTRAINT `reservations_ibfk_2` FOREIGN KEY (`idConcert`) REFERENCES `concerts` (`id_concert`),
+  ADD CONSTRAINT `reservations_ibfk_3` FOREIGN KEY (`groupe`) REFERENCES `groupes` (`id_groupe`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

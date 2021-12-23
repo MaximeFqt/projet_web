@@ -253,14 +253,13 @@ section#action_admin div#btn_admin {
     flex-direction: column;
 }
 
-section#action_admin input {
+section#action_admin input, #btnSubmitLogin, #btnResetLogin, #btnOkReserv {
     margin: 5px;
 }
 
 section#action_admin>h3.ss_titre {
     font-size: 2rem;
     font-weight: bold;
-    margin-bottom: 20px;
 }
 
 /* Positionnement des formulaires */
@@ -380,6 +379,12 @@ h2 {
     text-align: center;
     margin-top: 1rem;
 }
+
+input#btnSubmit_ajout, input#btnReset_ajout {
+    padding: 3px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
 /*************** FIN AJOUTUSER.PHP ***************/
 
 
@@ -402,6 +407,21 @@ table#table_panier td, table.table_admin td{
     font-size: 14px;
     line-height: 25px;
 }
+
+/* Boutons */
+td#btnAnnulReserv {
+    cursor: pointer;
+}
+
+td#btnAnnulReserv input {
+    background: none;
+    color: white;
+    cursor: pointer;
+    width: max-content;
+    height: max-content;
+}
+
+
 /*************** FIN PAGE PANIER.PHP ***************/
 
 

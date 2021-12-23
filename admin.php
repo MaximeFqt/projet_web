@@ -2,9 +2,21 @@
 
 session_start();
 
-// Inclusion du fichier
-include('connexion.php');
-$connexion = connexionBd();
+// Utilisation du fichier
+use App\Config\Database;
+
+/* AUTOLOAD */
+//autoload
+function chargerClasse($classe)
+{
+    $classe=str_replace('\\','/',$classe);
+    require $classe . '.php';
+}
+spl_autoload_register('chargerClasse'); //fin Autoload
+
+// Instanciation d'une bdd
+$db = new Database();
+$connexion = $db->getConnection();
 
 // Si l'utilisteur n'est pas administrateur
 if (!(isset($_SESSION['role']))) {
@@ -536,6 +548,23 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
         echo '<meta http-equiv="refresh" content="0;URL=admin.php">';
     }
 
+} else if (isset($_POST['annulReserv']) && isset($_POST['idRes']) && !empty($_POST['idRes'])) {
+
+    $idRes = htmlspecialchars($_POST['idRes']);
+
+    $sql = "select * from reservations where id_res ='$idRes';";
+    $reserv = $connexion->query($sql);
+
+    if ($reserv->rowCount() === 1) {
+
+        $res = $reserv->fetchAll(PDO::FETCH_OBJ);
+
+        $deleteRes = "delete from reservations where id_res = '$idRes';";
+        $deleteRes = $connexion->exec($deleteRes);
+
+        header('location: admin.php');
+
+    }
 }
 
 ?>
@@ -719,6 +748,7 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
                     <th> idGroupe </th>
                     <th> Lieu </th>
                     <th> Date </th>
+                    <th> </th>
                 </tr>
 
                 <?php foreach ($reserv as $uneReserv): ?>
@@ -731,6 +761,12 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
                         <td> <?= $uneReserv->groupe; ?> </td>
                         <td> <?= $uneReserv->lieu; ?> </td>
                         <td> <?= $uneReserv->date; ?> </td>
+                        <td id="btnAnnulReserv">
+                            <form action="admin.php" method="post">
+                                <input type="hidden" name="idRes" value="<?= $uneReserv->id_res ?>">
+                                <input type="submit" name="annulReserv" value="X">
+                            </form>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
 

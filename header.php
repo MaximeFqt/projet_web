@@ -1,6 +1,9 @@
 <?php
 
-$connexion = connexionBd();
+use App\Config\Database;
+
+$db = new Database();
+$connexion = $db->getConnection();
 
 if (isset($_SESSION['role'])) {
     $role = $_SESSION['role'];

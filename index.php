@@ -1,16 +1,27 @@
 <?php
 session_start();
 
+// Utilisation du fichier
+use App\Config\Database;
+
+/* AUTOLOAD */
+//autoload
+function chargerClasse($classe)
+{
+    $classe=str_replace('\\','/',$classe);
+    require $classe . '.php';
+}
+spl_autoload_register('chargerClasse'); //fin Autoload
+
+// Instanciation d'une bdd
+$db = new Database();
+$connexion = $db->getConnection();
+
 if (isset($_SESSION['login']) && isset($_SESSION['pass']) && isset($_SESSION['role']) ) {
     $login = $_SESSION['login'];
     $pass = $_SESSION['pass'];
     $role = $_SESSION['role'];
 }
-
-// Inclusion du fichier
-include('connexion.php');
-// Appel de la méthode permettant la connexion à la BDD
-$connexion = connexionBd();
 
 if (isset($_COOKIE['genre'])) {
     $genre = $_COOKIE['genre'];
@@ -107,8 +118,8 @@ $user = $users->fetchAll(PDO::FETCH_OBJ);       // Traitement
                 </p>
             </fieldset>
             <p class="submit">
-                <input type="submit" id="btnSubmit" value="Continuer" name="send"/>
-                <input type="reset" id="btnReset" value="Annuler" />
+                <input type="submit" id="btnSubmitLogin" value="Continuer" name="send"/>
+                <input type="reset" id="btnResetLogin" value="Annuler" />
             </p>
         </form>
 

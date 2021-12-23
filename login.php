@@ -4,8 +4,20 @@
  * FICHIER PERMETTANT L'IDENTIFICATION DE L'UTILISATEUR
  */
 
-// Inclusion de fichier
-include('connexion.php');
+// Utilisation du fichier
+use App\Config\Database;
+
+/* AUTOLOAD */
+//autoload
+function chargerClasse($classe)
+{
+    $classe=str_replace('\\','/',$classe);
+    require $classe . '.php';
+}
+spl_autoload_register('chargerClasse'); //fin Autoload
+
+// Instanciation d'une bdd
+$db = new Database();
 
 if (isset($_POST['send'])) {
 
@@ -13,7 +25,7 @@ if (isset($_POST['send'])) {
     $pass = htmlspecialchars($_POST['pass']);
 
     // Connexion à la base
-    $connexion = connexionBd();
+    $connexion = $db->getConnection();
 
     // Requête sql
     $sqlUser = "select * from users where login = '$login'";

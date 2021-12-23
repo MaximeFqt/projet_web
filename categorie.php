@@ -1,8 +1,21 @@
 <?php
 session_start();
 
-include('connexion.php');
-$connexion = connexionBd();
+// Utilisation du fichier
+use App\Config\Database;
+
+/* AUTOLOAD */
+//autoload
+function chargerClasse($classe)
+{
+    $classe=str_replace('\\','/',$classe);
+    require $classe . '.php';
+}
+spl_autoload_register('chargerClasse'); //fin Autoload
+
+// Instanciation d'une bdd
+$db = new Database();
+$connexion = $db->getConnection();
 
 if (isset($_POST['sendSelectGenre']) && isset($_POST['selectGenre']) && !empty($_POST['selectGenre'])) {
 
@@ -64,6 +77,33 @@ if (isset($_GET['cat'])) {
     <body>
 
         <?php include('header.php'); ?>
+
+
+        <!-- ===============================
+                 FORMULAIRE DE CONNEXION
+             =============================== -->
+
+
+        <form id="formulaire" method="post" action="login.php">
+            <fieldset id="form-login">
+                <legend>Identification administrateur</legend>
+                <p>
+                    <label for="identifiant">Identifiant: </label>
+                    <input type="text" placeholder="identifiant" name="login" autocomplete="off" id="identifiant" required/>
+                </p>
+                <p>
+                    <label for="motDePasse">Mot de passe:</label>
+                    <input type="password" placeholder="Mot de passe" name="pass" id="motDePasse" required/>
+                </p>
+                <p>
+                    <a href="ajoutUser.php" class="inscription"> Je m'inscrit </a>
+                </p>
+            </fieldset>
+            <p class="submit">
+                <input type="submit" id="btnSubmitLogin" value="Continuer" name="send"/>
+                <input type="reset" id="btnResetLogin" value="Annuler" />
+            </p>
+        </form>
 
         <section id="affGroupe">
 

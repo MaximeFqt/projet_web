@@ -2,15 +2,27 @@
 
 session_start();
 
-if(isset($_SESSION['login']) && isset($_SESSION['pass'])) {
+// Utilisation du fichier
+use App\Config\Database;
+
+/* AUTOLOAD */
+//autoload
+function chargerClasse($classe)
+{
+    $classe=str_replace('\\','/',$classe);
+    require $classe . '.php';
+}
+spl_autoload_register('chargerClasse'); //fin Autoload
+
+if (isset($_SESSION['login']) && isset($_SESSION['pass']) && isset($_SESSION['id'])) {
     $login = $_SESSION['login'];
     $pass = $_SESSION['pass'];
+    $id = $_SESSION['id'];
 }
 
-// Inclusion du fichier de connexion
-include('connexion.php');
-// Appel de méthode de connexion
-$connexion = connexionBd();
+// Instanciation d'une bdd
+$db = new Database();
+$connexion = $db->getConnection();
 
 if(isset($_GET['nom']) && isset($_GET['id'])) {
     if (!empty($_GET['nom']) && !empty($_GET['id'])) {
@@ -27,29 +39,33 @@ if(isset($_GET['nom']) && isset($_GET['id'])) {
             // Traitement de la réservation
             if (isset($_POST['sendBuy']) && !empty($_POST['sendBuy'])) {
                 if (!empty($_POST['nbPlace'])) {
+                    if (isset($id) && !empty($id)) {
 
-                    // Stockage des valeurs
-                    $nbPlace   = htmlspecialchars($_POST['nbPlace']);
-                    $idUser    = htmlspecialchars($_SESSION['id']);
-                    $idConcert = htmlspecialchars($concert[0]->id_concert);
-                    $prix      = htmlspecialchars($concert[0]->prix_place);
-                    $groupe    = htmlspecialchars($concert[0]->id_groupe);
-                    $lieu      = htmlspecialchars($concert[0]->lieu);
-                    $date      = htmlspecialchars($concert[0]->date);
+                        // Stockage des valeurs
+                        $nbPlace   = htmlspecialchars($_POST['nbPlace']);
+                        $idUser    = htmlspecialchars($_SESSION['id']);
+                        $idConcert = htmlspecialchars($concert[0]->id_concert);
+                        $prix      = htmlspecialchars($concert[0]->prix_place);
+                        $groupe    = htmlspecialchars($concert[0]->id_groupe);
+                        $lieu      = htmlspecialchars($concert[0]->lieu);
+                        $date      = htmlspecialchars($concert[0]->date);
 
-                    $prixTotal = $nbPlace * $prix;
+                        $prixTotal = $nbPlace * $prix;
 
-                    $sql = "insert into reservation (idUser, idConcert, nbplace, prixTotal, groupe, lieu, date) 
+                        $sql = "insert into reservations (idUser, idConcert, nbplace, prixTotal, groupe, lieu, date) 
                             values ('$idUser', '$idConcert', '$nbPlace', '$prixTotal', '$groupe', '$lieu', '$date');";
 
-                    $insertReservation = $connexion->exec($sql);
+                        $insertReservation = $connexion->exec($sql);
 
+                    } else {
+                        echo '<body onload = "alert(\'Veuillez vous connecter !\')" >';
+                        echo '<meta http-equiv="refresh">';
+                    }
                 } else {
                     echo '<body onload = "alert(\'Un problème est survenu !\')" >';
                     echo '<meta http-equiv="refresh">';
                 }
             }
-
         } else {
             echo '<body onload = "alert(\'Concert inconnu\')" >';
             echo '<meta http-equiv="refresh" content="0;URL=index.php">';
@@ -118,8 +134,8 @@ $groupe = $groupes->fetchAll(PDO::FETCH_OBJ);   // Traitement
                 </p>
             </fieldset>
             <p class="submit">
-                <input type="submit" id="btnSubmit" value="Continuer" name="send"/>
-                <input type="reset" id="btnReset" value="Annuler" />
+                <input type="submit" id="btnSubmitLogin" value="Continuer" name="send"/>
+                <input type="reset" id="btnResetLogin" value="Annuler" />
             </p>
         </form>
 
@@ -152,10 +168,10 @@ $groupe = $groupes->fetchAll(PDO::FETCH_OBJ);   // Traitement
                     <form action="#" id="buy" method="post">
                         <p>
                             <label for="buy"> Réserver : </label>
-                            <input type="number" id="buy" min="0" name="nbPlace" placeholder="Nombre de place" required/>
+                            <input type="number" id="buy" min="1" name="nbPlace" placeholder="Nombre de place" required/>
                         </p>
                         <p>
-                            <input type="submit" value="Ok" name="sendBuy">
+                            <input type="submit" id="btnOkReserv" value="Ok" name="sendBuy">
                         </p>
                     </form>
                 </li>

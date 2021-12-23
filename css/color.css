@@ -2,6 +2,13 @@ body {
     color: #dcdbdb;
 }
 
+input, select {
+    background-color: darkred;
+    border-radius: 15px;
+    text-align: center;
+    color: #dcdbdb;
+}
+
 /*************** HEADER ***************/
 .principal {
     background-color: rgba(65, 1, 1, 0.60);
@@ -81,7 +88,7 @@ ul.menu_categorie input#selectMenu:active {
 }
 
 /* Boutons d'actions */
-section#action_admin input {
+section#action_admin input, #btnSubmitLogin, #btnResetLogin, #btnOkReserv {
     font-family: "Times New Roman", sans-serif;
     font-size: 1rem;
     color: #dcdbdb;
@@ -93,12 +100,12 @@ section#action_admin input {
     background-color: darkred;
 }
 
-section#action_admin input:hover {
+section#action_admin input:hover, #btnSubmitLogin:hover, #btnResetLogin:hover, #btnOkReserv:hover {
     background-color: rgba(21, 4, 4, 0.5);
     transition-duration: 0.5s;
 }
 
-section#action_admin input:active {
+section#action_admin input:active, #btnSubmitLogin:active, #btnResetLogin:active, #btnOkReserv:active {
     background-color: rgba(110, 3, 3, 0.5);
     color: #5e5d5d;
     transition-duration: 0s;
@@ -109,16 +116,16 @@ section#action_admin input:active {
 
 
 /*************** PAGE VUE_CONCERT ***************/
-.retourIndex a {
+.retourIndex a, #btnOkReserv {
     background-color: darkred;
 }
 
-.retourIndex a:hover {
+.retourIndex a:hover, #btnOkReserv:hover {
     background-color: rgba(213, 4, 4, 0.50);
     transition-duration: 0.5s;
 }
 
-.retourIndex a:active {
+.retourIndex a:active, #btnOkReserv:active {
     background-color: rgba(110, 3, 3, 0.5);
     color: #5e5d5d;
     transition-duration: 0s;
