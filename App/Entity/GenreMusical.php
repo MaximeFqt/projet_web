@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Entity\GenreMusical;
+namespace App\Entity;
 
 class GenreMusical
 {
 
-    private int $idGenre;
+    private int    $idGenre;
     private String $nomGenre;
 
     /**

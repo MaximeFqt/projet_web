@@ -74,7 +74,7 @@ if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
     </head>
     <body>
 
-        <?php include('header.php'); ?>
+        <?php include('utils/header.php'); ?>
 
         <!-- ===============================
                  INFORMATIONS DU PANIER
@@ -154,7 +154,7 @@ if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
             <?php endif; ?>
         </div>
 
-        <?php include('footer.php'); ?>
+        <?php include('utils/footer.php'); ?>
 
     </body>
 </html>

@@ -70,7 +70,7 @@ if (isset($_POST['send'])) {
         <title> Concertôt </title>
     </head>
     <body>
-        <?php include('header.php'); ?>
+        <?php include('utils/header.php'); ?>
 
         <h1> Vous n'êtes pas enregistré parmis les utilisaterus de notre site </h1>
         <h2> Souhaitez-vous vous enregistrer ? </h2>
@@ -110,6 +110,6 @@ if (isset($_POST['send'])) {
             </p>
         </form>
 
-        <?php include('footer.php'); ?>
+        <?php include('utils/footer.php'); ?>
     </body>
 </html>

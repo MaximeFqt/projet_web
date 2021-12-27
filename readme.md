@@ -1,5 +1,5 @@
-## Projet web L2 2021-2021
-### Maxime FIQUET
+# Projet web L2 2021-2021
+## **_Maxime FIQUET_**
 
 <br> 
 
@@ -7,7 +7,7 @@
 
 <br>
 
-#### Backlog produit
+## **_Backlog produit_**
 
 |  Numéro  | User Story  |  Importance  | Note | Cirtère | Etat |
 | :------: | ----------- | :----------: | ---- | ------- | ---- |
@@ -39,7 +39,40 @@ id Administrateur :
 
 <br>
 
-## Groupe dans la base de données
+## **Détails des tables de données**
+
+|     Nom      |    Champs    | Clé primaire | Clé étrangère |
+| :----------: | :----------: | -----------: | ------------: |
+|   concerts   |**id_concert**|    **Oui**   |      Non      |
+|              | **_groupe_** |      Non     |   **_Oui_**   |
+|              |     lieu     |      Non     |      Non      |
+|              |     date     |      Non     |      Non      |
+|              |  prix_place  |      Non     |      Non      |
+|
+| genremusical | **id_genre** |    **Oui**   |      Non      |
+|              |   nomGenre   |      Non     |      Non      |
+|
+|   groupes    | **id_groupe**|    **Oui**   |      Non      |
+|              |      nom     |      Non     |      Non      |
+|              |  **_genre_** |      Non     |   **_Oui_**   |
+|              |     image    |      Non     |      Non      |
+|
+|    users     | **id_user**  |    **Oui**   |      Non      |
+|              |    login     |      Non     |      Non      |
+|              |    pass      |      Non     |      Non      |
+|              |    email     |      Non     |      Non      |
+|
+| reservation  | **id_reser** |    **Oui**   |      Non      |
+|              | **_idUser_** |      Non     |   **_Oui_**   |
+|              | **_idConc_** |      Non     |   **_Oui_**   |
+
+<br>
+
+---
+
+<br>
+
+## **Concerts dans la base de données**
 
 | Nom | Genre | Date | Lieu | Prix |
 | --- | ----- | ---- | ---- | ---- |
@@ -52,6 +85,7 @@ id Administrateur :
 <br>
 
 ---
+
 <br>
 
 [Lien vers le projet sur GitLab](https://gitlab.univ-lr.fr/mfiquet/projet_web)
