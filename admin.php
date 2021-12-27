@@ -583,7 +583,7 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
     </head>
 
     <body>
-        <?php require('header.php'); ?>
+        <?php require('utils/header.php'); ?>
 
         <h2 id="titre-Admin"> Administration du site </h2>
 
@@ -1031,6 +1031,6 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
             </p>
         </form>
 
-        <?php require('footer.php'); ?>
+        <?php require('utils/footer.php'); ?>
     </body>
 </html>

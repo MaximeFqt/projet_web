@@ -15,7 +15,7 @@ class ModelConcerts extends Model
     // Récupère tous les concerts
     public function findAll()
     {
-        $sql = "select * from concerts C join groupes G on G.id_groupe = C.groupe order by rand() limit 3;";
+        $sql = "select * from concerts C join groupes G on G.idGroupe = C.groupe order by rand() limit 3;";
         $concert = $this->getConnexion()->query($sql);
         $concerts = array();
 
@@ -28,7 +28,7 @@ class ModelConcerts extends Model
 
     // Trouve un concert par son idée
     public function findOne($id, $nomGroupe) : array {
-        $sql = "select * from concerts C join groupes G on G.id_groupe = C.groupe where C.id_concert = '$id' and G.nom = '$nomGroupe';";
+        $sql = "select * from concerts C join groupes G on G.idGroupe = C.groupe where C.idConcert = '$id' and G.nom = '$nomGroupe';";
         $concert = $this->getConnexion()->query($sql);
 
         $concerts = array();
@@ -40,13 +40,13 @@ class ModelConcerts extends Model
         return $concerts;
     }
 
-    public function getOneCategorie($id)
+    public function findOneCategorie($id)
     {
         if ($id == 'all') {
-            $sql = "select * from concerts C join groupes Gr on Gr.id_groupe = C.groupe;";
+            $sql = "select * from concerts C join groupes Gr on Gr.idGroupe = C.groupe;";
         } else {
             // Récupère les concerts contenants le genre recherché
-            $sql = "select * from concerts C join groupes G on G.id_groupe = C.groupe where G.genre = '$id';";
+            $sql = "select * from concerts C join groupes G on G.idGroupe = C.groupe where G.genre = '$id';";
         }
 
         $concert = $this->getConnexion()->query($sql);

@@ -39,7 +39,7 @@ class ControllerConcerts
 
     public function getCategorie($id)
     {
-        $content = $this->model->getOneCategorie($id);
+        $content = $this->model->findOneCategorie($id);
 
         include('App/View/getCategorie.php');
     }

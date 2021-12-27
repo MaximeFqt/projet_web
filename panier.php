@@ -94,7 +94,7 @@ if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
              =============================== -->
 
 
-        <form id="formulaire" method="post" action="login.php">
+        <form id="formulaire" method="post" action="index.php">
             <fieldset id="form-login">
                 <legend>Identification administrateur</legend>
                 <p>
@@ -106,7 +106,7 @@ if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
                     <input type="password" placeholder="Mot de passe" name="pass" id="motDePasse" required/>
                 </p>
                 <p>
-                    <a href="ajoutUser.php" class="inscription"> Je m'inscrit </a>
+                    <a href="App/View/viewAjoutUser.php" class="inscription"> Je m'inscrit </a>
                 </p>
             </fieldset>
             <p class="submit">

@@ -34,7 +34,7 @@ class ModelGenreMusical extends Model
     // Trouve les genres avec les groupes et les concerts liés
     public function findGenre($genre)
     {
-        $sql = "select * from concerts C join groupes G on G.id_groupe = C.groupe join genremusical Gm on Gm.id_genre = G.genre
+        $sql = "select * from concerts C join groupes G on G.idGroupe = C.groupe join genremusical Gm on Gm.idGenre = G.genre
         where G.genre = '$genre' order by rand() limit 3;";
 
         $dataGenre = $this->getConnexion()->query($sql);

@@ -20,7 +20,7 @@ class ModelUsers extends Model
         foreach ($user as $unUser) {
             $unUser = new Users(
                 array(
-                    "idUser" => $unUser['id_user'],
+                    "idUser" => $unUser['idUser'],
                     "login"  => $unUser['login'],
                     "pass"   => $unUser['pass'],
                     "email"  => $unUser['email']
@@ -31,5 +31,22 @@ class ModelUsers extends Model
 
         return $users;
     }
+
+    // Trouve l'utilisateur par rapport à son login
+    public function findByParam($login): array
+    {
+        $users = array();
+
+        $sql = "select * from users where login = '$login';";
+        $user = $this->getConnexion()->query($sql);
+
+        if ($user->rowCount() === 1) {
+            foreach ($user as $unUser) {
+                array_push($users, $unUser);
+            }
+        }
+        return $users;
+    }
+
 
 }

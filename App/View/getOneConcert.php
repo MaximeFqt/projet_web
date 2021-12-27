@@ -19,7 +19,7 @@
                     Il est prévu pour le <?= $unGroupe['date']; ?>.
                 </p>
                 <p>
-                    Le prix de la place est de <?= $unGroupe['prix_place']; ?> € par personne.
+                    Le prix de la place est de <?= $unGroupe['prixPlace']; ?> € par personne.
                 </p>
             </li>
         <?php endforeach; ?>
@@ -38,5 +38,5 @@
 </div>
 
 <p class="retourIndex">
-    <a href="index.php"> Retour </a>
+    <a href="../../index.php"> Retour </a>
 </p>

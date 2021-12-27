@@ -6,7 +6,6 @@ if (isset($_POST['sendSelectGenre']) && isset($_POST['selectGenre']) && !empty($
     $genre = htmlspecialchars($_POST['selectGenre']);
     //Redirection
     header("location: index.php?cat=$genre");
-
 }
 
 if (isset($_GET['cat'])) {
@@ -29,13 +28,13 @@ if (isset($_GET['cat'])) {
                 <img src="<?= $unConcert['image']; ?>" alt="<?= $unConcert['nom']; ?>">
                 <p> Nom : <?= $unConcert['nom']; ?> </p>
                 <p> Lieu : <?= $unConcert['lieu']; ?> </p>
-                <p> Prix : <?= $unConcert['prix_place']; ?> € </p>
-                <a href="index.php?nom=<?= $unConcert['nom']; ?>&id=<?= $unConcert['id_concert'];?>" class="lien-details"> Voir les détails </a>
+                <p> Prix : <?= $unConcert['prixPlace']; ?> € </p>
+                <a href="../../index.php?nom=<?= $unConcert['nom']; ?>&id=<?= $unConcert['idConcert'];?>" class="lien-details"> Voir les détails </a>
             </li>
         <?php endforeach; ?>
     </ul>
 </section>
 
 <p class="retourIndex">
-    <a href="index.php"> Retour </a>
+    <a href="../../index.php"> Retour </a>
 </p>

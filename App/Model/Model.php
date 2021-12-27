@@ -8,7 +8,7 @@ use PDO;
 class Model
 {
 
-    private $connexion;
+    private PDO $connexion;
     private String $table;
 
     /**
@@ -38,6 +38,31 @@ class Model
         $tables = $this->connexion->query($sql);
         $table = $tables->fetchAll(\PDO::FETCH_ASSOC);
         return $table;
+    }
+
+    public function create(array $data) {
+
+        $sql="insert into $this->table (";
+        foreach ($data as $key => $value) {
+            unset($data["id"]);
+            $sql.="`$key`,";
+        }
+        //suppression de la virgule
+        $sql=substr($sql,0,-1);
+        $sql.=" ) VALUES (";
+        foreach ($data as $key => $value) {
+            if(is_numeric($value))  $sql.=$value.",";
+            else
+                $sql.="'$value',";
+        }
+        $sql=substr($sql,0,-1);
+        $sql.=" )";
+
+        // Envoie de la requête
+
+        $retour=$this->connexion->exec($sql);
+        return $retour;
+
     }
 
     // GETTERS

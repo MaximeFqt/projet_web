@@ -31,8 +31,8 @@
                 <img src="<?= $unConcert['image']; ?>" alt="<?= $unConcert['nom']; ?>">
                 <p> Nom : <?= $unConcert['nom']; ?> </p>
                 <p> Lieu : <?= $unConcert['lieu']; ?> </p>
-                <p> Prix : <?= $unConcert['prix_place']; ?> € </p>
-                <a href="index.php?nom=<?= $unConcert['nom']; ?>&id=<?= $unConcert['id_concert'];?>" class="lien-details"> Voir les détails</a>
+                <p> Prix : <?= $unConcert['prixPlace']; ?> € </p>
+                <a href="../../index.php?nom=<?= $unConcert['nom']; ?>&id=<?= $unConcert['idConcert'];?>" class="lien-details"> Voir les détails</a>
             </li>
         <?php endforeach; ?>
     </ul>

@@ -1,13 +1,16 @@
 <?php
+
 session_start();
 
 // Utilisation du fichier
 use App\Config\Database;
+
 use App\Controller\ControllerConcerts;
 use App\Controller\ControllerGenreMusical;
+use App\Controller\ControllerUsers;
+
 
 /* AUTOLOAD */
-//autoload
 function chargerClasse($classe)
 {
     $classe = str_replace('\\','/',$classe);
@@ -21,19 +24,13 @@ $connexion = $db->getConnection();
 
 $controllerConcert = new ControllerConcerts();
 $controllerGenre   = new ControllerGenreMusical();
+$controllerUser    = new ControllerUsers();
 
-/* PROCEDURAL */
-
-if (isset($_SESSION['login']) && isset($_SESSION['pass']) && isset($_SESSION['role']) ) {
-    $login = $_SESSION['login'];
-    $pass = $_SESSION['pass'];
-    $role = $_SESSION['role'];
+if (isset($_POST['send'])) {
+    $controllerUser->login();
+} else if (isset($_POST) && !empty($_POST['sendAjoutUser'])) {
+    $controllerUser->addUser();
 }
-
-$recupAdmin = "select * from users;";
-
-$users = $connexion->query($recupAdmin);               // Envoie
-$user = $users->fetchAll(PDO::FETCH_OBJ);       // Traitement
 
 ?>
 
@@ -48,6 +45,7 @@ $user = $users->fetchAll(PDO::FETCH_OBJ);       // Traitement
         <link href="css/layout.css" rel="stylesheet" type="text/css">
         <link href="css/color.css" rel="stylesheet" type="text/css">
         <script src="js/comportement.js"></script>
+        <script src="js/formulaireInscription.js"></script>
         <title> Concertôt </title>
     </head>
 
@@ -60,11 +58,11 @@ $user = $users->fetchAll(PDO::FETCH_OBJ);       // Traitement
              =============================== -->
 
 
-        <?php if (isset($role)) : ?>
-            <?php if ($role == 'admin') : ?>
+        <?php if (isset($_SESSION['role'])) : ?>
+            <?php if ($_SESSION['role'] == 'admin') : ?>
                 <p id="info_connection"> Vous êtes connecté en tant qu'administrateur </p>
             <?php else : ?>
-                <p id="info_connection"> Vous êtes connecté en tant que : <?= $login; ?> </p>
+                <p id="info_connection"> Vous êtes connecté en tant que : <?= $_SESSION['login']; ?> </p>
             <?php endif; ?>
         <?php else : ?>
             <p id="info_connection"> Vous n'êtes pas connecté </p>
@@ -76,7 +74,7 @@ $user = $users->fetchAll(PDO::FETCH_OBJ);       // Traitement
              =============================== -->
 
 
-        <form id="formulaire" method="post" action="login.php">
+        <form id="formulaire" method="post" action="index.php">
             <fieldset id="form-login">
                 <legend>Identification administrateur</legend>
                 <p>
@@ -88,7 +86,7 @@ $user = $users->fetchAll(PDO::FETCH_OBJ);       // Traitement
                     <input type="password" placeholder="Mot de passe" name="pass" id="motDePasse" required/>
                 </p>
                 <p>
-                    <a href="ajoutUser.php" class="inscription"> Je m'inscrit </a>
+                    <a href="index.php?ajoutUser=true" class="inscription"> Je m'inscrit </a>
                 </p>
             </fieldset>
             <p class="submit">
@@ -99,7 +97,13 @@ $user = $users->fetchAll(PDO::FETCH_OBJ);       // Traitement
 
 
         <?php
-            if (isset($_GET['nom']) && isset($_GET['id'])) {
+
+            if (isset($_GET['ajoutUser']) && $_GET['ajoutUser'] == "true") {
+
+                // Affichage
+                include('App/View/viewAjoutUser.php');
+
+            } else if (isset($_GET['nom']) && isset($_GET['id'])) {
 
                 // Affichage d'un seul concert
                 $controllerConcert->getOne();
