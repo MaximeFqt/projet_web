@@ -40,7 +40,8 @@ class Model
         return $table;
     }
 
-    public function create(array $data) {
+    public function create(array $data)
+    {
 
         $sql="insert into $this->table (";
         foreach ($data as $key => $value) {
@@ -62,6 +63,34 @@ class Model
 
         $retour=$this->connexion->exec($sql);
         return $retour;
+
+    }
+
+    public function delete($id)
+    {
+
+        $selectPrimaryKey = "SELECT DISTINCT TABLE_NAME ,column_name
+                             FROM INFORMATION_SCHEMA.key_column_usage
+                             WHERE TABLE_SCHEMA IN ('projet_web');";
+
+        $keys = $this->getConnexion()->query($selectPrimaryKey);
+        $key = $keys->fetchAll(PDO::FETCH_ASSOC);
+
+        $i = 0;
+        while ($i < 9) {
+            if ($key[$i]['TABLE_NAME'] == $this->getTable()) {
+                $primaryKey = $key[$i]['column_name'];
+
+//                var_dump($primaryKey);
+
+                $sql = "delete from $this->table where $primaryKey = '$id'";
+
+                break;
+            }
+            $i++;
+        }
+
+        $retour = $this->getConnexion()->exec($sql);
 
     }
 

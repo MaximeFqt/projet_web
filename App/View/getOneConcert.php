@@ -2,6 +2,23 @@
 
 //var_dump($content);
 
+$db = new \App\Config\Database();
+$connexion = $db->getConnection();
+
+if(isset($_GET['nom']) && isset($_GET['id'])) {
+    if (!empty($_GET['nom']) && !empty($_GET['id'])) {
+
+        // TODO
+
+    } else {
+        echo '<body onload = "alert(\'Concert inconnu\')" >';
+        echo '<meta http-equiv="refresh" content="0;URL=index.php">';
+    }
+} else {
+    echo '<body onload = "alert(\'Concert inconnu\')" >';
+    echo '<meta http-equiv="refresh" content="0;URL=index.php">';
+}
+
 ?>
 
 <p class="presentation">  </p>

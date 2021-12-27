@@ -74,7 +74,7 @@ if (isset($_POST['sendAjtConcert'])) {
             $id = $idGrp[0]['id_groupe'];
 
             // Ajout du concert
-            $sqlInsertConcert = "insert into concerts (groupe, lieu, date, prix_place) values ('$id', '$lieu', '$date', '$prix')";
+            $sqlInsertConcert = "insert into concerts (groupe, lieu, date, prixPlace) values ('$id', '$lieu', '$date', '$prix')";
             $insertConcert = $connexion->exec($sqlInsertConcert);
 
             $_SESSION['updateSite'] = 'AjtConcert';
@@ -255,7 +255,7 @@ else if (isset($_POST['sendMdfConcert'])) {
         $date = htmlspecialchars($_POST['date']);
 
         // Requête et envoie
-        $sql = "select * from concerts Cr join groupes Gr on Gr.id_groupe = Cr.groupe
+        $sql = "select * from concerts Cr join groupes Gr on Gr.idGroupe = Cr.groupe
                 where Gr.nom = '$nomGroupe' and Cr.lieu = '$lieu' and Cr.date = '$date';";
         $recupConcert = $connexion->query($sql);
 
@@ -286,7 +286,7 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
         $idGroup = $_SESSION['id_groupe'];
 
         // Requête
-        $sql = "select * from concerts where id_concert = '$idConcert';";
+        $sql = "select * from concerts where idConcert = '$idConcert';";
         $recupConcert = $connexion->query($sql);
 
         if ($recupConcert->rowCount() == 1) {
@@ -305,7 +305,7 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
 
                     // Modification du concert
                     $updateConcert = "update concerts set groupe = '$idGroup', lieu = '$lieu', date = '$date', 
-                                    prix_place = '$prix' where id_concert = '$idConcert';";
+                                    prixPlace = '$prix' where idConcert = '$idConcert';";
 
                     $update = $connexion->exec($updateConcert);
 
@@ -343,7 +343,7 @@ else if (isset($_POST['sendMdfGrp']) && !empty($_POST['nomGroupe']) && !empty($_
     $genre = htmlspecialchars($_POST['genre']);
 
     // Requête et envoie
-    $sql = "select * from groupes Gr join genremusical Gm on Gm.id_genre = Gr.genre where Gr.nom = '$nomGroupe' and Gm.nomGenre = '$genre';";
+    $sql = "select * from groupes Gr join genremusical Gm on Gm.idGenre = Gr.genre where Gr.nom = '$nomGroupe' and Gm.nomGenre = '$genre';";
     $recupGrp = $connexion->query($sql);
 
     if ($recupGrp->rowCount() == 1) {
@@ -367,7 +367,7 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
         $idGroupe = $_SESSION['id_groupe'];
 
         // Requête
-        $sql = "select * from groupes where id_groupe = '$idGroupe';";
+        $sql = "select * from groupes where idGroupe = '$idGroupe';";
         $recupGrp = $connexion->query($sql);
 
         if ($recupGrp->rowCount() == 1) {
@@ -400,7 +400,7 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
                     $image = 'image/groupe/' . $_FILES["image"]["name"];
 
                     // Modification du groupe
-                    $updateGrp = "update groupes set nom = '$nomGroupe', genre = '$genre', image = '$image' where id_groupe = '$idGroupe';";
+                    $updateGrp = "update groupes set nom = '$nomGroupe', genre = '$genre', image = '$image' where idGroupe = '$idGroupe';";
 
                     $update = $connexion->exec($updateGrp);
 
@@ -510,7 +510,7 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
         $idGenre = htmlspecialchars($_SESSION['id_genre']);
 
         // Requête
-        $sql = "select * from genremusical where id_genre = '$idGenre';";
+        $sql = "select * from genremusical where idGenre = '$idGenre';";
         $recupGenre = $connexion->query($sql);
 
         if ($recupGenre->rowCount() === 1) {
@@ -522,7 +522,7 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
 
                 $nomGenre = htmlspecialchars($_POST['genre']);
 
-                $updateGenre = "update genremusical set nomGenre = '$nomGenre' where id_genre = '$idGenre';";
+                $updateGenre = "update genremusical set nomGenre = '$nomGenre' where idGenre = '$idGenre';";
 
                 $update = $connexion->exec($updateGenre);
 
@@ -552,14 +552,14 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
 
     $idRes = htmlspecialchars($_POST['idRes']);
 
-    $sql = "select * from reservations where id_res ='$idRes';";
+    $sql = "select * from reservations where idRes ='$idRes';";
     $reserv = $connexion->query($sql);
 
     if ($reserv->rowCount() === 1) {
 
         $res = $reserv->fetchAll(PDO::FETCH_OBJ);
 
-        $deleteRes = "delete from reservations where id_res = '$idRes';";
+        $deleteRes = "delete from reservations where idRes = '$idRes';";
         $deleteRes = $connexion->exec($deleteRes);
 
         header('location: admin.php');
@@ -658,7 +658,7 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
 
                 <?php foreach ($groupe as $unGrp): ?>
                     <tr>
-                        <td> <?= $unGrp->id_groupe ?> </td>
+                        <td> <?= $unGrp->idGroupe ?> </td>
                         <td> <?= $unGrp->nom; ?> </td>
                         <td> <?= $unGrp->genre; ?> </td>
                         <td> <?= $unGrp->image; ?> </td>
@@ -683,11 +683,11 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
 
                 <?php foreach ($concert as $unConcert): ?>
                     <tr>
-                        <td> <?= $unConcert->id_concert; ?> </td>
+                        <td> <?= $unConcert->idConcert; ?> </td>
                         <td> <?= $unConcert->groupe; ?> </td>
                         <td> <?= $unConcert->lieu; ?> </td>
                         <td> <?= $unConcert->date; ?> </td>
-                        <td> <?= $unConcert->prix_place; ?> </td>
+                        <td> <?= $unConcert->prixPlace; ?> </td>
                     </tr>
                 <?php endforeach; ?>
 
@@ -706,7 +706,7 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
 
                 <?php foreach ($genremusique as $unGenre): ?>
                     <tr>
-                        <td> <?= $unGenre->id_genre ?> </td>
+                        <td> <?= $unGenre->idGenre ?> </td>
                         <td> <?= $unGenre->nomGenre; ?> </td>
                     </tr>
                 <?php endforeach; ?>
@@ -726,7 +726,7 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
 
                 <?php foreach ($user as $unUsr): ?>
                     <tr>
-                        <td> <?= $unUsr->id_user; ?> </td>
+                        <td> <?= $unUsr->idUser; ?> </td>
                         <td> <?= $unUsr->login; ?> </td>
                     </tr>
                 <?php endforeach; ?>
@@ -753,17 +753,17 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
 
                 <?php foreach ($reserv as $uneReserv): ?>
                     <tr>
-                        <td> <?= $uneReserv->id_res; ?> </td>
-                        <td> <?= $uneReserv->idUser; ?> </td>
-                        <td> <?= $uneReserv->idConcert; ?> </td>
+                        <td> <?= $uneReserv->idRes; ?> </td>
+                        <td> <?= $uneReserv->user; ?> </td>
+                        <td> <?= $uneReserv->concert; ?> </td>
                         <td> <?= $uneReserv->nbPlace; ?> </td>
                         <td> <?= $uneReserv->prixTotal; ?> </td>
                         <td> <?= $uneReserv->groupe; ?> </td>
                         <td> <?= $uneReserv->lieu; ?> </td>
                         <td> <?= $uneReserv->date; ?> </td>
                         <td id="btnAnnulReserv">
-                            <form action="admin.php" method="post">
-                                <input type="hidden" name="idRes" value="<?= $uneReserv->id_res ?>">
+                            <form action="index.php?panier=true" method="post">
+                                <input type="hidden" name="idRes" value="<?= $uneReserv->idRes ?>">
                                 <input type="submit" name="annulReserv" value="X">
                             </form>
                         </td>

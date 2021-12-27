@@ -28,14 +28,14 @@ $genre = $genres->fetchAll(PDO::FETCH_OBJ);
     <nav>
         <ul class="nav">
             <li><a href="../index.php"> Accueil </a></li>
-            <li><a href="../panier.php"> Panier </a></li>
+            <li><a href="../index.php?panier=true"> Panier </a></li>
 
             <?php if (isset($role) && $role == 'admin') : ?>
                 <li><a href="../admin.php"> Admin </a></li>
             <?php endif; ?>
 
             <?php if (isset($role)) : ?>
-                <li> <a href="../logout.php"> Déconnection </a> </li>
+                <li> <a href="logout.php"> Déconnection </a> </li>
             <?php else : ?>
                 <li> <a id="login"> Connection </a> </li>
             <?php endif; ?>

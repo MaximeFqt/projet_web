@@ -8,6 +8,7 @@ use App\Config\Database;
 use App\Controller\ControllerConcerts;
 use App\Controller\ControllerGenreMusical;
 use App\Controller\ControllerUsers;
+use App\Controller\ControllerReservations;
 
 
 /* AUTOLOAD */
@@ -25,11 +26,15 @@ $connexion = $db->getConnection();
 $controllerConcert = new ControllerConcerts();
 $controllerGenre   = new ControllerGenreMusical();
 $controllerUser    = new ControllerUsers();
+$controllerReserv  = new ControllerReservations();
 
 if (isset($_POST['send'])) {
     $controllerUser->login();
 } else if (isset($_POST) && !empty($_POST['sendAjoutUser'])) {
     $controllerUser->addUser();
+} else if (isset($_POST['sendBuy']) && isset($_POST['nbPlace']) && !empty('nbPlace')) {
+    $nbPlace = htmlspecialchars($_POST['nbPlace']);
+    $controllerReserv->addReserv($nbPlace);
 }
 
 ?>
@@ -98,12 +103,24 @@ if (isset($_POST['send'])) {
 
         <?php
 
-            if (isset($_GET['ajoutUser']) && $_GET['ajoutUser'] == "true") {
+            if (isset($_GET['panier']) && $_GET['panier'] == "true") {
+
+                if (isset($_SESSION['idUser']) && !empty($_SESSION['idUser'])) {
+                    $controllerReserv->getAllFromUser($_SESSION['idUser']);
+
+                    if (isset($_POST['annulReserv']) && isset($_POST['idRes']) && $_POST['idRes']) {
+                        $controllerReserv->annulReserv( $_POST['idRes'] );
+                    }
+                }
+
+            } else if (isset($_GET['ajoutUser']) && $_GET['ajoutUser'] == "true") {
 
                 // Affichage
                 include('App/View/viewAjoutUser.php');
 
             } else if (isset($_GET['nom']) && isset($_GET['id'])) {
+                $nomGroupe = htmlspecialchars($_GET['nom']);
+                $idConcert = htmlspecialchars($_GET['id']);
 
                 // Affichage d'un seul concert
                 $controllerConcert->getOne();
