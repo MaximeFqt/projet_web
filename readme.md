@@ -48,20 +48,20 @@ id Administrateur :
 |              |     lieu     |      Non     |      Non      |
 |              |     date     |      Non     |      Non      |
 |              |  prix_place  |      Non     |      Non      |
-|
+|              |              |              |               |
 | genremusical | **id_genre** |    **Oui**   |      Non      |
 |              |   nomGenre   |      Non     |      Non      |
-|
+|              |              |              |               |
 |   groupes    | **id_groupe**|    **Oui**   |      Non      |
 |              |      nom     |      Non     |      Non      |
 |              |  **_genre_** |      Non     |   **_Oui_**   |
 |              |     image    |      Non     |      Non      |
-|
+|              |              |              |               |
 |    users     | **id_user**  |    **Oui**   |      Non      |
 |              |    login     |      Non     |      Non      |
 |              |    pass      |      Non     |      Non      |
 |              |    email     |      Non     |      Non      |
-|
+|              |              |              |               |
 | reservation  | **id_reser** |    **Oui**   |      Non      |
 |              | **_idUser_** |      Non     |   **_Oui_**   |
 |              | **_idConc_** |      Non     |   **_Oui_**   |
