@@ -55,6 +55,7 @@
 
 </section>
 
+
 <!-- ===============================
      FORMULAIRE D'AJOUT D'UN CONCERT
      =============================== -->
@@ -87,6 +88,52 @@
 </form>
 
 <!-- ===============================
+     FORMULAIRE D'AJOUT D'UN GROUPE
+     =============================== -->
+
+<form action="../../index.php?admin=true" id="ajoutGroupe" class="formulaire" method="post" enctype="multipart/form-data">
+    <fieldset id="form-ajout">
+        <legend>Ajout d'un groupe</legend>
+        <p>
+            <label for="nomGroupe"> Nom : </label>
+            <input type="text" name="nomGroupe" id="nomGroupe" required>
+        </p>
+        <p>
+            <label for="genre"> Genre: </label>
+            <input type="text" name="genre" id="genre" required>
+        </p>
+        <p>
+            <label for="img-groupe"> Image du groupe : </label>
+            <input type="file" name="image" accept="image/jpeg" required>
+        </p>
+    </fieldset>
+
+    <p class="submit">
+        <input type="submit" id="btnSubmit" value="Continuer" name="sendAjtGrp"/>
+        <input type="reset" id="btnReset" value="Annuler"/>
+    </p>
+</form>
+
+<!-- ===============================
+     FORMULAIRE AJOUT D'UN GENRE
+     =============================== -->
+
+<form action="../../index.php?admin=true" id="ajoutGenre" class="formulaire" method="post">
+    <fieldset id="form-ajout">
+        <legend> Ajout d'un genre de musique </legend>
+        <p>
+            <label for="nomGenre"> Nom du genre : </label>
+            <input type="text" name="genre" id="nomGenre" required>
+        </p>
+    </fieldset>
+
+    <p class="submit">
+        <input type="submit" id="btnSubmit" value="Ajouter" name="sendAjtGenre"/>
+        <input type="reset" id="btnReset" value="Annuler"/>
+    </p>
+</form>
+
+<!-- ===============================
      FORMULAIRE SUPPRESSION D'UN CONCERT
      =============================== -->
 
@@ -114,37 +161,10 @@
 </form>
 
 <!-- ===============================
-     FORMULAIRE D'AJOUT D'UN GROUPE
-     =============================== -->
-
-<form action="admin.php" id="ajoutGroupe" class="formulaire" method="post" enctype="multipart/form-data">
-    <fieldset id="form-ajout">
-        <legend>Ajout d'un groupe</legend>
-        <p>
-            <label for="nomGroupe"> Nom : </label>
-            <input type="text" name="nomGroupe" id="nomGroupe" required>
-        </p>
-        <p>
-            <label for="genre"> Genre: </label>
-            <input type="text" name="genre" id="genre" required>
-        </p>
-        <p>
-            <label for="img-groupe"> Image du groupe : </label>
-            <input type="file" name="image" accept="image/jpeg" required>
-        </p>
-    </fieldset>
-
-    <p class="submit">
-        <input type="submit" id="btnSubmit" value="Continuer" name="sendAjtGrp"/>
-        <input type="reset" id="btnReset" value="Annuler"/>
-    </p>
-</form>
-
-<!-- ===============================
      FORMULAIRE SUPPRESSION D'UN GROUPE
      =============================== -->
 
-<form action="admin.php" id="supprGroupe" class="formulaire" method="post">
+<form action="../../index.php?admin=true" id="supprGroupe" class="formulaire" method="post">
     <fieldset id="form-ajout">
         <legend>Suppression d'un groupe</legend>
         <p>
@@ -164,12 +184,31 @@
 </form>
 
 <!-- ===============================
+     FORMULAIRE SUPPRESSION D'UN GENRE
+     =============================== -->
+
+<form action="../../index.php?admin=true" id="supprGenre" class="formulaire" method="post">
+    <fieldset id="form-ajout">
+        <legend> Suppression d'un genre de musique </legend>
+        <p>
+            <label for="nomGenre"> Nom du genre : </label>
+            <input type="text" name="genre" id="nomGenre" required>
+        </p>
+    </fieldset>
+
+    <p class="submit">
+        <input type="submit" id="btnSubmit" value="Continuer" name="sendSprGenre"/>
+        <input type="reset" id="btnReset" value="Annuler"/>
+    </p>
+</form>
+
+<!-- ===============================
      FORMULAIRE MODIFICATION D'UN CONCERT
      =============================== -->
 
-<form action="admin.php?action=modifCrt" id="modifConcert" class="formulaire" method="post">
+<form  action="../../index.php?admin=true&modifConcert=true" id="modifConcert" class="formulaire" method="post">
     <fieldset id="form-ajout">
-        <?php if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] == "modifCrt") : ?>
+        <?php if (isset($_GET['modifConcert']) && !empty($_GET['modifConcert']) && $_GET['modifConcert'] == "true") : ?>
             <legend> Modification du concert </legend>
         <?php else : ?>
             <legend> Sélection d'un concert</legend>
@@ -186,7 +225,7 @@
             <label for="date"> Date : </label>
             <input type="date" name="date" id="date" required>
         </p>
-        <?php if (isset($_GET['action']) && $_GET['action'] == "modifCrt") : ?>
+        <?php if (isset($_GET['modifConcert']) && $_GET['modifConcert'] == "true") : ?>
             <p>
                 <label for="prix"> Nouveau prix: </label>
                 <input type="text" name="prix" id="prix" required>
@@ -196,7 +235,7 @@
 
     <p class="submit">
         <input type="submit" id="btnSubmit" value="Continuer"
-            <?php if (isset($_GET['action']) && $_GET['action'] == "modifCrt") : ?>
+            <?php if (isset($_GET['modifConcert']) && $_GET['modifConcert'] == "true") : ?>
                 name="modificationConcert"
             <?php else : ?>
                 name="sendMdfConcert"
@@ -210,9 +249,9 @@
      FORMULAIRE MODIFICATION D'UN GROUPE
      =============================== -->
 
-<form action="admin.php?action=modifGrp" id="modifGroupe" class="formulaire" method="post" enctype="multipart/form-data">
+<form action="../../index.php?admin=true&modifGroupe=true" id="modifGroupe" class="formulaire" method="post" enctype="multipart/form-data">
     <fieldset id="form-ajout">
-        <?php if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] == "modifGrp") : ?>
+        <?php if (isset($_GET['modifGroupe']) && !empty($_GET['modifGroupe']) && $_GET['modifGroupe'] == "true") : ?>
             <legend> Modification du groupe </legend>
         <?php else : ?>
             <legend> Sélection d'un groupe </legend>
@@ -225,7 +264,7 @@
             <label for="genre"> Genre musical : </label>
             <input type="text" name="genre" id="genre" required>
         </p>
-        <?php if (isset($_GET['action']) && $_GET['action'] == "modifGrp") : ?>
+        <?php if (isset($_GET['modifGroupe']) && $_GET['modifGroupe'] == "true") : ?>
             <p>
                 <label for="image"> Image du groupe : </label>
                 <input type="file" name="image" accept="image/jpeg" required>
@@ -235,7 +274,7 @@
 
     <p class="submit">
         <input type="submit" id="btnSubmit" value="Continuer"
-            <?php if (isset($_GET['action']) && $_GET['action'] == "modifGrp") : ?>
+            <?php if (isset($_GET['modifGroupe']) && $_GET['modifGroupe'] == "true") : ?>
                 name="modificationGrp"
             <?php else : ?>
                 name="sendMdfGrp"
@@ -246,50 +285,12 @@
 </form>
 
 <!-- ===============================
-     FORMULAIRE AJOUT D'UN GENRE
-     =============================== -->
-
-<form action="admin.php" id="ajoutGenre" class="formulaire" method="post">
-    <fieldset id="form-ajout">
-        <legend> Ajout d'un genre de musique </legend>
-        <p>
-            <label for="nomGenre"> Nom du genre : </label>
-            <input type="text" name="genre" id="nomGenre" required>
-        </p>
-    </fieldset>
-
-    <p class="submit">
-        <input type="submit" id="btnSubmit" value="Ajouter" name="sendAjtGenre"/>
-        <input type="reset" id="btnReset" value="Annuler"/>
-    </p>
-</form>
-
-<!-- ===============================
-     FORMULAIRE SUPPRESSION D'UN GENRE
-     =============================== -->
-
-<form action="admin.php" id="supprGenre" class="formulaire" method="post">
-    <fieldset id="form-ajout">
-        <legend> Suppression d'un genre de musique </legend>
-        <p>
-            <label for="nomGenre"> Nom du genre : </label>
-            <input type="text" name="genre" id="nomGenre" required>
-        </p>
-    </fieldset>
-
-    <p class="submit">
-        <input type="submit" id="btnSubmit" value="Continuer" name="sendSprGenre"/>
-        <input type="reset" id="btnReset" value="Annuler"/>
-    </p>
-</form>
-
-<!-- ===============================
      FORMULAIRE MODIFICATION D'UN GENRE
      =============================== -->
 
-<form action="admin.php?action=modifGenre" id="modifGenre" class="formulaire" method="post">
+<form action="../../index.php?admin=true&modifGenre=true" id="modifGenre" class="formulaire" method="post">
     <fieldset id="form-ajout">
-        <?php if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] == "modifGenre") : ?>
+        <?php if (isset($_GET['modifGenre']) && !empty($_GET['modifGenre']) && $_GET['modifGenre'] == "true") : ?>
             <legend> Modification d'un genre de musique </legend>
         <?php else : ?>
             <legend> Sélection d'un genre de musique </legend>
@@ -303,7 +304,7 @@
 
     <p class="submit">
         <input type="submit" id="btnSubmit" value="Continuer"
-            <?php if (isset($_GET['action']) && $_GET['action'] == "modifGenre") : ?>
+            <?php if (isset($_GET['modifGenre']) && $_GET['modifGenre'] == "true") : ?>
                 name="modificationGenre"
             <?php else : ?>
                 name="sendMdfGenre"

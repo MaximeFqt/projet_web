@@ -33,22 +33,44 @@ function principale() {
     let formSprConcert = document.getElementById('supprConcert');
     let formAjtGroupe  = document.getElementById('ajoutGroupe');
     let formSprGroupe  = document.getElementById('supprGroupe');
-    let formMdfConcert = document.getElementById('modifConcert');
-    let formMdfGroupe  = document.getElementById('modifGroupe');
     let formAjtGenre   = document.getElementById('ajoutGenre');
     let formSprGenre   = document.getElementById('supprGenre');
+
+
+    // GESTION DE L'URL
+    let currentUrl = document.location.href;
+
+    // Supprimons l'éventuel dernier slash de l'URL
+    currentUrl = currentUrl.replace(/\/$/, "");
+    // Gardons dans la variable queue_url uniquement la portion derrière le dernier slash de currentUrl
+    let endUrl = currentUrl.substring (currentUrl.lastIndexOf( "/" )+1 );
+
+
+    let formMdfConcert = document.getElementById('modifConcert');
+    let formMdfGroupe  = document.getElementById('modifGroupe');
     let formMdfGenre   = document.getElementById('modifGenre');
 
     // Ajout des événements
     btnAjtConcert.addEventListener('click', ajoutConcert);
-    btnSprConcert.addEventListener('click', supprConcert);
     btnAjtGroupe .addEventListener('click', ajoutGroupe );
+    btnAjtGenre  .addEventListener('click', ajoutGenre  );
+
+    btnSprConcert.addEventListener('click', supprConcert);
     btnSprGroupe .addEventListener('click', supprGroupe );
+    btnSprGenre  .addEventListener('click', supprGenre  );
+
     btnMdfConcert.addEventListener('click', modifConcert);
     btnMdfGroupe .addEventListener('click', modifGroupe );
-    btnAjtGenre  .addEventListener('click', ajoutGenre  );
-    btnSprGenre  .addEventListener('click', supprGenre  );
     btnMdfGenre  .addEventListener('click', modifGenre  );
+
+    // Lancement des événements formulaire
+    if (endUrl === "index.php?admin=true&modifConcert=true") {
+        modifConcert();
+    } else if (endUrl === "index.php?admin=true&modifGroupe=true") {
+        modifGroupe();
+    } else if (endUrl === "index.php?admin=true&modifGenre=true") {
+        modifGenre();
+    }
 
                                                     /*----------
                                                       FONCTIONS
@@ -255,6 +277,10 @@ function principale() {
 
     // FONCTION DU BOUTON ANNULER DANS LES FORMULAIRES
     function annuler() {
+
+        endUrl = 'index.php?admin=true';
+        document.location.href = endUrl ;
+
         // Traitement des boutons
         document.getElementById('action_admin').style.display = 'block';
         tablesDonnees.style.display = 'block';

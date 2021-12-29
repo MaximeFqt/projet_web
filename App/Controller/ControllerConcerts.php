@@ -67,4 +67,22 @@ class ControllerConcerts
         echo '<meta http-equiv="refresh" content="0;URL=index.php?admin=true">';
     }
 
+    // Récupération d'un concert
+    public function getSelectConcert(array $data)
+    {
+        $content = $this->model->findSelectConcert($data);
+        if ($content) {
+            echo '<meta http-equiv="refresh" content="0;URL=index.php?admin=true&modifConcert=true">';
+        } else {
+            echo '<meta http-equiv="refresh" content="0;URL=index.php?admin=true">';
+        }
+    }
+
+    // Modification d'un concert
+    public function updateConcert(array $dataSession, array $dataPOST)
+    {
+        $content = $this->model->updateConcert($dataSession, $dataPOST);
+        echo '<meta http-equiv="refresh" content="0;URL=index.php?admin=true">';
+    }
+
 }

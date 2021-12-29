@@ -93,6 +93,25 @@ class Model
 
     }
 
+    // Récupérer une image
+    public function getImage(): String
+    {
+        // Variables d'enregistrement
+        $enregistrement = false;
+        $aff = "";
+
+        // ENREGISTREMENT DE L'IMAGE
+        if (isset($_FILES) && $_FILES['image']['error'] == 0) {
+            $enregistrement = move_uploaded_file($_FILES["image"]["tmp_name"], "image/groupe/" . $_FILES["image"]["name"]);
+            $aff .= "Stored in: " . "image/groupe/" . $_FILES["image"]["name"];
+        }
+
+        // INSERTION
+        $image = 'image/groupe/' . $_FILES["image"]["name"];
+
+        return $image;
+    }
+
     // GETTERS
     /**
      * @return String

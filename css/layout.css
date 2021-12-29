@@ -12,10 +12,12 @@
     margin-bottom: 1.5rem;
 }
 
-#titreSite {
-    float :left;
-    margin-top : 20px;
-    margin-left : 50px;
+h1#titreSite {
+    font-size: 200%;
+    font-weight: bold;
+    float: left;
+    margin-top: 20px;
+    margin-left: 50px;
     display:block;
 }
 
@@ -260,6 +262,7 @@ section#action_admin input, #btnSubmitLogin, #btnResetLogin, #btnOkReserv {
 section#action_admin>h3.ss_titre {
     font-size: 2rem;
     font-weight: bold;
+    margin-bottom: 15px;
 }
 
 /* Positionnement des formulaires */
@@ -342,8 +345,21 @@ div#table_status h3 {
 }
 
 p.info-admin {
+    font-weight: bold;
+    font-size: 1.5rem;
     text-align: center;
-    font-size: 1px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-decoration: underline;
+}
+
+legend {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+label {
+    font-size: 120%;
 }
 /*************** FIN ADMIN.PHP ***************/
 
@@ -404,7 +420,7 @@ table#table_panier th, table.table_admin th {
 
 table#table_panier td, table.table_admin td{
     border-bottom: 1px solid darkred;
-    font-size: 14px;
+    font-size: 115%;
     line-height: 25px;
 }
 

@@ -21,9 +21,9 @@ class ModelConcerts extends Model
             $unConcert = new Concerts(
                 array(
                     "idConcert" => $unConcert['idConcert'],
-                    "groupe"    => $unConcert['groupe'],
-                    "lieu"      => $unConcert['lieu'],
-                    "date"      => $unConcert['date'],
+                    "groupe" => $unConcert['groupe'],
+                    "lieu" => $unConcert['lieu'],
+                    "date" => $unConcert['date'],
                     "prixPlace" => $unConcert['prixPlace']
                 )
             );
@@ -48,7 +48,7 @@ class ModelConcerts extends Model
     }
 
     // Trouve un concert par son idée
-    public function findOne($id, $nomGroupe) : array
+    public function findOne($id, $nomGroupe): array
     {
         $sql = "select * from concerts C join groupes G on G.idGroupe = C.groupe where C.idConcert = '$id' and G.nom = '$nomGroupe';";
         $concert = $this->getConnexion()->query($sql);
@@ -85,9 +85,9 @@ class ModelConcerts extends Model
     public function insertConcert(array $data): void
     {
         $nomGroupe = $data['groupe'];
-        $date      = $data['date'];
-        $lieu      = $data['lieu'];
-        $prix      = $data['prix'];
+        $date = $data['date'];
+        $lieu = $data['lieu'];
+        $prix = $data['prix'];
 
         $sql = "select * from concerts C join groupes Gr on Gr.idGroupe = C.groupe 
                 where Gr.nom = '$nomGroupe' and C.date = '$date' and C.lieu = '$lieu' and C.prixPlace = '$prix';";
@@ -127,8 +127,8 @@ class ModelConcerts extends Model
     public function deleteConcert(array $data): void
     {
         $nomGroupe = $data['groupe'];
-        $date      = $data['date'];
-        $lieu      = $data['lieu'];
+        $date = $data['date'];
+        $lieu = $data['lieu'];
 
         $sql = "select * from concerts C join groupes Gr on Gr.idGroupe = C.groupe 
                 where Gr.nom = '$nomGroupe' and C.date = '$date' and C.lieu = '$lieu';";
@@ -136,7 +136,7 @@ class ModelConcerts extends Model
         $concerts = $this->getConnexion()->query($sql);
 
 
-        if ($concerts->rowCount() > 0) {
+        if ($concerts->rowCount() === 1) {
 
             $concert = $concerts->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -144,11 +144,83 @@ class ModelConcerts extends Model
 
             $this->delete($idConcert);
 
-            header('location: index.php?admin=true');
+            $_SESSION['updateSite'] = 'SprConcert';
 
         } else {
             echo '<body onload = "alert(\'Ce concert n`existe pas ! \')" >';
             echo '<meta http-equiv="refresh" content="0;URL=index.php?admin=true">';
+        }
+    }
+
+    // Récupère le concert sélectionné
+    public function findSelectConcert(array $data): bool
+    {
+        $nomGroupe = $data['nomGroupe'];
+        $lieu = $data['lieu'];
+        $date = $data['date'];
+
+        $sql = "select * from groupes Gr join concerts C on C.groupe = Gr.idGroupe
+                where Gr.nom = '$nomGroupe' and C.lieu = '$lieu' and C.date = '$date';";
+        $grps = $this->getConnexion()->query($sql);
+
+        if ($grps->rowCount() === 1) {
+
+            $grp = $grps->fetchAll(\PDO::FETCH_ASSOC);
+            $idGrp = $grp[0]['idGroupe'];
+
+            $concerts = $this->find();
+            $concert = array();
+
+            foreach ($concerts as $unConcert) {
+                if ($idGrp == $unConcert['groupe'] && $lieu == $unConcert['lieu'] && $date == $unConcert['date']) {
+                    array_push($concert, $unConcert);
+                    break;
+                }
+            }
+
+            // Stockage des variables utiles pour la modification
+            $_SESSION['idConcert'] = $concert[0]['idConcert'];
+            $_SESSION['idGroupe'] = $concert[0]['groupe'];
+
+            return true;
+
+        } else {
+            echo '<body onload = "alert(\'Concert inexistant\')" >';
+            return false;
+        }
+    }
+
+    // Modifie le concert sélectionné
+    public function updateConcert(array $dataSession, array $dataPOST)
+    {
+        $idConcert = $dataSession['idConcert'];
+        $idGroupe = $dataSession['idGroupe'];
+
+        $nomGroupe = $dataPOST['nomGroupe'];
+        $lieu = $dataPOST['lieu'];
+        $date = $dataPOST['date'];
+        $prix = $dataPOST['prix'];
+
+        // Requête
+        $sql = "select * from concerts where idConcert = '$idConcert';";
+        $recupConcert = $this->getConnexion()->query($sql);
+
+        if ($recupConcert->rowCount() == 1) {
+
+            // Modification du concert
+            $updateConcert = "update concerts set groupe = '$idGroupe', lieu = '$lieu', date = '$date', 
+                                    prixPlace = '$prix' where idConcert = '$idConcert';";
+
+            $update = $this->getConnexion()->exec($updateConcert);
+
+            $_SESSION['updateSite'] = "modifConcert";
+
+            // Suppression des variables de session inutiles
+            unset($_SESSION['idConcert']);
+            unset($_SESSION['idGroupe']);
+
+        } else {
+            echo '<body onload = "alert(\'Concert inexistant\')" >';
         }
     }
 

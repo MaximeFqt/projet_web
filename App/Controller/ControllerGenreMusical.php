@@ -33,4 +33,36 @@ class ControllerGenreMusical
         include('App/View/getConcertsByGenre.php');
     }
 
+    // Ajoute un groupe dans la BDD
+    public function addGenre(String $nomGenre)
+    {
+        $content = $this->model->insertGenre($nomGenre);
+        echo '<meta http-equiv="refresh" content="0;URL=index.php?admin=true">';
+    }
+
+    // Supprimer un groupe
+    public function deleteGenre(String $nomGenre)
+    {
+        $content = $this->model->deleteGenre($nomGenre);
+        echo '<meta http-equiv="refresh" content="0;URL=index.php?admin=true">';
+    }
+
+    // Sélection du genre
+    public function getselectGenre(array $data)
+    {
+        $content = $this->model->findSelectGenre($data);
+        if ($content) {
+            echo '<meta http-equiv="refresh" content="0;URL=index.php?admin=true&modifGenre=true">';
+        } else {
+            echo '<meta http-equiv="refresh" content="0;URL=index.php?admin=true">';
+        }
+    }
+
+    // Modification du genre
+    public function updateGenre(array $dataSession, array $dataPOST)
+    {
+        $content = $this->model->updateGenre($dataSession, $dataPOST);
+        echo '<meta http-equiv="refresh" content="0;URL=index.php?admin=true">';
+    }
+
 }
