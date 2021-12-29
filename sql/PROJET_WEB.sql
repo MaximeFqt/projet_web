@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : lun. 27 déc. 2021 à 20:16
+-- Généré le : mer. 29 déc. 2021 à 18:17
 -- Version du serveur : 10.4.21-MariaDB
 -- Version de PHP : 8.0.11
 
@@ -43,7 +43,10 @@ INSERT INTO `concerts` (`idConcert`, `groupe`, `lieu`, `date`, `prixPlace`) VALU
 (1, 1, 'St Denis - Stade de France', '2022-07-09', 56.5),
 (2, 3, 'Southampton - Royaume Uni', '2022-02-24', 16.96),
 (3, 2, 'Lille - Zenith Arena', '2022-05-15', 68),
-(4, 4, 'Paris - Bercy', '2022-02-12', 55);
+(4, 4, 'Paris - Bercy', '2022-02-12', 55),
+(5, 5, 'St-Denis - Stade de France', '2022-07-16', 78.5),
+(6, 6, 'Esch sur Alzette - Luxembourg', '2022-06-16', 99),
+(7, 7, 'San Juan - Poto Rico', '2022-03-28', 90);
 
 -- --------------------------------------------------------
 
@@ -62,7 +65,8 @@ CREATE TABLE `genremusical` (
 
 INSERT INTO `genremusical` (`idGenre`, `nomGenre`) VALUES
 (1, 'Rock'),
-(2, 'Chanson Française');
+(2, 'Chanson Française'),
+(3, 'Pop');
 
 -- --------------------------------------------------------
 
@@ -74,7 +78,7 @@ CREATE TABLE `groupes` (
   `idGroupe` int(11) NOT NULL,
   `nom` varchar(30) NOT NULL,
   `genre` int(11) NOT NULL,
-  `image` varchar(30) NOT NULL
+  `image` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -85,7 +89,10 @@ INSERT INTO `groupes` (`idGroupe`, `nom`, `genre`, `image`) VALUES
 (1, 'Red hot chili peppers', 1, 'image/groupe/RedHot.jpg'),
 (2, 'Scorpion', 1, 'image/groupe/Scorpion.jpg'),
 (3, 'AC-DC', 1, 'image/groupe/ACDC.jpg'),
-(4, 'Tryo', 2, 'image/groupe/Tryo.jpg');
+(4, 'Tryo', 2, 'image/groupe/Tryo.jpg'),
+(5, 'Coldplay', 3, 'image/groupe/Coldplay.jpg'),
+(6, 'Imagine Dragons', 3, 'image/groupe/ImagineDragons.jpg'),
+(7, 'Maroon 5', 3, 'image/groupe/Maroon5.jpg');
 
 -- --------------------------------------------------------
 
@@ -172,19 +179,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pour la table `concerts`
 --
 ALTER TABLE `concerts`
-  MODIFY `idConcert` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idConcert` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT pour la table `genremusical`
 --
 ALTER TABLE `genremusical`
-  MODIFY `idGenre` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idGenre` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `groupes`
 --
 ALTER TABLE `groupes`
-  MODIFY `idGroupe` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idGroupe` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT pour la table `reservations`

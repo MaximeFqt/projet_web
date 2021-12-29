@@ -105,7 +105,7 @@ section#action_admin input, #btnSubmitLogin, #btnResetLogin, #btnOkReserv {
 }
 
 section#action_admin input:hover, #btnSubmitLogin:hover, #btnResetLogin:hover, #btnOkReserv:hover {
-    background-color: rgba(21, 4, 4, 0.5);
+    background-color: rgba(70, 14, 14, 0.5);
     transition-duration: 0.5s;
 }
 

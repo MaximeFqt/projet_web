@@ -99,11 +99,11 @@ section#affGroupe {
 }
 
 ul#list_group {
-    overflow:hidden;
+    overflow: hidden;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     flex-wrap: wrap;
-    margin-bottom: 6rem;
+    margin-bottom: 2rem;
 }
 
 .group img {
@@ -118,7 +118,7 @@ li.group {
     position: relative;
     width: 300px;
     height: 250px;
-    margin: 4px;
+    margin: 15px;
     padding: 5px 0;
     background-color: rgba(73, 1, 1, 0.8);
     border: 1px solid rgba(49, 1, 1, 0.9);
@@ -231,6 +231,17 @@ li.group {
     padding: 7px;
     border-radius: 15px;
     cursor: pointer;
+}
+
+.retourIndex a:hover {
+    background-color: rgba(70, 14, 14, 0.5);
+    transition-duration: 0.5s;
+}
+
+.retourIndex a:active {
+    background-color: rgba(110, 3, 3, 0.5);
+    color: #5e5d5d;
+    transition-duration: 0s;
 }
 /*************** FIN PAGE VUE_CONCERT.PHP ***************/
 
