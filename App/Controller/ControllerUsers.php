@@ -18,6 +18,13 @@ class ControllerUsers
         //$this->view = new View();
     }
 
+    public function getAll()
+    {
+        $content = $this->model->findAll();
+
+        include('App/View/getAllUsers.php');
+    }
+
     // Connection de l'utilisateur
     public function login()
     {
@@ -66,6 +73,7 @@ class ControllerUsers
         }
     }
 
+    // Ajouter un utilisateur
     public function addUser()
     {
         if ($_POST) {
@@ -110,6 +118,25 @@ class ControllerUsers
             echo '<body onload = "alert(\'Une erreur est survenue !\')" >';
         }
 
+    }
+
+    // Déconnexion
+    public function logout()
+    {
+        $logout = $this->model->logout();
+        header('location: index.php');
+    }
+
+    // Include view
+    public function getView()
+    {
+        include('App/View/viewAjoutUser.php');
+    }
+
+    // Include view Admin
+    public function getViewAdmin()
+    {
+        include('App/View/viewAdmin.php');
     }
 
 }

@@ -21,9 +21,9 @@ class ModelReservations extends Model
         foreach ($reserv as $uneReserv) {
             $uneReserv = new Reservations(
                 array(
-                    "idReserv"  => $uneReserv['id_res'],
-                    "idUser"    => $uneReserv['idUser'],
-                    "idConcert" => $uneReserv['idConcert'],
+                    "idReserv"  => $uneReserv['idRes'],
+                    "idUser"    => $uneReserv['user'],
+                    "idConcert" => $uneReserv['concert'],
                     "nbPlace"   => $uneReserv['nbPlace'],
                     "prixTotal" => $uneReserv['prixTotal'],
                     "groupe"    => $uneReserv['groupe'],
@@ -69,7 +69,7 @@ class ModelReservations extends Model
             $this->delete($idRes);
         } else {
             // Redirection
-            echo '<meta http-equiv="refresh" content="0;URL=index.php?panier=true&annulRes=true">';
+            echo '<meta http-equiv="refresh" content="0;URL=index.php?panier=true">';
             // Message d'erreur
             echo '<body onload = "alert(\'Une erreur est survenue !\')" >';
         }

@@ -61,14 +61,13 @@ class Model
 
         // Envoie de la requête
 
-        $retour=$this->connexion->exec($sql);
+        $retour = $this->connexion->exec($sql);
         return $retour;
 
     }
 
     public function delete($id)
     {
-
         $selectPrimaryKey = "SELECT DISTINCT TABLE_NAME ,column_name
                              FROM INFORMATION_SCHEMA.key_column_usage
                              WHERE TABLE_SCHEMA IN ('projet_web');";

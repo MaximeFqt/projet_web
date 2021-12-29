@@ -1,15 +1,6 @@
 <?php
 
-session_start();
-
-// Utilisation du fichier
-use App\Config\Database;
-
-use App\Controller\ControllerConcerts;
-use App\Controller\ControllerGenreMusical;
-use App\Controller\ControllerUsers;
-use App\Controller\ControllerReservations;
-
+use App\Config\Router;
 
 /* AUTOLOAD */
 function chargerClasse($classe)
@@ -19,23 +10,8 @@ function chargerClasse($classe)
 }
 spl_autoload_register('chargerClasse'); //fin Autoload
 
-// Instanciation d'une bdd
-$db = new Database();
-$connexion = $db->getConnection();
-
-$controllerConcert = new ControllerConcerts();
-$controllerGenre   = new ControllerGenreMusical();
-$controllerUser    = new ControllerUsers();
-$controllerReserv  = new ControllerReservations();
-
-if (isset($_POST['send'])) {
-    $controllerUser->login();
-} else if (isset($_POST) && !empty($_POST['sendAjoutUser'])) {
-    $controllerUser->addUser();
-} else if (isset($_POST['sendBuy']) && isset($_POST['nbPlace']) && !empty('nbPlace')) {
-    $nbPlace = htmlspecialchars($_POST['nbPlace']);
-    $controllerReserv->addReserv($nbPlace);
-}
+$root = new Router();
+$root->start();
 
 ?>
 
@@ -51,33 +27,15 @@ if (isset($_POST['send'])) {
         <link href="css/color.css" rel="stylesheet" type="text/css">
         <script src="js/comportement.js"></script>
         <script src="js/formulaireInscription.js"></script>
+        <script src="js/admin.js"></script>
         <title> Concertôt </title>
     </head>
 
     <body id="body">
-        <?php require("utils/header.php");?>
-
-
-        <!-- ===============================
-                INFORMATIONS DE CONNEXION
-             =============================== -->
-
-
-        <?php if (isset($_SESSION['role'])) : ?>
-            <?php if ($_SESSION['role'] == 'admin') : ?>
-                <p id="info_connection"> Vous êtes connecté en tant qu'administrateur </p>
-            <?php else : ?>
-                <p id="info_connection"> Vous êtes connecté en tant que : <?= $_SESSION['login']; ?> </p>
-            <?php endif; ?>
-        <?php else : ?>
-            <p id="info_connection"> Vous n'êtes pas connecté </p>
-        <?php endif; ?>
-
 
         <!-- ===============================
                  FORMULAIRE DE CONNEXION
              =============================== -->
-
 
         <form id="formulaire" method="post" action="index.php">
             <fieldset id="form-login">
@@ -100,53 +58,5 @@ if (isset($_POST['send'])) {
             </p>
         </form>
 
-
-        <?php
-
-            if (isset($_GET['panier']) && $_GET['panier'] == "true") {
-
-                if (isset($_SESSION['idUser']) && !empty($_SESSION['idUser'])) {
-                    $controllerReserv->getAllFromUser($_SESSION['idUser']);
-
-                    if (isset($_POST['annulReserv']) && isset($_POST['idRes']) && $_POST['idRes']) {
-                        $controllerReserv->annulReserv( $_POST['idRes'] );
-                    }
-                }
-
-            } else if (isset($_GET['ajoutUser']) && $_GET['ajoutUser'] == "true") {
-
-                // Affichage
-                include('App/View/viewAjoutUser.php');
-
-            } else if (isset($_GET['nom']) && isset($_GET['id'])) {
-                $nomGroupe = htmlspecialchars($_GET['nom']);
-                $idConcert = htmlspecialchars($_GET['id']);
-
-                // Affichage d'un seul concert
-                $controllerConcert->getOne();
-
-            } else if (isset($_GET['cat']) && !empty($_GET['cat'])) {
-
-                // Affichage de tous les concerts en fonction du genre choisi
-                $controllerConcert->getCategorie( $_GET['cat'] );
-
-            } else if (isset($_POST['selectGenre']) && !empty($_POST['selectGenre'])) {
-
-                // Affichage de tous les concerts en fonction du genre choisi
-                $controllerConcert->getCategorie( $_POST['selectGenre'] );
-
-            } else if (!isset($_COOKIE['genre']) || $_COOKIE['genre'] == 'all') {
-
-                // Affichage de tous les concerts en fonction du cookie
-                $controllerConcert->getAll();
-
-            } else {
-
-                $controllerGenre->getGenre( $_COOKIE['genre'] );
-
-            }
-        ?>
-
-        <?php require("utils/footer.php");?>
     </body>
 </html>

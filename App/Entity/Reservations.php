@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use Cassandra\Date;
-
 class Reservations
 {
 
@@ -14,7 +12,7 @@ class Reservations
     private float  $prixTotal;
     private int    $groupe;
     private String $lieu;
-    private Date   $date;
+    private String $date;
 
     /**
      * Constructeur
@@ -100,9 +98,9 @@ class Reservations
     }
 
     /**
-     * @return Date
+     * @return String
      */
-    public function getDate(): Date
+    public function getDate(): string
     {
         return $this->date;
     }
@@ -166,9 +164,9 @@ class Reservations
     }
 
     /**
-     * @param Date $date
+     * @param String $date
      */
-    public function setDate(Date $date): void
+    public function setDate(String $date): void
     {
         $this->date = $date;
     }

@@ -52,48 +52,8 @@ $enregistrement = false;
 $aff="";
 
 /*--------------     TRAITEMENT DES FORMULAIRES     --------------*/
-// Traitement du formulaire pour AJOUTER UN CONCERT
-if (isset($_POST['sendAjtConcert'])) {
-
-    if (!empty($_POST['nomGroupe']) && !empty($_POST['date']) && !empty($_POST['lieu']) && !empty($_POST['prix'])) {
-
-        // Stockage des valeurs
-        $nomGroupe = htmlspecialchars($_POST['nomGroupe']);
-        $date = htmlspecialchars($_POST['date']);
-        $lieu = htmlspecialchars($_POST['lieu']);
-        $prix = htmlspecialchars($_POST['prix']);
-
-        // Requête et traitement
-        $recupGroupe = "select * from groupes where nom = '$nomGroupe';";
-        $idGrps = $connexion->query($recupGroupe);
-        $idGrp = $idGrps->fetchAll(PDO::FETCH_ASSOC);
-
-        // Si le nom du groupe correspond à la récupération de la requête
-        if ($nomGroupe == $idGrp[0]['nom']) {
-
-            $id = $idGrp[0]['id_groupe'];
-
-            // Ajout du concert
-            $sqlInsertConcert = "insert into concerts (groupe, lieu, date, prixPlace) values ('$id', '$lieu', '$date', '$prix')";
-            $insertConcert = $connexion->exec($sqlInsertConcert);
-
-            $_SESSION['updateSite'] = 'AjtConcert';
-
-            header('location:admin.php');
-
-        } else {
-            // Affichage de l'alerte
-            echo '<body onload = "alert(\'Ce groupe n`existe pas \')" >';
-        }
-
-    } else {
-        echo '<body onload = "alert(\'Les données du formulaire ne sont pas valables\')" >';
-        echo '<meta http-equiv="refresh" content="0;URL=admin.php">';
-    }
-
-}
 // Traitement du formulaire pour SUPPRIMER UN CONCERT
-else if (isset($_POST['sendSprConcert'])) {
+if (isset($_POST['sendSprConcert'])) {
 
     if (!empty($_POST['nomGroupe']) && !empty($_POST['date']) && !empty($_POST['lieu'])) {
 
@@ -548,7 +508,9 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
         echo '<meta http-equiv="refresh" content="0;URL=admin.php">';
     }
 
-} else if (isset($_POST['annulReserv']) && isset($_POST['idRes']) && !empty($_POST['idRes'])) {
+}
+// ANNULER UNE RESERVATION
+else if (isset($_POST['annulReserv']) && isset($_POST['idRes']) && !empty($_POST['idRes'])) {
 
     $idRes = htmlspecialchars($_POST['idRes']);
 
@@ -588,57 +550,6 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
         <h2 id="titre-Admin"> Administration du site </h2>
 
         <!-- ===============================
-             BOUTONS D'ACTION DE LA PAGE ADMIN
-             =============================== -->
-
-        <section id="action_admin">
-            <h3 class="ss_titre"> Veuillez choisir l'action que vous voulez effectuer </h3>
-
-            <div id="btn_admin">
-                <div id="btn_concert">
-                    <input type="button" id="ajout_concert" name="ajout_concert" value="Ajouter un concert">
-                    <input type="button" id="suppr_concert" name="suppr_concert" value="Supprimer un concert">
-                    <input type="button" id="modif_concert" name="modif_concert" value="Modifier un concert">
-                </div>
-                <div id="btn_groupe">
-                    <input type="button" id="ajout_groupe" name="ajout_groupe" value="Ajouter un groupe">
-                    <input type="button" id="suppr_groupe" name="suppr_groupe" value="Supprimer un groupe">
-                    <input type="button" id="modif_groupe" name="modif_groupe" value="Modifier un groupe">
-                </div>
-                <div id="btn_genre">
-                    <input type="button" id="ajout_genre" name="ajout_genre" value="Ajouter un genre">
-                    <input type="button" id="suppr_genre" name="suppr_genre" value="Supprimer un genre">
-                    <input type="button" id="modif_genre" name="modif_genre" value="Modifier un genre">
-                </div>
-            </div>
-
-            <!-- ============ NOTIFICATIONS ============ -->
-
-            <?php if (isset($_SESSION['updateSite']) && !empty($_SESSION['updateSite'])): ?>
-                <?php if ($_SESSION['updateSite'] == 'AjtConcert') : ?>
-                    <p class="info-admin"> Le concert à été ajouté avec succés ! </p>
-                <?php elseif ($_SESSION['updateSite'] == 'SprConcert') : ?>
-                    <p class="info-admin"> Le concert à été supprimé avec succés ! </p>
-                <?php elseif ($_SESSION['updateSite'] == 'AjtGroupe') : ?>
-                    <p class="info-admin"> Le groupe à été ajouté avec succés ! </p>
-                <?php elseif ($_SESSION['updateSite'] == 'SprGroupe') : ?>
-                    <p class="info-admin"> Le groupe à été supprimé avec succés ! </p>
-                <?php elseif ($_SESSION['updateSite'] == "modifConcert") : ?>
-                    <p class="info-admin"> Un concert vient d'être modifié avec succés ! </p>
-                <?php elseif ($_SESSION['updateSite'] == "modifGroupe") : ?>
-                    <p class="info-admin"> Un groupe vient d'être modifié avec succés ! </p>
-                <?php elseif ($_SESSION['updateSite'] == "AjtGenre") : ?>
-                    <p class="info-admin"> Un genre vient d'être ajouté avec succés ! </p>
-                <?php elseif ($_SESSION['updateSite'] == "SprGenre") : ?>
-                    <p class="info-admin"> Un genre vient d'être supprimé avec succés ! </p>
-                <?php elseif ($_SESSION['updateSite'] == "modifGenre") : ?>
-                    <p class="info-admin"> Un genre vient d'être modifié avec succés ! </p>
-                <?php endif; ?>
-            <?php endif; ?>
-
-        </section>
-
-        <!-- ===============================
              INSERTION DES TABLES DE DONNEES
              =============================== -->
 
@@ -667,31 +578,7 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
 
             </table>
 
-            <table class="table_admin concerts">
 
-                <!-- ============ TABLE CONCERTS ============ -->
-
-                <h3> Table concerts </h3>
-
-                <tr>
-                    <th> Id </th>
-                    <th> Id_groupe </th>
-                    <th> Lieu </th>
-                    <th> Date </th>
-                    <th> Prix </th>
-                </tr>
-
-                <?php foreach ($concert as $unConcert): ?>
-                    <tr>
-                        <td> <?= $unConcert->idConcert; ?> </td>
-                        <td> <?= $unConcert->groupe; ?> </td>
-                        <td> <?= $unConcert->lieu; ?> </td>
-                        <td> <?= $unConcert->date; ?> </td>
-                        <td> <?= $unConcert->prixPlace; ?> </td>
-                    </tr>
-                <?php endforeach; ?>
-
-            </table>
 
             <table class="table_admin genreMusique">
 
@@ -728,45 +615,6 @@ else if (isset($_GET['action']) && !empty($_GET['action']) && $_GET['action'] ==
                     <tr>
                         <td> <?= $unUsr->idUser; ?> </td>
                         <td> <?= $unUsr->login; ?> </td>
-                    </tr>
-                <?php endforeach; ?>
-
-            </table>
-
-            <table class="table_admin reservation">
-
-                <!-- ============ TABLE RESERVATIONS ============ -->
-
-                <h3> Table reservations </h3>
-
-                <tr>
-                    <th> Id </th>
-                    <th> idUser </th>
-                    <th> idConcert </th>
-                    <th> Nombre place </th>
-                    <th> PrixTotal </th>
-                    <th> idGroupe </th>
-                    <th> Lieu </th>
-                    <th> Date </th>
-                    <th> </th>
-                </tr>
-
-                <?php foreach ($reserv as $uneReserv): ?>
-                    <tr>
-                        <td> <?= $uneReserv->idRes; ?> </td>
-                        <td> <?= $uneReserv->user; ?> </td>
-                        <td> <?= $uneReserv->concert; ?> </td>
-                        <td> <?= $uneReserv->nbPlace; ?> </td>
-                        <td> <?= $uneReserv->prixTotal; ?> </td>
-                        <td> <?= $uneReserv->groupe; ?> </td>
-                        <td> <?= $uneReserv->lieu; ?> </td>
-                        <td> <?= $uneReserv->date; ?> </td>
-                        <td id="btnAnnulReserv">
-                            <form action="index.php?panier=true" method="post">
-                                <input type="hidden" name="idRes" value="<?= $uneReserv->idRes ?>">
-                                <input type="submit" name="annulReserv" value="X">
-                            </form>
-                        </td>
                     </tr>
                 <?php endforeach; ?>
 

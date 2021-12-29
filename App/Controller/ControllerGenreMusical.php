@@ -22,7 +22,7 @@ class ControllerGenreMusical
     {
         $content = $this->model->findAll();
 
-        include('App/View/getAllGenre.php');
+        include('App/View/getAllGenres.php');
     }
 
     // Récupérer un seul genre
@@ -30,7 +30,7 @@ class ControllerGenreMusical
     {
         $content = $this->model->findGenre($genre);
 
-        include('App/View/getAllGenre.php');
+        include('App/View/getConcertsByGenre.php');
     }
 
 }

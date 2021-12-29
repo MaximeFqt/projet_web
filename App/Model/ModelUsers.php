@@ -12,7 +12,7 @@ class ModelUsers extends Model
         parent::__construct("users");
     }
 
-    public function findAll()
+    public function findAll(): array
     {
         $user = $this->find();
         $users = array();
@@ -46,6 +46,17 @@ class ModelUsers extends Model
             }
         }
         return $users;
+    }
+
+    // Déconnexion
+    public function logout(): bool
+    {
+        session_start();
+        // Destruction des variables de session
+        session_unset();
+        // Destruction de la session en cours
+        session_destroy();
+        return true;
     }
 
 

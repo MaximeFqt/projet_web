@@ -8,8 +8,8 @@ use App\Model\ModelConcerts;
 class ControllerConcerts
 {
 
-    private Model $model;
-    //private $view;
+    private Model  $model;
+    private String $view;
 
     public function __construct()
     {
@@ -22,7 +22,15 @@ class ControllerConcerts
     {
         $content = $this->model->findAll();
 
-        include('App/View/getAllConcert.php');
+        include('App/View/getAllConcerts.php');
+    }
+
+    // Récupérer trois concerts
+    public function getThree()
+    {
+        $content = $this->model->findThree();
+
+        include('App/View/getThreeConcert.php');
     }
 
     // Récupérer un seul concert
@@ -37,11 +45,26 @@ class ControllerConcerts
         include('App/View/getOneConcert.php');
     }
 
+    // Affiche tous les concerts d'une même catégorie
     public function getCategorie($id)
     {
         $content = $this->model->findOneCategorie($id);
 
         include('App/View/getCategorie.php');
+    }
+
+    // Ajoute un concert dans la BDD
+    public function addConcert(array $data)
+    {
+        $content = $this->model->insertConcert($data);
+        echo '<meta http-equiv="refresh" content="0;URL=index.php?admin=true">';
+    }
+
+    // Supprimer un concert
+    public function deleteConcert(array $data)
+    {
+        $content = $this->model->deleteConcert($data);
+        echo '<meta http-equiv="refresh" content="0;URL=index.php?admin=true">';
     }
 
 }

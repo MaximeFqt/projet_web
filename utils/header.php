@@ -31,11 +31,11 @@ $genre = $genres->fetchAll(PDO::FETCH_OBJ);
             <li><a href="../index.php?panier=true"> Panier </a></li>
 
             <?php if (isset($role) && $role == 'admin') : ?>
-                <li><a href="../admin.php"> Admin </a></li>
+                <li><a href="../index.php?admin=true"> Admin </a></li>
             <?php endif; ?>
 
             <?php if (isset($role)) : ?>
-                <li> <a href="logout.php"> Déconnection </a> </li>
+                <li> <a href="../index.php?logout=true"> Déconnection </a> </li>
             <?php else : ?>
                 <li> <a id="login"> Connection </a> </li>
             <?php endif; ?>

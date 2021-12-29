@@ -41,7 +41,7 @@ if(isset($_GET['nom']) && isset($_GET['id'])) {
             </li>
         <?php endforeach; ?>
         <li>
-            <form action="#" id="buy" method="post">
+            <form action="" id="buy" method="post">
                 <p>
                     <label for="buy"> Réserver : </label>
                     <input type="number" id="buy" min="1" name="nbPlace" placeholder="Nombre de place" required/>

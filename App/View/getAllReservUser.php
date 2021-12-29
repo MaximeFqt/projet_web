@@ -4,22 +4,22 @@
 
 ?>
 
-<!-- ===============================
-    INFORMATIONS DU PANIER
-=============================== -->
+                                   <!-- ===============================
+                                         INFORMATIONS DU PANIER
+                                   =============================== -->
+
 
 <?php if (!isset($_SESSION['login'])) : ?>
-    <h2 id="titre"> Connectez-vous pour avoir accès à votre panier </h2>
+    <h2 id="titre"> Connectez-vous pour avoir accès à votre panier ! </h2>
 <?php elseif (isset($_SESSION['panier']) && $_SESSION['panier'] == "empty") : ?>
     <h2 id="titre"> Votre panier est vide ! </h2>
 <?php elseif (isset($_SESSION['panier']) && $_SESSION['panier'] == "unfree") : ?>
     <h2 id="titre"> Voici votre panier </h2>
 <?php endif; ?>
 
-
-<!-- ===============================
-    FORMULAIRE DE CONNEXION
-=============================== -->
+                                    <!-- ===============================
+                                        FORMULAIRE DE CONNEXION
+                                    =============================== -->
 
 
 <form id="formulaire" method="post" action="../../index.php">
@@ -34,7 +34,7 @@
             <input type="password" placeholder="Mot de passe" name="pass" id="motDePasse" required/>
         </p>
         <p>
-            <a href="viewAjoutUser.php" class="inscription"> Je m'inscrit </a>
+            <a href="../../index.php?ajoutUser=true" class="inscription"> Je m'inscrit </a>
         </p>
     </fieldset>
     <p class="submit">

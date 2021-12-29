@@ -20,7 +20,7 @@ class ModelGroupes extends Model
         foreach ($groupe as $unGroupe) {
             $unGroupe = new Groupes(
                 array(
-                    "idGroupe" => $unGroupe['id_groupe'],
+                    "idGroupe" => $unGroupe['idGroupe'],
                     "nom"      => $unGroupe['nom'],
                     "genre"    => $unGroupe['genre'],
                     "image"    => $unGroupe['image']

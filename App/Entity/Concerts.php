@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use Cassandra\Date;
-
 class Concerts
 {
 
@@ -46,7 +44,7 @@ class Concerts
     public function getGroupe(): int { return $this->groupe; }
     /** @return String */
     public function getLieu(): string { return $this->lieu; }
-    /** @return Date */
+    /** @return String */
     public function getDate(): string { return $this->date; }
     /** @return float */
     public function getPrixPlace(): float { return $this->prixPlace; }
@@ -58,7 +56,7 @@ class Concerts
     public function setGroupe(int $groupe): void { $this->groupe = $groupe; }
     /** @param String $lieu */
     public function setLieu(string $lieu): void { $this->lieu = $lieu; }
-    /** @param Date $date */
+    /** @param String $date */
     public function setDate(string $date): void { $this->date = $date; }
     /** @param float $prixPlace */
     public function setPrixPlace(float $prixPlace): void { $this->prixPlace = $prixPlace; }

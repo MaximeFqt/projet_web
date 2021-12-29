@@ -13,7 +13,7 @@ class ModelGenreMusical extends Model
     }
 
     // Trouve tous les genres
-    public function findAll()
+    public function findAll(): array
     {
         $genre = $this->find();
         $genres = array();
@@ -21,7 +21,7 @@ class ModelGenreMusical extends Model
         foreach ($genre as $unGenre) {
             $unGenre = new GenreMusical(
                 array(
-                    "idGenre"  => $unGenre['id_genre'],
+                    "idGenre"  => $unGenre['idGenre'],
                     "nomGenre" => $unGenre['nomGenre']
                 )
             );
