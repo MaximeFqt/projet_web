@@ -383,7 +383,6 @@ class Router
             } else {
                 // Affichage de base du panier
                 $this->controllerReserv->getViewReservUser();
-                // include('App/View/getAllReservUser.php');
             }
 
         } else if (isset($_GET['ajoutUser']) && $_GET['ajoutUser'] == "true") {

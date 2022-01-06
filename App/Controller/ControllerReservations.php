@@ -43,8 +43,7 @@ class ControllerReservations
             $_SESSION['panier'] = 'empty';
         }
 
-        $this->getViewReservUser();
-        include($this->view);
+        include('App/View/getAllReservUser.php');
     }
 
     // Annule une réservation
