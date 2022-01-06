@@ -14,18 +14,18 @@
     <div id="btn_admin">
         <div id="btn_concert">
             <input type="button" id="ajout_concert" name="ajout_concert" value="Ajouter un concert">
-            <input type="button" id="suppr_concert" name="suppr_concert" value="Supprimer un concert">
             <input type="button" id="modif_concert" name="modif_concert" value="Modifier un concert">
+            <input type="button" id="suppr_concert" name="suppr_concert" value="Supprimer un concert">
         </div>
         <div id="btn_groupe">
             <input type="button" id="ajout_groupe" name="ajout_groupe" value="Ajouter un groupe">
-            <input type="button" id="suppr_groupe" name="suppr_groupe" value="Supprimer un groupe">
             <input type="button" id="modif_groupe" name="modif_groupe" value="Modifier un groupe">
+            <input type="button" id="suppr_groupe" name="suppr_groupe" value="Supprimer un groupe">
         </div>
         <div id="btn_genre">
             <input type="button" id="ajout_genre" name="ajout_genre" value="Ajouter un genre">
-            <input type="button" id="suppr_genre" name="suppr_genre" value="Supprimer un genre">
             <input type="button" id="modif_genre" name="modif_genre" value="Modifier un genre">
+            <input type="button" id="suppr_genre" name="suppr_genre" value="Supprimer un genre">
         </div>
     </div>
 

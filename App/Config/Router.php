@@ -371,6 +371,7 @@ class Router
 
         } else if (isset($_GET['panier']) && $_GET['panier'] == "true") {
 
+            // L'utilisateur est connecté
             if (isset($_SESSION['idUser']) && !empty($_SESSION['idUser'])) {
                 // Affichage des réservations de l'utilisateur
                 $this->controllerReserv->getAllFromUser($_SESSION['idUser']);
@@ -382,6 +383,7 @@ class Router
             } else {
                 // Affichage de base du panier
                 $this->controllerReserv->getViewReservUser();
+                // include('App/View/getAllReservUser.php');
             }
 
         } else if (isset($_GET['ajoutUser']) && $_GET['ajoutUser'] == "true") {

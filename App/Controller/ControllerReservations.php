@@ -14,7 +14,6 @@ class ControllerReservations
     public function __construct()
     {
         $this->model = new ModelReservations();
-        //$this->view = new View();
     }
 
     /**
@@ -72,13 +71,13 @@ class ControllerReservations
     public function getViewReservUser()
     {
         $this->setView('App/View/getAllReservUser.php');
+        include($this->view);
     }
 
     // Affiche la view
     public function getView()
     {
         $this->setView('App/View/getAllReserv.php');
-
     }
 
 }

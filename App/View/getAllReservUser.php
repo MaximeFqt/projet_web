@@ -9,7 +9,7 @@
                                    =============================== -->
 
 
-<?php if (!isset($_SESSION['login'])) : ?>
+<?php if (empty($_SESSION['login'])) : ?>
     <h2 id="titre"> Connectez-vous pour avoir accès à votre panier ! </h2>
 <?php elseif (isset($_SESSION['panier']) && $_SESSION['panier'] == "empty") : ?>
     <h2 id="titre"> Votre panier est vide ! </h2>
