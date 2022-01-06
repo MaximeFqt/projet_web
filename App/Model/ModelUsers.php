@@ -9,7 +9,8 @@ class ModelUsers extends Model
 
     public function __construct()
     {
-        parent::__construct("users");
+        $this->table = "users";
+        parent::__construct($this->table);
     }
 
     public function findAll(): array
@@ -37,7 +38,7 @@ class ModelUsers extends Model
     {
         $users = array();
 
-        $sql = "select * from users where login = '$login';";
+        $sql = "select * from $this->table where login = '$login';";
         $user = $this->getConnexion()->query($sql);
 
         if ($user->rowCount() === 1) {

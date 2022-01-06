@@ -9,7 +9,8 @@ class ModelConcerts extends Model
 
     public function __construct()
     {
-        parent::__construct("concerts");
+        $this->table = "concerts";
+        parent::__construct($this->table);
     }
 
     public function findAll(): array
@@ -36,7 +37,7 @@ class ModelConcerts extends Model
     // Récupère trois concerts
     public function findThree()
     {
-        $sql = "select * from concerts C join groupes G on G.idGroupe = C.groupe order by rand() limit 3;";
+        $sql = "select * from $this->table C join groupes G on G.idGroupe = C.groupe order by rand() limit 3;";
         $concert = $this->getConnexion()->query($sql);
         $concerts = array();
 
@@ -50,7 +51,7 @@ class ModelConcerts extends Model
     // Trouve un concert par son idée
     public function findOne($id, $nomGroupe): array
     {
-        $sql = "select * from concerts C join groupes G on G.idGroupe = C.groupe where C.idConcert = '$id' and G.nom = '$nomGroupe';";
+        $sql = "select * from $this->table C join groupes G on G.idGroupe = C.groupe where C.idConcert = '$id' and G.nom = '$nomGroupe';";
         $concert = $this->getConnexion()->query($sql);
 
         $concerts = array();
@@ -65,10 +66,10 @@ class ModelConcerts extends Model
     public function findOneCategorie($id): array
     {
         if ($id == 'all') {
-            $sql = "select * from concerts C join groupes Gr on Gr.idGroupe = C.groupe;";
+            $sql = "select * from $this->table C join groupes Gr on Gr.idGroupe = C.groupe;";
         } else {
             // Récupère les concerts contenants le genre recherché
-            $sql = "select * from concerts C join groupes G on G.idGroupe = C.groupe where G.genre = '$id';";
+            $sql = "select * from $this->table C join groupes G on G.idGroupe = C.groupe where G.genre = '$id';";
         }
 
         $concert = $this->getConnexion()->query($sql);
@@ -89,7 +90,7 @@ class ModelConcerts extends Model
         $lieu = $data['lieu'];
         $prix = $data['prix'];
 
-        $sql = "select * from concerts C join groupes Gr on Gr.idGroupe = C.groupe 
+        $sql = "select * from $this->table C join groupes Gr on Gr.idGroupe = C.groupe 
                 where Gr.nom = '$nomGroupe' and C.date = '$date' and C.lieu = '$lieu' and C.prixPlace = '$prix';";
 
         $concerts = $this->getConnexion()->query($sql);
@@ -107,7 +108,7 @@ class ModelConcerts extends Model
                 $id = $idGrp[0]['idGroupe'];
 
                 // Ajout du concert
-                $sqlInsertConcert = "insert into concerts (groupe, lieu, date, prixPlace) values ('$id', '$lieu', '$date', '$prix')";
+                $sqlInsertConcert = "insert into $this->table (groupe, lieu, date, prixPlace) values ('$id', '$lieu', '$date', '$prix')";
                 $insertConcert = $this->getConnexion()->exec($sqlInsertConcert);
 
                 $_SESSION['updateSite'] = 'AjtConcert';
@@ -130,7 +131,7 @@ class ModelConcerts extends Model
         $date = $data['date'];
         $lieu = $data['lieu'];
 
-        $sql = "select * from concerts C join groupes Gr on Gr.idGroupe = C.groupe 
+        $sql = "select * from $this->table C join groupes Gr on Gr.idGroupe = C.groupe 
                 where Gr.nom = '$nomGroupe' and C.date = '$date' and C.lieu = '$lieu';";
 
         $concerts = $this->getConnexion()->query($sql);
@@ -159,7 +160,7 @@ class ModelConcerts extends Model
         $lieu = $data['lieu'];
         $date = $data['date'];
 
-        $sql = "select * from groupes Gr join concerts C on C.groupe = Gr.idGroupe
+        $sql = "select * from groupes Gr join $this->table C on C.groupe = Gr.idGroupe
                 where Gr.nom = '$nomGroupe' and C.lieu = '$lieu' and C.date = '$date';";
         $grps = $this->getConnexion()->query($sql);
 
@@ -202,13 +203,13 @@ class ModelConcerts extends Model
         $prix = $dataPOST['prix'];
 
         // Requête
-        $sql = "select * from concerts where idConcert = '$idConcert';";
+        $sql = "select * from $this->table where idConcert = '$idConcert';";
         $recupConcert = $this->getConnexion()->query($sql);
 
         if ($recupConcert->rowCount() == 1) {
 
             // Modification du concert
-            $updateConcert = "update concerts set groupe = '$idGroupe', lieu = '$lieu', date = '$date', 
+            $updateConcert = "update $this->table set groupe = '$idGroupe', lieu = '$lieu', date = '$date', 
                                     prixPlace = '$prix' where idConcert = '$idConcert';";
 
             $update = $this->getConnexion()->exec($updateConcert);

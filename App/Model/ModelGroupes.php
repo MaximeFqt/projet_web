@@ -9,7 +9,8 @@ class ModelGroupes extends Model
 
     public function __construct()
     {
-        parent::__construct("groupes");
+        $this->table = "groupes";
+        parent::__construct($this->table);
     }
 
     public function findAll()
@@ -38,7 +39,7 @@ class ModelGroupes extends Model
          $nomGroupe = $data['nomGroupe'];
          $genre    = $data['genre'];
 
-        $sql = "select * from groupes Gr join genremusical Gm on Gm.idGenre = Gr.genre
+        $sql = "select * from $this->table Gr join genremusical Gm on Gm.idGenre = Gr.genre
                        where Gm.nomGenre = '$genre' and Gr.nom = '$nomGroupe';";
 
         $genres = $this->getConnexion()->query($sql); // Envoie
@@ -58,7 +59,7 @@ class ModelGroupes extends Model
                 $image = $this->getImage();
 
                 // Ajout du groupe
-                $sqlInsertGroupe = "insert into groupes (nom, genre, image) values ('$nomGroupe', '$idGenre', '$image')";
+                $sqlInsertGroupe = "insert into $this->table (nom, genre, image) values ('$nomGroupe', '$idGenre', '$image')";
                 $insertGroupe = $this->getConnexion()->exec($sqlInsertGroupe);
 
                 $_SESSION['updateSite'] = 'AjtGroupe';
@@ -80,7 +81,7 @@ class ModelGroupes extends Model
         $nomGroupe = $data['nomGroupe'];
         $genre    = $data['genre'];
 
-        $sql = "select * from groupes Gr join genremusical Gm on Gm.idGenre = Gr.genre
+        $sql = "select * from $this->table Gr join genremusical Gm on Gm.idGenre = Gr.genre
                        where Gm.nomGenre = '$genre' and Gr.nom = '$nomGroupe';";
 
         $groupes = $this->getConnexion()->query($sql); // Envoie
@@ -109,7 +110,7 @@ class ModelGroupes extends Model
         $genre     = $data['genre'];
 
         // Requête et envoie
-        $sql = "select * from groupes Gr join genremusical Gm on Gm.idGenre = Gr.genre 
+        $sql = "select * from $this->table Gr join genremusical Gm on Gm.idGenre = Gr.genre 
                 where Gr.nom = '$nomGroupe' and Gm.nomGenre = '$genre';";
         $recupGrp = $this->getConnexion()->query($sql);
 
@@ -167,7 +168,7 @@ class ModelGroupes extends Model
                 $image = $this->getImage();
 
                 // Modification du concert
-                $updateGroupe = "update groupes set nom = '$nomGroupe', genre = '$idGenre', image = '$image' where idGroupe = '$idGroupe';";
+                $updateGroupe = "update $this->table set nom = '$nomGroupe', genre = '$idGenre', image = '$image' where idGroupe = '$idGroupe';";
 
                 $update = $this->getConnexion()->exec($updateGroupe);
 

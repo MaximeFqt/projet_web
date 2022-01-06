@@ -9,7 +9,8 @@ class ModelReservations extends Model
 
     public function __construct()
     {
-        parent::__construct("reservations");
+        $this->table = "reservations";
+        parent::__construct($this->table);
     }
 
     // Trouve toutes les réservations
@@ -43,7 +44,7 @@ class ModelReservations extends Model
     {
         $reservs = array();
 
-        $sql = "select * from reservations R join groupes Gr on Gr.idGroupe = R.groupe where R.user = '$idUser';";
+        $sql = "select * from $this->table R join groupes Gr on Gr.idGroupe = R.groupe where R.user = '$idUser';";
         $reserv = $this->getConnexion()->query($sql);
 
         if ($reserv->rowCount() === 0) {
@@ -62,7 +63,7 @@ class ModelReservations extends Model
     // Annule une réservation
     public function deleteRes($idRes): void
     {
-        $sql = "select * from reservations R join groupes Gr on Gr.idGroupe = R.groupe where R.idRes = '$idRes';";
+        $sql = "select * from $this->table R join groupes Gr on Gr.idGroupe = R.groupe where R.idRes = '$idRes';";
         $reserv = $this->getConnexion()->query($sql);
 
         if ($reserv->rowCount() === 1) {
@@ -104,7 +105,7 @@ class ModelReservations extends Model
 
                 $prixTotal = $nbPlace * $prix;
 
-                $sql = "insert into reservations (user, concert, nbPlace, prixTotal, groupe, lieu, date) 
+                $sql = "insert into $this->table (user, concert, nbPlace, prixTotal, groupe, lieu, date) 
                             values ('$idUser', '$idConcert', '$nbPlace', '$prixTotal', '$groupe', '$lieu', '$date');";
 
                 $insertReservation = $this->getConnexion()->exec($sql);

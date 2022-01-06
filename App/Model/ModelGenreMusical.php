@@ -9,7 +9,8 @@ class ModelGenreMusical extends Model
 
     public function __construct()
     {
-        parent::__construct("genremusical");
+        $this->table = "genremusical";
+        parent::__construct($this->table);
     }
 
     // Trouve tous les genres
@@ -34,7 +35,7 @@ class ModelGenreMusical extends Model
     // Trouve les genres avec les groupes et les concerts liés
     public function findGenre($genre)
     {
-        $sql = "select * from concerts C join groupes G on G.idGroupe = C.groupe join genremusical Gm on Gm.idGenre = G.genre
+        $sql = "select * from concerts C join groupes G on G.idGroupe = C.groupe join $this->table Gm on Gm.idGenre = G.genre
         where G.genre = '$genre' order by rand() limit 3;";
 
         $dataGenre = $this->getConnexion()->query($sql);
@@ -50,13 +51,13 @@ class ModelGenreMusical extends Model
     // Ajout d'un genre
     public function insertGenre(String $nomGenre): void
     {
-        $sql = "select * from genremusical where nomGenre = '$nomGenre';";
+        $sql = "select * from $this->table where nomGenre = '$nomGenre';";
 
         $genres = $this->getConnexion()->query($sql);
         if ($genres->rowCount() === 0) {
 
             // Ajout du genre
-            $sqlInsertGenre = "insert into genremusical (nomGenre) values ('$nomGenre')";
+            $sqlInsertGenre = "insert into $this->table (nomGenre) values ('$nomGenre')";
             $insertGenre = $this->getConnexion()->exec($sqlInsertGenre);
 
             $_SESSION['updateSite'] = 'AjtGenre';
@@ -72,7 +73,7 @@ class ModelGenreMusical extends Model
     // Suppression d'un genre
     public function deleteGenre(String $nomGenre): void
     {
-        $sql = "select * from genremusical where nomGenre = '$nomGenre';";
+        $sql = "select * from $this->table where nomGenre = '$nomGenre';";
         $genres = $this->getConnexion()->query($sql); // Envoie
 
 
@@ -98,7 +99,7 @@ class ModelGenreMusical extends Model
     {
         $nomGenre = $data['nomGenre'];
 
-        $sql = "select * from genremusical where nomGenre = '$nomGenre';";
+        $sql = "select * from $this->table where nomGenre = '$nomGenre';";
         $genres = $this->getConnexion()->query($sql);
 
         if ($genres->rowCount() === 1) {
@@ -126,13 +127,13 @@ class ModelGenreMusical extends Model
         $nomGgenre = $dataPOST['nomGenre'];
 
         // Requête
-        $sql = "select * from genremusical where idGenre = '$idGenre';";
+        $sql = "select * from $this->table where idGenre = '$idGenre';";
         $recupGenre = $this->getConnexion()->query($sql);
 
         if ($recupGenre->rowCount() == 1) {
 
             // Modification du concert
-            $updateGenre = "update genremusical set nomGenre = '$nomGgenre' where idGenre = '$idGenre';";
+            $updateGenre = "update $this->table set nomGenre = '$nomGgenre' where idGenre = '$idGenre';";
 
             $update = $this->getConnexion()->exec($updateGenre);
 
