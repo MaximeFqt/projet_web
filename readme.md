@@ -31,6 +31,7 @@
 id Administrateur : 
     login : admin
     pass  : admin
+    email : 
 ```
 
 <br> 
@@ -92,5 +93,5 @@ id Administrateur :
 
 <br>
 
-[Lien vers le projet sur GitHub](https://github.com/MaximeFqt/projet_web.git)
+[Lien vers le projet sur GitHub](https://github.com/MaximeFqt/projet_web)
 
