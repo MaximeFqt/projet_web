@@ -71,12 +71,14 @@ select#selectMenu {
 
 
 /*************** index.php ***************/
-body {
+#body {
     background-image: url('../image/banner.jpg');
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+    height: 100vh;
+    background-attachment: fixed;
 }
 
 h2#titre {

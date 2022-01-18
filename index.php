@@ -34,11 +34,11 @@ $root->start();
 
     <body id="body">
 
-        <!-- ===============================
+            <!-- ===============================
                  FORMULAIRE DE CONNEXION
              =============================== -->
 
-        <form id="formulaire" method="post" action="index.php">
+            <form id="formulaire" method="post" action="index.php">
             <fieldset id="form-login">
                 <legend>Identification administrateur</legend>
                 <p>
@@ -58,6 +58,7 @@ $root->start();
                 <input type="reset" id="btnResetLogin" value="Annuler" />
             </p>
         </form>
+        
 
     </body>
 </html>

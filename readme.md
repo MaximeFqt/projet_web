@@ -92,5 +92,5 @@ id Administrateur :
 
 <br>
 
-[Lien vers le projet sur GitLab](https://gitlab.univ-lr.fr/mfiquet/projet_web)
+[Lien vers le projet sur GitHub](https://github.com/MaximeFqt/projet_web.git)
 
