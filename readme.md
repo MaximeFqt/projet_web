@@ -31,7 +31,7 @@
 id Administrateur : 
     login : admin
     pass  : admin
-    email : 
+    aucune adresse email
 ```
 
 <br> 
